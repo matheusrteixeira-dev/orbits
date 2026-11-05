@@ -1,8 +1,8 @@
 C = {
  "name": "Français",
  "meta": {
-  "title": "Matheus Teixeira · Ingénieur en machine learning et développeur logiciel",
-  "desc": "Matheus Teixeira, ingénieur en machine learning et développeur logiciel de Santos, au Brésil. Projets, feuille de route, formation, expérience et contact."
+  "title": "Matheus Teixeira · Ingénieur en machine learning et ingénieur logiciel",
+  "desc": "Matheus Teixeira, ingénieur en machine learning et ingénieur logiciel, de Santos au Brésil. Projets, feuille de route, formation, expérience et contact."
  },
  "skip": "Aller au contenu",
  "nav": {
@@ -15,7 +15,7 @@ C = {
   "sections": "Sections",
   "roadmap": "Feuille de route"
  },
- "role": "Ingénieur en machine learning · Développeur logiciel",
+ "role": "Ingénieur en machine learning · Ingénieur logiciel · Chercheur en informatique quantique",
  "ui": {
   "pause": "Mettre en pause",
   "play": "Reprendre le mouvement",
@@ -46,9 +46,9 @@ C = {
  "about": {
   "h": "À propos",
   "p": [
-   "Je suis Matheus, ingénieur en machine learning et développeur logiciel, originaire de Santos, au Brésil. J’écris du logiciel depuis 2016, quand j’ai commencé comme développeur web et assistant de support informatique chez Orion Benefícios, et j’étudie à la FEI depuis 2019.",
-   "Pour mon master, j’ai construit un pipeline reproductible qui classe des images histopathologiques de cancer du sein, en combinant des caractéristiques ResNet-50 avec des machines à vecteurs de support classiques et quantiques, et je l’ai exécuté sur du matériel IBM Quantum. Je suis maintenant un MBA en Data Science, IA et Analytics à l’USP avec une bourse complète, et je suis inscrit en doctorat à la FEI, avec une bourse CAPES et des cours à partir de février 2027.",
-   "En dehors de la recherche, je développe des logiciels de bout en bout, du modèle ou de la physique jusqu’à l’interface et aux tests. Les cinq projets ci-dessous sont ceux qui me tiennent le plus à cœur."
+   "Je suis Matheus Teixeira, de Santos, au Brésil. Je travaille sur le machine learning et le logiciel. Ma recherche porte sur le machine learning quantique et la correction d’erreurs quantiques, et la plupart de mon code est en Python, TypeScript, React et Rust.",
+   "J’ai commencé en 2016 comme développeur web et assistant de support informatique chez Orion Benefícios. J’étudie à la FEI depuis 2019, d’abord une licence en informatique, puis un master en génie électrique en IA. Mon mémoire est un pipeline hybride quantique-classique pour l’histopathologie du cancer du sein, avec des données séparées par patient, si bien qu’aucun patient n’apparaît à la fois dans l’entraînement et dans le test. Je fais maintenant un MBA en Data Science, IA et Analytics à l’USP avec une bourse complète, et je suis inscrit en doctorat à la FEI sur la correction d’erreurs quantiques, avec une bourse CAPES et des cours à partir de février 2027.",
+   "Voici cinq de mes projets, un par planète."
   ],
   "facts": [
    [
@@ -61,15 +61,15 @@ C = {
    ],
    [
     "Domaines",
-    "Machine learning, vision par ordinateur, logiciel"
+    "Machine learning, logiciel, informatique quantique"
    ]
   ],
   "alt": "Portrait de Matheus Teixeira",
   "term": {
-   "who": "Matheus Teixeira : ingénieur en machine learning et développeur logiciel",
+   "who": "Matheus Teixeira : ingénieur en machine learning, ingénieur logiciel, chercheur en informatique quantique",
    "now": [
     "MBA en Data Science, IA et Analytics à l’USP, en cours",
-    "Doctorat en génie électrique à la FEI, inscrit, cours à partir de février 2027",
+    "Doctorat en génie électrique à la FEI sur la correction d’erreurs quantiques, inscrit, cours à partir de février 2027",
     "Ouvert aux postes en machine learning et en logiciel"
    ],
    "lang": "pt_BR (langue maternelle)   en_US (C2, EF SET 92/100)"
@@ -81,16 +81,16 @@ C = {
  },
  "proj": {
   "isaac": {
-   "sub": "Simulations physiques interactives en 3D",
+   "sub": "Simulations de physique interactives",
    "world": "Monde volcanique",
-   "sum": "De la physique à manipuler dans le navigateur. Un moteur en Rust compilé en WebAssembly calcule les simulations, et React, TypeScript et Three.js les affichent.",
+   "sum": "Des simulations de physique interactives pour les étudiants, avec graphiques et équations en direct.",
    "hl": [
     "Cœur physique en Rust compilé en WebAssembly",
     "Interface en React, TypeScript et Three.js",
     "Testé avec cargo test, Vitest et Playwright de bout en bout"
    ],
    "viz": "Un double pendule intégré par RK4 par pas de 2 ms. Son jumeau pâle part à 0,001 rad d’écart, et le chaos les sépare.",
-   "lede": "Un laboratoire de physique dans le navigateur. Vous changez un paramètre et la scène, les graphiques et les équations répondent aussitôt, d’une balle lancée jusqu’à un trou noir.",
+   "lede": "Des simulations de physique interactives pour les étudiants, avec graphiques et équations en direct. Cœur physique en Rust compilé en WebAssembly ; interface en React, TypeScript et Three.js ; physique validée avec cargo test, tests unitaires avec Vitest et tests de bout en bout avec Playwright.",
    "platform": "Web",
    "shots": [
     "Un double pendule avec graphiques en direct",
@@ -147,14 +147,14 @@ C = {
   "amadeo": {
    "sub": "De l’audio à la partition",
    "world": "Monde océanique",
-   "sum": "Transforme un enregistrement en partition que l’on peut modifier, jouer et partager, entièrement dans le navigateur. En ligne, avec une offre Pro.",
+   "sum": "Transforme des enregistrements audio en partitions modifiables, entièrement dans le navigateur.",
    "hl": [
     "Transcription neuronale dans le navigateur, avec TensorFlow.js",
     "Éditeur de partitions, 35 instruments échantillonnés et un mode d’entraînement",
     "En ligne en neuf langues, avec abonnements Pro"
    ],
    "viz": "Les traces de hauteur du spectrogramme deviennent des notes sur la portée.",
-   "lede": "Amadeo écoute un fichier audio, un enregistrement au micro ou une vidéo et écrit la musique : notes, tempo, mesure, tonalité et accords. La partition peut être modifiée, jouée sur 35 instruments échantillonnés, travaillée avec des notes qui tombent et exportée en PDF, MusicXML, MIDI ou WAV. Tout se passe dans le navigateur.",
+   "lede": "Transforme des enregistrements audio en partitions modifiables, entièrement dans le navigateur : détection neuronale des hauteurs avec TensorFlow.js, estimation de la tonalité et des accords, export en PDF, MusicXML et MIDI. React et TypeScript, neuf langues, tests Playwright sur plusieurs navigateurs. La partition peut être modifiée, jouée sur 35 instruments échantillonnés et travaillée avec des notes qui tombent.",
    "platform": "Web",
    "arch": [
     [
@@ -194,16 +194,16 @@ C = {
    ],
    "notes": [
     [
-     "Le son ne quitte pas l’appareil",
-     "La transcription tourne avec TensorFlow.js dans le navigateur : les enregistrements ne sont pas envoyés. Les partitions restent sur l’appareil de l’utilisateur et se partagent par un lien qui contient toute la partition."
+     "Dans le navigateur",
+     "La transcription tourne avec TensorFlow.js dans le navigateur, donc les enregistrements ne sont pas envoyés. Les partitions restent sur l’appareil et se partagent par un lien qui contient toute la partition."
     ],
     [
-     "Des hauteurs à la musique",
-     "Une liste de hauteurs n’est pas encore une partition. Amadeo suit le tempo, trouve la mesure, la tonalité et les accords, donne à chaque main sa propre ligne et grave le résultat avec VexFlow."
+     "Au-delà des hauteurs",
+     "Amadeo estime le tempo, la mesure, la tonalité et les accords, donne à chaque main sa propre portée et grave la partition avec VexFlow."
     ],
     [
-     "Un produit, pas une démo",
-     "Amadeo est en ligne en neuf langues, avec une offre Pro payée via Stripe, un répertoire d’arrangements, un accordeur et un métronome. Une application Android est prête et attend sa publication sur le store."
+     "En ligne",
+     "Amadeo est en ligne en neuf langues, avec un abonnement Pro payé via Stripe, un répertoire d’arrangements, un accordeur et un métronome. Une application Android est prête et attend sa sortie sur le store."
     ]
    ],
    "shots": [
@@ -213,16 +213,16 @@ C = {
    ]
   },
   "brectus": {
-   "sub": "Orchestrateur local d’agents de code IA",
+   "sub": "Application de bureau pour agents de code IA",
    "world": "Monde d’orages",
-   "sum": "Une application de bureau qui envoie chaque demande à l’agent de code du bon projet.",
+   "sum": "Application de bureau qui envoie les demandes à un agent de code IA distinct pour chaque projet.",
    "hl": [
     "Node.js et Electron",
     "Chiffrement au repos via le trousseau du système d’exploitation",
     "Mises à jour signées et CI sous Windows, macOS et Linux"
    ],
    "viz": "Les demandes sont acheminées vers un agent par projet.",
-   "lede": "Une application de bureau qui envoie chaque demande à l’agent de programmation du bon projet, pour faire avancer plusieurs projets depuis un seul endroit.",
+   "lede": "Application de bureau qui envoie les demandes à un agent de code IA distinct pour chaque projet. Les données sont chiffrées au repos, les mises à jour sont signées et la CI tourne sous Windows, macOS et Linux. Node.js et Electron.",
    "platform": "Bureau",
    "arch": [
     [
@@ -235,7 +235,7 @@ C = {
     ],
     [
      "Agents",
-     "un agent Claude Code par projet"
+     "un agent de code IA par projet"
     ]
    ],
    "tests": [
@@ -255,7 +255,7 @@ C = {
    "notes": [
     [
      "Un agent par projet",
-     "Chaque projet a son propre agent Claude Code. Le routeur décide à quel projet appartient une demande et la lui transmet."
+     "Chaque projet a son propre agent de code IA. L’application détermine à quel projet appartient une demande et l’y envoie."
     ],
     [
      "Chiffré au repos",
@@ -275,14 +275,14 @@ C = {
   "websites": {
    "sub": "Orion Benefícios, LÍDER Plus Telemedicina et un institut d’esthétique",
    "world": "Monde de glace",
-   "sum": "Des sites pour trois entreprises brésiliennes, et un portail pour les employés.",
+   "sum": "Les sites d’Orion Benefícios et de LÍDER Plus Telemedicina, un site pour un institut d’esthétique et un portail pour les salariés.",
    "hl": [
     "Astro et TypeScript, ou un petit générateur en Python, sur Cloudflare Pages",
     "Portail des employés sur Workers et D1, avec en-têtes CSP",
     "Tests WCAG 2.2 AA dans trois moteurs de navigateur"
    ],
-   "viz": "Scores Lighthouse : 95 sur mobile, 100 sur ordinateur.",
-   "lede": "Des sites pour deux entreprises brésiliennes, Orion Benefícios et LÍDER Plus Telemedicina, et pour un institut d’esthétique indépendant à Santos, ainsi qu’un portail pour les employés. Les trois sont conçus pour être rapides, sûrs et accessibles.",
+   "viz": "Scores Lighthouse des sites des entreprises : 95 sur mobile, 100 sur ordinateur.",
+   "lede": "Les sites des entreprises Orion Benefícios et LÍDER Plus Telemedicina, un site pour un institut d’esthétique à Santos et un portail pour les salariés. Les sites des entreprises obtiennent 95 sur mobile et 100 sur ordinateur dans Lighthouse et respectent le WCAG 2.2 AA.",
    "platform": "Web",
    "arch": [
     [
@@ -323,11 +323,11 @@ C = {
    "notes": [
     [
      "Rapides",
-     "Des pages statiques, construites avec Astro ou avec un petit générateur en Python, servies par Cloudflare Pages. Lighthouse donne 95 sur mobile et 100 sur ordinateur."
+     "Des pages statiques, faites avec Astro ou avec un petit générateur Python, servies par Cloudflare Pages. Les sites des entreprises obtiennent 95 sur mobile et 100 sur ordinateur dans Lighthouse."
     ],
     [
      "Accessibles",
-     "Des tests automatiques WCAG 2.2 AA tournent dans les trois moteurs de navigateur : Chromium, Firefox et WebKit."
+     "Les sites des entreprises sont testés selon le WCAG 2.2 AA dans les trois moteurs de navigateur : Chromium, Firefox et WebKit."
     ],
     [
      "Sûrs",
@@ -343,16 +343,16 @@ C = {
    ]
   },
   "allwinner": {
-   "sub": "Recherche de signaux sur le marché crypto",
+   "sub": "Backtest de stratégies de trading",
    "world": "Géante gazeuse",
-   "sum": "Du code de recherche qui vérifie si des signaux de trading tiennent hors échantillon.",
+   "sum": "Backteste des stratégies de trading sur des données hors échantillon, avec frais et slippage.",
    "hl": [
     "Backtests walk-forward hors échantillon, après frais et slippage",
     "Tests de block bootstrap contre le data snooping",
     "Python, pandas, FastAPI et SQLite, avec 221 tests pytest"
    ],
    "viz": "Test walk-forward : ajuster sur une fenêtre, trader sur la suivante, sans jamais regarder en avant.",
-   "lede": "Un logiciel de recherche qui pose une seule question à chaque signal de trading : fonctionne-t-il encore sur des données qu’il n’a jamais vues, après frais et slippage ?",
+   "lede": "Backteste des stratégies de trading sur des données hors échantillon, avec des fenêtres walk-forward, des frais et du slippage, et utilise des tests de block bootstrap pour vérifier que les résultats ne sont pas dus au hasard. Python, pandas, FastAPI et SQLite, avec 221 tests pytest.",
    "platform": "Python",
    "arch": [
     [
@@ -365,7 +365,7 @@ C = {
     ],
     [
      "Block bootstrap",
-     "chance ou compétence ?"
+     "pas dû au hasard"
     ],
     [
      "FastAPI + SQLite",
@@ -380,12 +380,12 @@ C = {
    ],
    "notes": [
     [
-     "Ne jamais regarder en avant",
+     "Fenêtres walk-forward",
      "Chaque stratégie est ajustée sur une fenêtre et négociée sur la suivante, puis la fenêtre avance. Les frais et le slippage sont payés à chaque opération."
     ],
     [
-     "Chance ou compétence",
-     "Essayer beaucoup de stratégies en fait paraître certaines bonnes par hasard. Des tests de block bootstrap confrontent chaque résultat à ce risque."
+     "Tests de block bootstrap",
+     "Essayer beaucoup de stratégies en fait paraître certaines bonnes par hasard. Les tests de block bootstrap vérifient que chaque résultat n’est pas dû au hasard."
     ],
     [
      "Du code testé",
@@ -480,18 +480,18 @@ C = {
   "p": [
    "Le trou noir tourne à 90 % de la vitesse maximale et il est vu 18° au-dessus de son disque. Son image vient de rayons lumineux tracés dans la métrique de Kerr, et le disque est ombré en direct sur votre carte graphique, avec des couleurs de corps noir, l’effet Doppler relativiste du côté qui s’approche et le décalage gravitationnel vers le rouge.",
    "Les planètes et la ceinture d’astéroïdes orbitent dans le plan du disque, le plan équatorial du trou noir, où sa rotation ne peut pas incliner leurs orbites. Tout suit une seule horloge, à la fréquence orbitale de Kerr : le bord intérieur du disque fait un tour en moins d’une seconde, la planète la plus éloignée en 45 secondes environ. Leurs ellipses tournent lentement, comme le prévoit la relativité générale, et chaque planète montre toujours la même face au trou noir.",
-   "Une seconde ici vaut 40 M de temps, où M est la masse du trou noir en unités de temps ; pour un trou noir de quatre millions de soleils, comme celui du centre de la Voie lactée, cela fait environ 800 fois la vitesse réelle. La caméra tourne lentement autour du trou noir, et la lumière de tout ce qui se trouve derrière, planètes, ceinture ou étoiles, est déviée par sa gravité.",
-   "Les distances partagent une même échelle, mais les planètes sont dessinées des centaines à mille fois plus grandes qu’elles ne le seraient."
+   "Une seconde ici vaut 40 M de temps, où M est la masse du trou exprimée en temps. Pour un trou de 100 millions de soleils, cela fait environ 20 000 fois la vitesse réelle. La caméra tourne lentement autour du trou. La lumière des planètes, de la ceinture et des étoiles est déviée par la gravité du trou, c’est pourquoi l’arrière de chaque orbite paraît relevé au-dessus de lui.",
+   "Les distances partagent une même échelle, mais les planètes sont dessinées des milliers de fois plus grandes qu’elles ne le seraient."
   ]
  },
  "nf": {
   "t": "Page introuvable",
-  "p": "Cette page a quitté le système.",
+  "p": "Il n’y a aucune page à cette adresse.",
   "a": "Retour à l’accueil"
  },
  "hero": {
   "h": "Tout ce que je construis *gravite* autour de quelque chose de réel.",
-  "p": "Je suis Matheus. J’entraîne des modèles en Python et PyTorch et je livre des applications testées en TypeScript et en Rust. Chaque planète ici est l’un de mes projets, en orbite autour d’un trou noir en rotation. Cliquez sur l’une d’elles pour vous y poser.",
+  "p": "Je suis Matheus. Je travaille sur le machine learning et le logiciel, et la plupart de mon code est en Python, TypeScript, React et Rust. Chaque planète ici est l’un de mes projets, en orbite autour d’un trou noir en rotation. Cliquez sur l’une d’elles pour y atterrir.",
   "cta": [
    "Voir les projets",
    "À propos"
@@ -499,7 +499,7 @@ C = {
  },
  "roadmap": {
   "h": "Feuille de route",
-  "p": "D’où je viens et où je vais, dessiné comme une ligne d’univers. Le temps s’écoule vers la droite, et la ligne monte pendant l’année à Zurich. Les parties en pointillé sont prévues.",
+  "p": "Mon parcours jusqu’ici et la suite. Le temps s’écoule vers la droite, et la ligne monte pendant l’année à Zurich. Les parties en pointillé sont prévues.",
   "br": "Brésil",
   "ch": "Zurich",
   "now": "Maintenant",

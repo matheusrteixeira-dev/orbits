@@ -1,8 +1,8 @@
 C = {
  "name": "English",
  "meta": {
-  "title": "Matheus Teixeira · Machine learning engineer and software developer",
-  "desc": "Matheus Teixeira, machine learning engineer and software developer from Santos, Brazil. Projects, roadmap, education, experience and contact."
+  "title": "Matheus Teixeira · Machine learning engineer and software engineer",
+  "desc": "Matheus Teixeira, machine learning engineer and software engineer from Santos, Brazil. Projects, roadmap, education, experience and contact."
  },
  "skip": "Skip to content",
  "nav": {
@@ -15,10 +15,10 @@ C = {
   "lang": "Language",
   "sections": "Sections"
  },
- "role": "Machine learning engineer · Software developer",
+ "role": "Machine learning engineer · Software engineer · Quantum computing researcher",
  "hero": {
   "h": "Everything I build *orbits* something real.",
-  "p": "I’m Matheus. I train models in Python and PyTorch and ship tested apps in TypeScript and Rust. Each planet here is one of my projects, circling a spinning black hole. Click one to land on it.",
+  "p": "I’m Matheus. I work on machine learning and software, and most of my code is in Python, TypeScript, React and Rust. Each planet here is one of my projects, orbiting a spinning black hole. Click one to land on it.",
   "cta": [
    "See the projects",
    "About me"
@@ -54,9 +54,9 @@ C = {
  "about": {
   "h": "About",
   "p": [
-   "I’m Matheus, a machine learning engineer and software developer from Santos, Brazil. I have been writing software since 2016, when I started as a web developer and IT support assistant at Orion Benefícios, and I have studied at FEI since 2019.",
-   "For my M.Sc. I built a reproducible pipeline that classifies breast cancer histopathology images, combining ResNet-50 features with classical and quantum support vector machines, and ran it on IBM Quantum hardware. I am now doing an MBA in Data Science, AI and Analytics at USP on a full scholarship, and I am enrolled in the Ph.D. at FEI, with a CAPES scholarship and classes from February 2027.",
-   "Outside research I build software end to end, from the model or the physics to the interface and the tests. The five projects below are the ones I care about most."
+   "I’m Matheus Teixeira, from Santos, Brazil. I work on machine learning and software. My research is in quantum machine learning and quantum error correction, and most of my code is in Python, TypeScript, React and Rust.",
+   "I started in 2016 as a web developer and IT support assistant at Orion Benefícios. I have studied at FEI since 2019, first a B.Sc. in Computer Science and then an M.Sc. in Electrical Engineering in AI. My dissertation is a hybrid quantum-classical pipeline for breast cancer histopathology, with the data split by patient so that no patient appears in both training and test sets. I am now doing an MBA in Data Science, AI and Analytics at USP on a full scholarship, and I am enrolled in the Ph.D. at FEI on quantum error correction, with a CAPES scholarship and classes from February 2027.",
+   "Below are five of my projects, one per planet."
   ],
   "facts": [
    [
@@ -69,15 +69,15 @@ C = {
    ],
    [
     "Works on",
-    "Machine learning, computer vision, software"
+    "Machine learning, software, quantum computing"
    ]
   ],
   "alt": "Portrait of Matheus Teixeira",
   "term": {
-   "who": "Matheus Teixeira: machine learning engineer and software developer",
+   "who": "Matheus Teixeira: machine learning engineer, software engineer, quantum computing researcher",
    "now": [
     "MBA in Data Science, AI and Analytics at USP, in progress",
-    "Ph.D. in Electrical Engineering at FEI, enrolled, classes from February 2027",
+    "Ph.D. in Electrical Engineering at FEI on quantum error correction, enrolled, classes from February 2027",
     "Open to machine learning and software roles"
    ],
    "lang": "pt_BR (native)   en_US (C2, EF SET 92/100)"
@@ -89,10 +89,10 @@ C = {
  },
  "proj": {
   "isaac": {
-   "sub": "Interactive 3D physics simulations",
+   "sub": "Interactive physics simulations",
    "world": "Volcanic world",
-   "sum": "Physics you can play with in the browser. A Rust engine compiled to WebAssembly runs the simulations, and React, TypeScript and Three.js draw them.",
-   "lede": "A physics lab in the browser. You change a parameter and the scene, the graphs and the equations respond at once, from a thrown ball to a black hole.",
+   "sum": "Interactive physics simulations for students, with live graphs and equations.",
+   "lede": "Interactive physics simulations for students, with live graphs and equations. Physics core in Rust compiled to WebAssembly; interface in React, TypeScript and Three.js; physics validated with cargo test, unit tests in Vitest and end-to-end tests in Playwright.",
    "hl": [
     "Rust physics core compiled to WebAssembly",
     "Interface in React, TypeScript and Three.js",
@@ -155,8 +155,8 @@ C = {
   "amadeo": {
    "sub": "Audio to sheet music",
    "world": "Ocean world",
-   "sum": "Turns a recording into sheet music you can edit, play and share, entirely in the browser. Live, with a Pro plan.",
-   "lede": "Amadeo listens to a sound file, a microphone recording or a video and writes the music down: notes, tempo, meter, key and chords. The score can be edited, played on 35 sampled instruments, practised with falling notes and exported to PDF, MusicXML, MIDI or WAV. Everything runs in the browser.",
+   "sum": "Turns audio recordings into editable sheet music, all in the browser.",
+   "lede": "Turns audio recordings into editable sheet music, all in the browser: neural pitch detection on TensorFlow.js, key and chord estimation, export to PDF, MusicXML and MIDI. React and TypeScript, nine languages, cross-browser Playwright tests. The score can be edited, played on 35 sampled instruments and practised with falling notes.",
    "hl": [
     "Neural transcription in the browser, on TensorFlow.js",
     "Score editor, 35 sampled instruments and a practice mode",
@@ -202,15 +202,15 @@ C = {
    ],
    "notes": [
     [
-     "Sound never leaves the device",
-     "Transcription runs on TensorFlow.js in the browser, so recordings are not uploaded. Scores stay on the visitor's device and are shared through a link that carries the whole score."
+     "Runs in the browser",
+     "Transcription runs on TensorFlow.js in the browser, so recordings are not uploaded. Scores stay on the device and are shared through a link that carries the whole score."
     ],
     [
-     "From pitches to music",
-     "A list of pitches is not a score. Amadeo follows the tempo, finds the meter, the key and the chords, gives each hand its own line and engraves the result with VexFlow."
+     "Beyond pitch detection",
+     "Amadeo estimates the tempo, meter, key and chords, gives each hand its own line and engraves the score with VexFlow."
     ],
     [
-     "A product, not a demo",
+     "Live product",
      "Amadeo is live in nine languages, with a Pro plan paid through Stripe, a repertoire of arrangements, a tuner and a metronome. An Android app is built and waiting for its store release."
     ]
    ],
@@ -221,10 +221,10 @@ C = {
    ]
   },
   "brectus": {
-   "sub": "Local orchestrator for AI coding agents",
+   "sub": "Desktop app for AI coding agents",
    "world": "Storm world",
-   "sum": "A desktop app that sends each request to the coding agent of the right project.",
-   "lede": "A desktop app that routes each request to the coding agent of the right project, so that several projects can move forward from one place.",
+   "sum": "Desktop app that sends requests to a separate AI coding agent for each project.",
+   "lede": "Desktop app that sends requests to a separate AI coding agent for each project. Data is encrypted at rest, updates are signed, and CI runs on Windows, macOS and Linux. Node.js and Electron.",
    "hl": [
     "Node.js and Electron",
     "Encryption at rest through the operating system’s keystore",
@@ -243,7 +243,7 @@ C = {
     ],
     [
      "Agents",
-     "one Claude Code agent per project"
+     "one AI coding agent per project"
     ]
    ],
    "tests": [
@@ -263,7 +263,7 @@ C = {
    "notes": [
     [
      "One agent per project",
-     "Each project has its own Claude Code agent. The router decides where a request belongs and sends it there."
+     "Each project has its own AI coding agent. The app decides which project a request belongs to and sends it there."
     ],
     [
      "Encrypted at rest",
@@ -283,14 +283,14 @@ C = {
   "websites": {
    "sub": "Orion Benefícios, LÍDER Plus Telemedicina and an esthetics studio",
    "world": "Ice world",
-   "sum": "Websites for three Brazilian businesses, and an employee portal.",
-   "lede": "Websites for two Brazilian companies, Orion Benefícios and LÍDER Plus Telemedicina, and for an independent esthetics studio in Santos, plus an employee portal. All three are built to be fast, secure and accessible.",
+   "sum": "Company websites for Orion Benefícios and LÍDER Plus Telemedicina, a website for an esthetics studio, and an employee portal.",
+   "lede": "Company websites for Orion Benefícios and LÍDER Plus Telemedicina, a website for an esthetics studio in Santos, and an employee portal. The company websites score 95 on mobile and 100 on desktop in Lighthouse and meet WCAG 2.2 AA.",
    "hl": [
     "Astro and TypeScript, or a small Python generator, on Cloudflare Pages",
     "Employee portal on Workers and D1, with CSP headers",
     "WCAG 2.2 AA tests in three browser engines"
    ],
-   "viz": "Lighthouse scores: 95 on mobile, 100 on desktop.",
+   "viz": "Lighthouse scores of the company websites: 95 on mobile, 100 on desktop.",
    "platform": "Web",
    "arch": [
     [
@@ -331,11 +331,11 @@ C = {
    "notes": [
     [
      "Fast",
-     "Static pages, built with Astro or with a small Python generator, served by Cloudflare Pages. Lighthouse scores 95 on mobile and 100 on desktop."
+     "Static pages, built with Astro or with a small Python generator, served by Cloudflare Pages. The company websites score 95 on mobile and 100 on desktop in Lighthouse."
     ],
     [
      "Accessible",
-     "Automated WCAG 2.2 AA tests run in all three browser engines: Chromium, Firefox and WebKit."
+     "The company websites are tested against WCAG 2.2 AA in all three browser engines: Chromium, Firefox and WebKit."
     ],
     [
      "Secure",
@@ -351,10 +351,10 @@ C = {
    ]
   },
   "allwinner": {
-   "sub": "Crypto market signal research",
+   "sub": "Backtesting trading strategies",
    "world": "Gas giant",
-   "sum": "Research code that checks whether trading signals hold up out of sample.",
-   "lede": "Research software that asks one question of every trading signal: does it still work on data it has never seen, after fees and slippage?",
+   "sum": "Backtests trading strategies on out-of-sample data, with fees and slippage.",
+   "lede": "Backtests trading strategies on out-of-sample data with walk-forward windows, fees and slippage, and uses block-bootstrap tests to check that results are not due to chance. Python, pandas, FastAPI and SQLite, with 221 pytest tests.",
    "hl": [
     "Walk-forward, out-of-sample backtests after fees and slippage",
     "Block-bootstrap tests against data snooping",
@@ -373,7 +373,7 @@ C = {
     ],
     [
      "Block bootstrap",
-     "luck or skill?"
+     "not due to chance"
     ],
     [
      "FastAPI + SQLite",
@@ -388,12 +388,12 @@ C = {
    ],
    "notes": [
     [
-     "Never look ahead",
+     "Walk-forward windows",
      "Each strategy is fitted on one window and traded on the next, then the window slides forward. Fees and slippage are paid on every trade."
     ],
     [
-     "Luck or skill",
-     "Trying many strategies makes some look good by chance. Block-bootstrap tests check each result against that."
+     "Block-bootstrap tests",
+     "Trying many strategies makes some look good by chance. Block-bootstrap tests check that each result is not due to chance."
     ],
     [
      "Tested code",
@@ -409,7 +409,7 @@ C = {
  },
  "roadmap": {
   "h": "Roadmap",
-  "p": "Where I have been and where I am going, drawn as a worldline. Time runs to the right, and the line moves up for the year in Zurich. Dashed parts are planned.",
+  "p": "My path so far and what comes next. Time runs to the right, and the line goes up for the year in Zurich. Dashed parts are planned.",
   "br": "Brazil",
   "ch": "Zurich",
   "now": "Now",
@@ -530,13 +530,13 @@ C = {
   "p": [
    "The black hole spins at 90% of the maximum rate and is seen from 18° above its disc. Its image comes from light rays traced through the Kerr metric, and the disc is shaded live on your graphics card, with blackbody colours, Doppler beaming on the approaching side and gravitational redshift.",
    "The planets and the asteroid belt orbit in the plane of the disc, the hole’s equatorial plane, where the spin cannot tilt their orbits. Everything runs on one clock at the Kerr orbital rate: the inner edge of the disc laps in under a second, the outermost planet in about 45 seconds. Their ellipses turn slowly, as general relativity predicts, and each planet keeps one face towards the hole.",
-   "One second here is 40 M of time, where M is the hole’s mass in units of time; for a hole of four million suns, like the one at the centre of the Milky Way, that is about 800 times real speed. The camera drifts slowly around the hole, and light from anything behind it, planets, belt or stars, is bent by its gravity.",
-   "Distances share one scale, but the planets are drawn hundreds to a thousand times larger than they would be."
+   "One second here is 40 M of time, where M is the hole’s mass in units of time. For a hole of 100 million suns, that is about 20,000 times real speed. The camera drifts slowly around the hole. Light from the planets, the belt and the stars is bent by the hole’s gravity, so the far side of every orbit appears raised above the hole.",
+   "Distances share one scale, but the planets are drawn thousands of times larger than they would be."
   ]
  },
  "nf": {
   "t": "Page not found",
-  "p": "This page drifted out of the system.",
+  "p": "There is no page at this address.",
   "a": "Back to the home page"
  }
 }

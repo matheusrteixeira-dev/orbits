@@ -1,8 +1,8 @@
 C = {
  "name": "Deutsch",
  "meta": {
-  "title": "Matheus Teixeira · Machine-Learning-Engineer und Softwareentwickler",
-  "desc": "Matheus Teixeira, Machine-Learning-Ingenieur und Softwareentwickler aus Santos, Brasilien. Projekte, Fahrplan, Ausbildung, Erfahrung und Kontakt."
+  "title": "Matheus Teixeira · Machine-Learning-Engineer und Softwareingenieur",
+  "desc": "Matheus Teixeira, Machine-Learning-Engineer und Softwareingenieur aus Santos, Brasilien. Projekte, Roadmap, Ausbildung, Erfahrung und Kontakt."
  },
  "skip": "Zum Inhalt springen",
  "nav": {
@@ -15,7 +15,7 @@ C = {
   "sections": "Abschnitte",
   "roadmap": "Fahrplan"
  },
- "role": "Machine-Learning-Engineer · Softwareentwickler",
+ "role": "Machine-Learning-Engineer · Softwareingenieur · Forscher in Quantencomputing",
  "ui": {
   "pause": "Bewegung anhalten",
   "play": "Bewegung fortsetzen",
@@ -46,9 +46,9 @@ C = {
  "about": {
   "h": "Über mich",
   "p": [
-   "Ich bin Matheus, Machine-Learning-Ingenieur und Softwareentwickler aus Santos, Brasilien. Ich schreibe Software seit 2016, als ich als Webentwickler und IT-Support-Assistent bei Orion Benefícios anfing, und studiere seit 2019 an der FEI.",
-   "Für meinen Master habe ich eine reproduzierbare Pipeline gebaut, die histopathologische Bilder von Brustkrebs klassifiziert. Sie verbindet ResNet-50-Merkmale mit klassischen und Quanten-Support-Vector-Machines, und ich habe sie auf IBM-Quantum-Hardware ausgeführt. Derzeit mache ich einen MBA in Data Science, KI und Analytics an der USP mit Vollstipendium, und ich bin an der FEI zur Promotion eingeschrieben, mit CAPES-Stipendium und Kursen ab Februar 2027.",
-   "Neben der Forschung entwickle ich Software von Anfang bis Ende, vom Modell oder der Physik bis zur Oberfläche und zu den Tests. Die fünf Projekte unten liegen mir am meisten am Herzen."
+   "Ich bin Matheus Teixeira aus Santos, Brasilien. Ich arbeite an maschinellem Lernen und Software. Meine Forschung betrifft Quanten-Machine-Learning und Quantenfehlerkorrektur, und der Großteil meines Codes ist in Python, TypeScript, React und Rust.",
+   "Ich habe 2016 als Webentwickler und IT-Support-Assistent bei Orion Benefícios angefangen. Seit 2019 studiere ich an der FEI, zuerst einen Bachelor in Informatik, dann einen Master in Elektrotechnik mit Schwerpunkt KI. Meine Masterarbeit ist eine hybride quantenklassische Pipeline für die Histopathologie von Brustkrebs, mit nach Patienten getrennten Daten, sodass kein Patient zugleich in Training und Test vorkommt. Jetzt mache ich einen MBA in Data Science, KI und Analytics an der USP mit Vollstipendium, und ich bin für die Promotion an der FEI zur Quantenfehlerkorrektur eingeschrieben, mit CAPES-Stipendium und Kursen ab Februar 2027.",
+   "Unten sind fünf meiner Projekte, eines pro Planet."
   ],
   "facts": [
    [
@@ -61,15 +61,15 @@ C = {
    ],
    [
     "Schwerpunkte",
-    "Maschinelles Lernen, Computer Vision, Software"
+    "Maschinelles Lernen, Software, Quantencomputing"
    ]
   ],
   "alt": "Porträt von Matheus Teixeira",
   "term": {
-   "who": "Matheus Teixeira: Machine-Learning-Ingenieur und Softwareentwickler",
+   "who": "Matheus Teixeira: Machine-Learning-Engineer, Softwareingenieur, Forscher in Quantencomputing",
    "now": [
     "MBA in Data Science, KI und Analytics an der USP, laufend",
-    "Promotion in Elektrotechnik an der FEI, eingeschrieben, Kurse ab Februar 2027",
+    "Promotion in Elektrotechnik an der FEI zur Quantenfehlerkorrektur, eingeschrieben, Kurse ab Februar 2027",
     "Offen für Stellen in Machine Learning und Softwareentwicklung"
    ],
    "lang": "pt_BR (Muttersprache)   en_US (C2, EF SET 92/100)"
@@ -81,16 +81,16 @@ C = {
  },
  "proj": {
   "isaac": {
-   "sub": "Interaktive 3D-Physiksimulationen",
+   "sub": "Interaktive Physiksimulationen",
    "world": "Vulkanwelt",
-   "sum": "Physik zum Ausprobieren im Browser. Eine Rust-Engine, kompiliert zu WebAssembly, rechnet die Simulationen, und React, TypeScript und Three.js zeichnen sie.",
+   "sum": "Interaktive Physiksimulationen für Lernende, mit Live-Graphen und Gleichungen.",
    "hl": [
     "Physikkern in Rust, kompiliert zu WebAssembly",
     "Oberfläche in React, TypeScript und Three.js",
     "Getestet mit cargo test, Vitest und Playwright-End-to-End-Tests"
    ],
    "viz": "Ein Doppelpendel, mit RK4 in Schritten von 2 ms integriert. Der blasse Zwilling startet 0,001 rad daneben, und das Chaos trennt die beiden.",
-   "lede": "Ein Physiklabor im Browser. Sie ändern einen Parameter, und Szene, Graphen und Gleichungen reagieren sofort, vom geworfenen Ball bis zum Schwarzen Loch.",
+   "lede": "Interaktive Physiksimulationen für Lernende, mit Live-Graphen und Gleichungen. Physikkern in Rust, kompiliert zu WebAssembly; Oberfläche in React, TypeScript und Three.js; Physik geprüft mit cargo test, Unit-Tests mit Vitest und End-to-End-Tests mit Playwright.",
    "platform": "Web",
    "shots": [
     "Ein Doppelpendel mit Live-Graphen",
@@ -147,14 +147,14 @@ C = {
   "amadeo": {
    "sub": "Vom Audio zum Notenblatt",
    "world": "Ozeanwelt",
-   "sum": "Macht aus einer Aufnahme Noten, die man bearbeiten, abspielen und teilen kann, ganz im Browser. Online, mit einem Pro-Tarif.",
+   "sum": "Macht aus Audioaufnahmen bearbeitbare Noten, komplett im Browser.",
    "hl": [
     "Neuronale Transkription im Browser, mit TensorFlow.js",
     "Noteneditor, 35 gesampelte Instrumente und ein Übungsmodus",
     "Online in neun Sprachen, mit Pro-Abos"
    ],
    "viz": "Tonhöhenspuren im Spektrogramm werden zu Noten im Notensystem.",
-   "lede": "Amadeo hört eine Audiodatei, eine Mikrofonaufnahme oder ein Video und schreibt die Musik auf: Noten, Tempo, Takt, Tonart und Akkorde. Die Partitur lässt sich bearbeiten, auf 35 gesampelten Instrumenten abspielen, mit fallenden Noten üben und als PDF, MusicXML, MIDI oder WAV exportieren. Alles läuft im Browser.",
+   "lede": "Macht aus Audioaufnahmen bearbeitbare Noten, komplett im Browser: neuronale Tonhöhenerkennung mit TensorFlow.js, Schätzung von Tonart und Akkorden, Export als PDF, MusicXML und MIDI. React und TypeScript, neun Sprachen, browserübergreifende Playwright-Tests. Die Partitur lässt sich bearbeiten, auf 35 gesampelten Instrumenten abspielen und mit fallenden Noten üben.",
    "platform": "Web",
    "arch": [
     [
@@ -194,16 +194,16 @@ C = {
    ],
    "notes": [
     [
-     "Der Ton bleibt auf dem Gerät",
+     "Läuft im Browser",
      "Die Transkription läuft mit TensorFlow.js im Browser, Aufnahmen werden also nicht hochgeladen. Partituren bleiben auf dem Gerät und werden über einen Link geteilt, der die ganze Partitur enthält."
     ],
     [
-     "Von Tonhöhen zur Musik",
-     "Eine Liste von Tonhöhen ist noch keine Partitur. Amadeo folgt dem Tempo, findet Takt, Tonart und Akkorde, gibt jeder Hand ihre eigene Stimme und setzt das Ergebnis mit VexFlow."
+     "Mehr als Tonhöhen",
+     "Amadeo schätzt Tempo, Takt, Tonart und Akkorde, gibt jeder Hand ein eigenes System und setzt die Partitur mit VexFlow."
     ],
     [
-     "Ein Produkt, keine Demo",
-     "Amadeo ist in neun Sprachen online, mit einem Pro-Tarif über Stripe, einem Repertoire an Arrangements, einem Stimmgerät und einem Metronom. Eine Android-App ist fertig und wartet auf die Veröffentlichung im Store."
+     "Online",
+     "Amadeo ist in neun Sprachen online, mit einem über Stripe bezahlten Pro-Tarif, einem Repertoire an Arrangements, einem Stimmgerät und einem Metronom. Eine Android-App ist fertig und wartet auf die Veröffentlichung im Store."
     ]
    ],
    "shots": [
@@ -213,16 +213,16 @@ C = {
    ]
   },
   "brectus": {
-   "sub": "Lokaler Orchestrator für KI-Coding-Agenten",
+   "sub": "Desktop-App für KI-Coding-Agenten",
    "world": "Sturmwelt",
-   "sum": "Eine Desktop-App, die jede Anfrage an den Coding-Agenten des richtigen Projekts schickt.",
+   "sum": "Desktop-App, die Anfragen an einen eigenen KI-Coding-Agenten für jedes Projekt schickt.",
    "hl": [
     "Node.js und Electron",
     "Verschlüsselung ruhender Daten über den Schlüsselspeicher des Betriebssystems",
     "Signierte Updates und CI unter Windows, macOS und Linux"
    ],
    "viz": "Anfragen werden an einen Agenten pro Projekt weitergeleitet.",
-   "lede": "Eine Desktop-App, die jede Anfrage an den Coding-Agenten des richtigen Projekts schickt, damit mehrere Projekte von einem Ort aus vorankommen.",
+   "lede": "Desktop-App, die Anfragen an einen eigenen KI-Coding-Agenten für jedes Projekt schickt. Daten werden im Ruhezustand verschlüsselt, Updates sind signiert, und die CI läuft unter Windows, macOS und Linux. Node.js und Electron.",
    "platform": "Desktop",
    "arch": [
     [
@@ -235,7 +235,7 @@ C = {
     ],
     [
      "Agenten",
-     "ein Claude-Code-Agent pro Projekt"
+     "ein KI-Coding-Agent pro Projekt"
     ]
    ],
    "tests": [
@@ -255,7 +255,7 @@ C = {
    "notes": [
     [
      "Ein Agent pro Projekt",
-     "Jedes Projekt hat seinen eigenen Claude-Code-Agenten. Der Router entscheidet, zu welchem Projekt eine Anfrage gehört, und schickt sie dorthin."
+     "Jedes Projekt hat seinen eigenen KI-Coding-Agenten. Die App entscheidet, zu welchem Projekt eine Anfrage gehört, und schickt sie dorthin."
     ],
     [
      "Im Ruhezustand verschlüsselt",
@@ -275,14 +275,14 @@ C = {
   "websites": {
    "sub": "Orion Benefícios, LÍDER Plus Telemedicina und ein Kosmetikstudio",
    "world": "Eiswelt",
-   "sum": "Websites für drei brasilianische Betriebe und ein Mitarbeiterportal.",
+   "sum": "Websites für Orion Benefícios und LÍDER Plus Telemedicina, eine Website für ein Kosmetikstudio und ein Mitarbeiterportal.",
    "hl": [
     "Astro und TypeScript oder ein kleiner Python-Generator, auf Cloudflare Pages",
     "Mitarbeiterportal auf Workers und D1, mit CSP-Headern",
     "WCAG-2.2-AA-Tests in drei Browser-Engines"
    ],
-   "viz": "Lighthouse-Werte: 95 auf dem Smartphone, 100 auf dem Desktop.",
-   "lede": "Websites für zwei brasilianische Unternehmen, Orion Benefícios und LÍDER Plus Telemedicina, und für ein unabhängiges Kosmetikstudio in Santos, dazu ein Mitarbeiterportal. Alle drei sind schnell, sicher und barrierefrei gebaut.",
+   "viz": "Lighthouse-Werte der Firmenwebsites: 95 auf dem Smartphone, 100 auf dem Desktop.",
+   "lede": "Firmenwebsites für Orion Benefícios und LÍDER Plus Telemedicina, eine Website für ein Kosmetikstudio in Santos und ein Mitarbeiterportal. Die Firmenwebsites erreichen in Lighthouse 95 auf dem Smartphone und 100 auf dem Desktop und erfüllen WCAG 2.2 AA.",
    "platform": "Web",
    "arch": [
     [
@@ -323,11 +323,11 @@ C = {
    "notes": [
     [
      "Schnell",
-     "Statische Seiten, gebaut mit Astro oder einem kleinen Python-Generator, ausgeliefert von Cloudflare Pages. Lighthouse: 95 mobil und 100 am Desktop."
+     "Statische Seiten, gebaut mit Astro oder einem kleinen Python-Generator, ausgeliefert über Cloudflare Pages. Die Firmenwebsites erreichen in Lighthouse 95 auf dem Smartphone und 100 auf dem Desktop."
     ],
     [
      "Barrierefrei",
-     "Automatische WCAG-2.2-AA-Tests laufen in allen drei Browser-Engines: Chromium, Firefox und WebKit."
+     "Die Firmenwebsites werden in allen drei Browser-Engines gegen WCAG 2.2 AA getestet: Chromium, Firefox und WebKit."
     ],
     [
      "Sicher",
@@ -343,16 +343,16 @@ C = {
    ]
   },
   "allwinner": {
-   "sub": "Forschung zu Signalen am Kryptomarkt",
+   "sub": "Backtesting von Handelsstrategien",
    "world": "Gasriese",
-   "sum": "Forschungscode, der prüft, ob Handelssignale außerhalb der Stichprobe bestehen.",
+   "sum": "Backtestet Handelsstrategien auf Out-of-Sample-Daten, mit Gebühren und Slippage.",
    "hl": [
     "Walk-forward-Backtests außerhalb der Stichprobe, nach Gebühren und Slippage",
     "Block-Bootstrap-Tests gegen Data Snooping",
     "Python, pandas, FastAPI und SQLite, mit 221 pytest-Tests"
    ],
    "viz": "Walk-forward-Test: auf einem Fenster anpassen, im nächsten handeln, nie vorausschauen.",
-   "lede": "Forschungssoftware, die jedem Handelssignal eine einzige Frage stellt: Funktioniert es noch auf Daten, die es nie gesehen hat, nach Gebühren und Slippage?",
+   "lede": "Backtestet Handelsstrategien auf Out-of-Sample-Daten mit Walk-Forward-Fenstern, Gebühren und Slippage und prüft mit Block-Bootstrap-Tests, dass die Ergebnisse nicht auf Zufall beruhen. Python, pandas, FastAPI und SQLite, mit 221 pytest-Tests.",
    "platform": "Python",
    "arch": [
     [
@@ -365,7 +365,7 @@ C = {
     ],
     [
      "Block-Bootstrap",
-     "Glück oder Können?"
+     "kein Zufall"
     ],
     [
      "FastAPI + SQLite",
@@ -380,12 +380,12 @@ C = {
    ],
    "notes": [
     [
-     "Nie vorausschauen",
+     "Walk-Forward-Fenster",
      "Jede Strategie wird auf einem Zeitfenster angepasst und im nächsten gehandelt, dann rückt das Fenster weiter. Gebühren und Slippage fallen bei jedem Trade an."
     ],
     [
-     "Glück oder Können",
-     "Wer viele Strategien ausprobiert, findet einige, die zufällig gut aussehen. Block-Bootstrap-Tests prüfen jedes Ergebnis genau darauf."
+     "Block-Bootstrap-Tests",
+     "Wer viele Strategien ausprobiert, findet einige, die zufällig gut aussehen. Block-Bootstrap-Tests prüfen, dass jedes Ergebnis nicht auf Zufall beruht."
     ],
     [
      "Getesteter Code",
@@ -480,18 +480,18 @@ C = {
   "p": [
    "Das Schwarze Loch rotiert mit 90 % der maximalen Rate und ist 18° über seiner Scheibe zu sehen. Das Bild stammt aus Lichtstrahlen, die durch die Kerr-Metrik verfolgt wurden, und die Scheibe wird live auf Ihrer Grafikkarte schattiert, mit Schwarzkörperfarben, Doppler-Beaming auf der sich nähernden Seite und gravitativer Rotverschiebung.",
    "Die Planeten und der Asteroidengürtel kreisen in der Ebene der Scheibe, der Äquatorebene des Lochs, wo die Rotation ihre Bahnen nicht kippen kann. Alles läuft auf einer Uhr mit der Kerr-Umlauffrequenz: Der Innenrand der Scheibe dreht sich in weniger als einer Sekunde einmal, der äußerste Planet in etwa 45 Sekunden. Ihre Ellipsen drehen sich langsam, wie es die allgemeine Relativitätstheorie vorhersagt, und jeder Planet zeigt dem Loch immer dieselbe Seite.",
-   "Eine Sekunde hier entspricht 40 M Zeit, wobei M die Masse des Lochs in Zeiteinheiten ist; für ein Loch von vier Millionen Sonnen wie im Zentrum der Milchstraße ist das etwa 800-fache Echtzeit. Die Kamera kreist langsam um das Loch, und Licht von allem dahinter, Planeten, Gürtel oder Sternen, wird von seiner Schwerkraft abgelenkt.",
-   "Die Entfernungen teilen sich einen Maßstab, aber die Planeten sind hundert- bis tausendmal größer gezeichnet, als sie wären."
+   "Eine Sekunde hier sind 40 M Zeit, wobei M die Masse des Lochs in Zeiteinheiten ist. Für ein Loch von 100 Millionen Sonnen sind das etwa 20.000-fache Echtzeit. Die Kamera kreist langsam um das Loch. Das Licht der Planeten, des Gürtels und der Sterne wird von der Schwerkraft des Lochs abgelenkt, deshalb erscheint die Rückseite jeder Umlaufbahn über das Loch angehoben.",
+   "Die Entfernungen teilen sich einen Maßstab, aber die Planeten sind tausendfach größer gezeichnet, als sie wären."
   ]
  },
  "nf": {
   "t": "Seite nicht gefunden",
-  "p": "Diese Seite ist aus dem System gedriftet.",
+  "p": "Unter dieser Adresse gibt es keine Seite.",
   "a": "Zur Startseite"
  },
  "hero": {
   "h": "Alles, was ich baue, *kreist* um etwas Echtes.",
-  "p": "Ich bin Matheus. Ich trainiere Modelle in Python und PyTorch und liefere getestete Apps in TypeScript und Rust. Jeder Planet hier ist eines meiner Projekte und kreist um ein rotierendes Schwarzes Loch. Klicken Sie auf einen, um dort zu landen.",
+  "p": "Ich bin Matheus. Ich arbeite an maschinellem Lernen und Software, und der Großteil meines Codes ist in Python, TypeScript, React und Rust. Jeder Planet hier ist eines meiner Projekte und umkreist ein rotierendes Schwarzes Loch. Klicken Sie auf einen, um darauf zu landen.",
   "cta": [
    "Zu den Projekten",
    "Über mich"
@@ -499,7 +499,7 @@ C = {
  },
  "roadmap": {
   "h": "Fahrplan",
-  "p": "Woher ich komme und wohin ich gehe, gezeichnet als Weltlinie. Die Zeit läuft nach rechts, und für das Jahr in Zürich steigt die Linie nach oben. Gestrichelte Teile sind geplant.",
+  "p": "Mein bisheriger Weg und was als Nächstes kommt. Die Zeit läuft nach rechts, und für das Jahr in Zürich steigt die Linie nach oben. Gestrichelte Teile sind geplant.",
   "br": "Brasilien",
   "ch": "Zürich",
   "now": "Jetzt",
