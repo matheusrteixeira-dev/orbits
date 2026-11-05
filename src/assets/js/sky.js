@@ -161,7 +161,7 @@ float F(float r){return pow(r,-3.)*max(1.-sqrt(uRin/r),0.);}
 // Gas texture: a few broad spiral waves cos(m phi + k ln r), carried round at the Kerr rate and
 // wound up by the differential rotation; each generation lives P M of time and cross-fades into
 // the next, so the pattern never winds into hairlines. It only modulates the brightness by
-// about +-30 per cent: the light itself is the thin-disc flux.
+// about +-10 per cent, with fine orbital streaks as in Isaac: the light itself is the thin-disc flux.
 float tx(float r,float lr,float phi,float dl){
  float Om=1./(pow(r,1.5)+uA),sh=1.5*pow(r,1.5)*Om*Om,acc=0.;
  for(int L=0;L<2;L++){float age=uAge[L],ph=phi-Om*age,n=0.;
@@ -169,7 +169,7 @@ float tx(float r,float lr,float phi,float dl){
    n+=T.z*clamp(1.2-k*dl*2.,0.,1.)*cos(T.x*ph+T.y*lr+T.w+uRp[L*NT+j]);}
   acc+=uW[L]*n;}
  float n=acc/sqrt(max(dot(uW,uW),1e-3))/3.;
- return 1.+.3*tanh(n);}
+ return (1.+.1*tanh(n))*(.9+.1*sin(r*7.+3.*sin(r*1.7)));}
 void main(){ivec2 q=ivec2(gl_FragCoord.xy);
  vec3 a0=floor(texelFetch(uMap,q,0).rgb*255.+.5),p0=floor(texelFetch(uMap,q+ivec2(0,uH),0).rgb*255.+.5);
  vec3 a1=floor(texelFetch(uMap,q+ivec2(0,2*uH),0).rgb*255.+.5),p1=floor(texelFetch(uMap,q+ivec2(0,3*uH),0).rgb*255.+.5);
@@ -182,8 +182,8 @@ void main(){ivec2 q=ivec2(gl_FragCoord.xy);
   float phi=(pp.r*256.+pp.g)/65536.*6.2831853+uPhc,g=.2+aa.b/255.*1.6;
   // Optically thick thin disc (Novikov-Thorne flux F, zero at the ISCO). Observed bolometric
   // intensity g^4 F; colour from a black body at T proportional to F^(1/4), shifted by g.
-  float fl=F(r)/uFmax,T=clamp(g*7600.*pow(fl,.25),1500.,12000.);
-  float edge=smoothstep(uRin,uRin+.35,r)*smoothstep(16.,10.5,r);   // disc gas ends near 16 M
+  float fl=F(r)/uFmax,T=clamp(g*5200.*pow(fl,.25),1500.,12000.);
+  float w=clamp(fwidth(r),.02,.6),edge=smoothstep(uRin,uRin+.2,r)*smoothstep(12.+w,12.-w,r);   // the disc ends sharply at 12 M
   // Exposure: a camera's log-like response, so the cool outer disc stays visible next to the
   // hot inner edge (a display choice; the ratios between points are kept in order).
   float I=pow(g*g*g*g*fl,.55)*tx(r,lr,phi,dl)*2.,al=edge;
@@ -202,8 +202,8 @@ void main(){vec2 uv=gl_FragCoord.xy/uSz;vec3 s=vec3(0);float w=0.;
     const FINAL = `#version 300 es
 precision highp float;uniform sampler2D uS,uB1,uB2;uniform vec2 uSz;out vec4 o;
 void main(){vec2 uv=gl_FragCoord.xy/uSz;uv.y=1.-uv.y;vec4 s=texture(uS,uv);
- vec3 img=(s.rgb*s.rgb*4.+(.28*texture(uB1,uv).rgb+.16*texture(uB2,uv).rgb)*4.)*.8;
- img=pow(1.-exp(-1.5*img),vec3(1./1.1));
+ vec3 img=(s.rgb*s.rgb*4.+(.06*texture(uB1,uv).rgb+.03*texture(uB2,uv).rgb)*4.)*.9;
+ img=min(img,vec3(1.));
  img*=smoothstep(0.,.03,uv.x)*smoothstep(1.,.97,uv.x)*smoothstep(0.,.05,uv.y)*smoothstep(1.,.95,uv.y);
  o=vec4(img,clamp(max(s.a,max(img.r,max(img.g,img.b))*1.15),0.,1.));}`;
 

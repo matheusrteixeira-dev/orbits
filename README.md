@@ -34,9 +34,9 @@ factor of a circular prograde emitter. `tools/kerr_part.py` is the same tracer f
 so that four processes can share the image. `tools/pack_bh.py` packs the geometry into `bh-map.png`.
 In the browser, `assets/js/sky.js` shades the disc from those maps every frame on the GPU: an
 optically thick thin disc with the Novikov–Thorne flux, observed bolometric intensity g⁴F,
-blackbody colours shifted by g, a slowly evolving spiral texture carried round at the Kerr rate
-Ω = 1 / (r^1.5 + a), and a camera-like exposure curve and bloom. The gas is drawn out to about
-16 M.
+blackbody colours shifted by g, fine orbital streaks and a faint spiral texture carried round at
+the Kerr rate Ω = 1 / (r^1.5 + a), a camera-like exposure curve and a light bloom. The disc has a
+sharp outer edge at 12 M.
 
 The planets and the belt orbit in the equatorial plane, the plane of the disc, so frame dragging
 does not precess their orbital planes. Disc, planets and belt share one clock (40 M of time per
