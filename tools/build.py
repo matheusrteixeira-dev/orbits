@@ -346,7 +346,7 @@ def render(lang, C, ver, all_c):
 <section class="sec" id="education" aria-labelledby="h-education"><div class="sh"><h2 id="h-education">{e(C["education"]["h"])}</h2></div><div class="ed">{"".join(ed)}</div></section>
 
 <section class="sec" id="experience" aria-labelledby="h-experience"><div class="sh"><h2 id="h-experience">{e(C["experience"]["h"])}</h2></div>
-<div class="xp"><div>{xp}</div><aside class="pub"><span class="k">{e(C["pub"]["k"])}</span><h3 lang="en">{e(PAPER)}</h3><p>{e(C["pub"]["w"])}</p>{ext_link(LINKS["paper"], C["pub"]["a"])}</aside></div></section>
+<div class="xp"><div>{xp}</div><div class="pub"><span class="k">{e(C["pub"]["k"])}</span><h3 lang="en">{e(PAPER)}</h3><p>{e(C["pub"]["w"])}</p>{ext_link(LINKS["paper"], C["pub"]["a"])}</div></div></section>
 
 <section class="sec" id="tools" aria-labelledby="h-tools"><div class="sh"><h2 id="h-tools">{e(C["tools"]["h"])}</h2></div><div class="to">{tools}</div></section>
 
