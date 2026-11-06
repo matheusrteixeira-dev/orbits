@@ -99,6 +99,7 @@
       cx = S.rtl ? IR.l - 8 - (APO + 2) * K : IR.r + 8 + (APO + 2) * K;
       cy = (h - (UP + DN) * K) / 2 + UP * K;
     }
+    K = Math.max(.5, K);   // a hidden or collapsed pane can report no width or height
     for (const c of [bg, fg, sc]) { c.width = Math.round(w * dpr); c.height = Math.round(h * dpr); }
     L = { w, h, cx, cy, K, mob };
     BH.place(L, Math.min(devicePixelRatio || 1, 1.5));
@@ -452,7 +453,7 @@ void main(){ivec2 p=ivec2(gl_FragCoord.xy);vec4 c=texelFetch(uC,p,0),g=texelFetc
     const dt = Math.min(.1, ms / 1000); last = now;
     if (active) { tau += dt * RATE; t += dt; }
     phc = t * DRIFT; cph = Math.cos(phc); sph = Math.sin(phc);
-    if (!visible || !active) return;
+    if (!visible || !active || L.w < 2 || L.h < 2) return;
     if (BH.done || !BH.ok) {
       if (ms < 250) { ema += (ms - ema) * .08; slow = ema > 30 ? slow + ms : 0; }
       if (slow > 2000 && q < QUAL.length - 1) { q++; slow = 0; ema = 16; layout(); }
