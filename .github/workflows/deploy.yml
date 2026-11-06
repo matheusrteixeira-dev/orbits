@@ -21,6 +21,13 @@ jobs:
       - run: python3 tools/build.py
         env:
           SITE_URL: https://sectus.dev/
+      # Creates the Pages project on the first run; fails harmlessly once it exists.
+      - uses: cloudflare/wrangler-action@v3
+        continue-on-error: true
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages project create orbits --production-branch=main
       - uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
