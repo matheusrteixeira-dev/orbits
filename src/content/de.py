@@ -17,8 +17,6 @@ C = {
  },
  "role": "Machine-Learning-Engineer · Softwareingenieur · Forscher in Quantencomputing",
  "ui": {
-  "pause": "Bewegung anhalten",
-  "play": "Bewegung fortsetzen",
   "land": "Auf diesem Planeten landen",
   "landBtn": "Auf dem Planeten landen",
   "back": "Zurück zum System",
@@ -46,7 +44,7 @@ C = {
  "about": {
   "h": "Über mich",
   "p": [
-   "Ich bin Matheus Teixeira aus Santos, Brasilien. Ich arbeite an maschinellem Lernen und Software. Meine Forschung betrifft Quanten-Machine-Learning und Quantenfehlerkorrektur, und der Großteil meines Codes ist in Python, TypeScript, React und Rust.",
+   "Ich bin Matheus Teixeira aus Santos, Brasilien. Ich entwickle Modelle für maschinelles Lernen und Software und forsche zu Quanten-Machine-Learning und Quantenfehlerkorrektur.",
    "Ich habe 2016 als Webentwickler und IT-Support-Assistent bei Orion Benefícios angefangen. Seit 2019 studiere ich an der FEI, zuerst einen Bachelor in Informatik, dann einen Master in Elektrotechnik mit Schwerpunkt KI. Meine Masterarbeit ist eine hybride quantenklassische Pipeline für die Histopathologie von Brustkrebs, mit nach Patienten getrennten Daten, sodass kein Patient zugleich in Training und Test vorkommt. Jetzt mache ich einen MBA in Data Science, KI und Analytics an der USP mit Vollstipendium, und ich bin für die Promotion an der FEI zur Quantenfehlerkorrektur eingeschrieben, mit CAPES-Stipendium und Kursen ab Februar 2027.",
    "Unten sind fünf meiner Projekte, eines pro Planet."
   ],
@@ -77,7 +75,7 @@ C = {
  },
  "projects": {
   "h": "Projekte",
-  "p": "Ein Projekt pro Planet. Landen Sie auf einem Planeten für die ganze Geschichte."
+  "p": "Landen Sie auf einem Planeten, um das Projekt aus der Nähe zu sehen."
  },
  "proj": {
   "isaac": {
@@ -198,11 +196,11 @@ C = {
      "Die Transkription läuft mit TensorFlow.js im Browser, Aufnahmen werden also nicht hochgeladen. Partituren bleiben auf dem Gerät und werden über einen Link geteilt, der die ganze Partitur enthält."
     ],
     [
-     "Mehr als Tonhöhen",
+     "Tempo, Tonart und Akkorde",
      "Amadeo schätzt Tempo, Takt, Tonart und Akkorde, gibt jeder Hand ein eigenes System und setzt die Partitur mit VexFlow."
     ],
     [
-     "Online",
+     "Im Einsatz",
      "Amadeo ist in neun Sprachen online, mit einem über Stripe bezahlten Pro-Tarif, einem Repertoire an Arrangements, einem Stimmgerät und einem Metronom. Eine Android-App ist fertig und wartet auf die Veröffentlichung im Store."
     ]
    ],
@@ -322,15 +320,15 @@ C = {
    ],
    "notes": [
     [
-     "Schnell",
+     "Statische Seiten",
      "Statische Seiten, gebaut mit Astro oder einem kleinen Python-Generator, ausgeliefert über Cloudflare Pages. Die Firmenwebsites erreichen in Lighthouse 95 auf dem Smartphone und 100 auf dem Desktop."
     ],
     [
-     "Barrierefrei",
+     "Auf Barrierefreiheit getestet",
      "Die Firmenwebsites werden in allen drei Browser-Engines gegen WCAG 2.2 AA getestet: Chromium, Firefox und WebKit."
     ],
     [
-     "Sicher",
+     "Das Mitarbeiterportal",
      "Das Mitarbeiterportal läuft auf Cloudflare Workers mit einer D1-Datenbank, hinter Content-Security-Policy-Headern."
     ]
    ],
@@ -473,15 +471,15 @@ C = {
  },
  "contact": {
   "h": "Kontakt",
-  "p": "Ich bin offen für Stellen im Bereich maschinelles Lernen und Software sowie für Forschungskooperationen. Am schnellsten erreichen Sie mich per E-Mail."
+  "p": "Ich suche Stellen im Bereich maschinelles Lernen und Software und spreche gern über Forschung. Am besten erreichen Sie mich per E-Mail."
  },
  "sky": {
   "h": "Über diesen Himmel",
   "p": [
-   "Das Schwarze Loch wird mit demselben Raytracer gezeichnet wie in Isaac, meinem Physiksimulator. Jedes Pixel folgt einem Lichtstrahl rückwärts durch die gekrümmte Raumzeit eines nicht rotierenden Lochs, gesehen 18° über seiner Scheibe. Die Scheibe ist heißes Gas, gefärbt wie ein schwarzer Körper, heller auf der Seite, die auf uns zukommt, und nahe am Loch rotverschoben. Der dünne helle Ring um den Schatten ist Licht, das das Loch umrundet hat, bevor es uns erreicht.",
+   "Das Schwarze Loch wird mit demselben Raytracer gezeichnet wie in Isaac, meinem Physiksimulator. Jedes Pixel folgt einem Lichtstrahl rückwärts durch die gekrümmte Raumzeit um das Loch (das sich nicht dreht), gesehen 18° über seiner Scheibe. Die Scheibe ist heißes Gas, gefärbt wie ein schwarzer Körper, heller auf der Seite, die auf uns zukommt, und nahe am Loch rotverschoben. Das Gas kreist so schnell, wie es das wirklich täte: Der innere Rand braucht für eine Runde etwa 2 Sekunden, der äußere etwa 9. Der dünne helle Ring um den Schatten ist Licht, das das Loch umrundet hat, bevor es uns erreicht.",
    "Die Planeten und der Asteroidengürtel umkreisen das Loch in der Ebene der Scheibe, alle nach derselben Uhr: Der innerste Planet braucht für eine Runde etwa 23 Sekunden, der äußerste etwa 46. Ihre Ellipsen drehen sich langsam, wie die allgemeine Relativitätstheorie vorhersagt, und jeder Planet wendet dem Loch stets dieselbe Seite zu.",
    "Eine Sekunde hier sind 40 M Zeit, wobei M die Masse des Lochs in Zeiteinheiten ist. Für ein Loch von 100 Millionen Sonnen sind das etwa 20.000-fache Echtzeit. Die Kamera kreist langsam um das Loch.",
-   "Zwei Dinge sind nicht maßstabsgetreu. Umlaufbahnen, Gürtel und Planeten sind ohne die Ablenkung ihres Lichts gezeichnet, die die Rückseite jeder Umlaufbahn über das Loch heben würde, und die Planeten sind tausendfach größer gezeichnet, als sie wären."
+   "Das Licht der Planeten, des Gürtels und der Umlaufbahnen wird vom Loch abgelenkt wie das der Sterne, deshalb erscheint die Rückseite jeder Umlaufbahn über das Loch gehoben. Nur die Planeten sind nicht maßstabsgetreu: Sie sind tausendfach größer gezeichnet, als sie wären."
   ]
  },
  "nf": {
@@ -491,7 +489,7 @@ C = {
  },
  "hero": {
   "h": "Alles, was ich baue, *kreist* um etwas Echtes.",
-  "p": "Ich bin Matheus. Ich arbeite an maschinellem Lernen und Software, und der Großteil meines Codes ist in Python, TypeScript, React und Rust. Jeder Planet hier ist eines meiner Projekte und umkreist ein Schwarzes Loch. Klicken Sie auf einen, um darauf zu landen.",
+  "p": "Ich bin Matheus. Ich entwickle Modelle für maschinelles Lernen und Software. Jeder Planet hier ist eines meiner Projekte und umkreist ein Schwarzes Loch. Klicken Sie auf einen, um darauf zu landen.",
   "cta": [
    "Zu den Projekten",
    "Über mich"

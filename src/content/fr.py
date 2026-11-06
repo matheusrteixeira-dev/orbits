@@ -17,8 +17,6 @@ C = {
  },
  "role": "Ingénieur en machine learning · Ingénieur logiciel · Chercheur en informatique quantique",
  "ui": {
-  "pause": "Mettre en pause",
-  "play": "Reprendre le mouvement",
   "land": "Se poser sur cette planète",
   "landBtn": "Se poser sur la planète",
   "back": "Retour au système",
@@ -46,7 +44,7 @@ C = {
  "about": {
   "h": "À propos",
   "p": [
-   "Je suis Matheus Teixeira, de Santos, au Brésil. Je travaille sur le machine learning et le logiciel. Ma recherche porte sur le machine learning quantique et la correction d’erreurs quantiques, et la plupart de mon code est en Python, TypeScript, React et Rust.",
+   "Je suis Matheus Teixeira, de Santos, au Brésil. Je conçois des modèles de machine learning et des logiciels, et mes recherches portent sur le machine learning quantique et la correction d’erreurs quantiques.",
    "J’ai commencé en 2016 comme développeur web et assistant de support informatique chez Orion Benefícios. J’étudie à la FEI depuis 2019, d’abord une licence en informatique, puis un master en génie électrique en IA. Mon mémoire est un pipeline hybride quantique-classique pour l’histopathologie du cancer du sein, avec des données séparées par patient, si bien qu’aucun patient n’apparaît à la fois dans l’entraînement et dans le test. Je fais maintenant un MBA en Data Science, IA et Analytics à l’USP avec une bourse complète, et je suis inscrit en doctorat à la FEI sur la correction d’erreurs quantiques, avec une bourse CAPES et des cours à partir de février 2027.",
    "Voici cinq de mes projets, un par planète."
   ],
@@ -77,7 +75,7 @@ C = {
  },
  "projects": {
   "h": "Projets",
-  "p": "Un projet par planète. Posez-vous sur une planète pour lire l’histoire complète."
+  "p": "Posez-vous sur une planète pour voir le projet de près."
  },
  "proj": {
   "isaac": {
@@ -198,11 +196,11 @@ C = {
      "La transcription tourne avec TensorFlow.js dans le navigateur, donc les enregistrements ne sont pas envoyés. Les partitions restent sur l’appareil et se partagent par un lien qui contient toute la partition."
     ],
     [
-     "Au-delà des hauteurs",
+     "Tempo, tonalité et accords",
      "Amadeo estime le tempo, la mesure, la tonalité et les accords, donne à chaque main sa propre portée et grave la partition avec VexFlow."
     ],
     [
-     "En ligne",
+     "En service",
      "Amadeo est en ligne en neuf langues, avec un abonnement Pro payé via Stripe, un répertoire d’arrangements, un accordeur et un métronome. Une application Android est prête et attend sa sortie sur le store."
     ]
    ],
@@ -322,15 +320,15 @@ C = {
    ],
    "notes": [
     [
-     "Rapides",
+     "Pages statiques",
      "Des pages statiques, faites avec Astro ou avec un petit générateur Python, servies par Cloudflare Pages. Les sites des entreprises obtiennent 95 sur mobile et 100 sur ordinateur dans Lighthouse."
     ],
     [
-     "Accessibles",
+     "Accessibilité testée",
      "Les sites des entreprises sont testés selon le WCAG 2.2 AA dans les trois moteurs de navigateur : Chromium, Firefox et WebKit."
     ],
     [
-     "Sûrs",
+     "Le portail des employés",
      "Le portail des employés tourne sur Cloudflare Workers avec une base D1, derrière des en-têtes Content Security Policy."
     ]
    ],
@@ -473,15 +471,15 @@ C = {
  },
  "contact": {
   "h": "Contact",
-  "p": "Je suis ouvert aux postes en machine learning et en logiciel, ainsi qu’aux collaborations de recherche. Le plus rapide pour me joindre est l’e-mail."
+  "p": "Je cherche un poste en machine learning ou en logiciel, et je parle volontiers de recherche. Le mieux pour me joindre est l’e-mail."
  },
  "sky": {
   "h": "À propos de ce ciel",
   "p": [
-   "Le trou noir est dessiné avec le même lancer de rayons qu’Isaac, mon simulateur de physique. Chaque pixel suit un rayon de lumière à rebours dans l’espace-temps courbe d’un trou sans rotation, vu 18° au-dessus de son disque. Le disque est un gaz chaud, coloré comme un corps noir, plus brillant du côté qui vient vers nous et décalé vers le rouge près du trou. L’anneau fin et brillant autour de l’ombre est de la lumière qui a fait le tour du trou avant de nous atteindre.",
+   "Le trou noir est dessiné avec le même lancer de rayons qu’Isaac, mon simulateur de physique. Chaque pixel suit un rayon de lumière à rebours dans l’espace-temps courbe autour du trou (qui ne tourne pas sur lui-même), vu 18° au-dessus de son disque. Le disque est un gaz chaud, coloré comme un corps noir, plus brillant du côté qui vient vers nous et décalé vers le rouge près du trou. Le gaz tourne à la vitesse qu’il aurait réellement : le bord intérieur fait un tour en 2 secondes environ, le bord extérieur en 9. L’anneau fin et brillant autour de l’ombre est de la lumière qui a fait le tour du trou avant de nous atteindre.",
    "Les planètes et la ceinture d’astéroïdes orbitent dans le plan du disque, toutes sur la même horloge : la planète la plus proche fait un tour en environ 23 secondes, la plus éloignée en environ 46. Leurs ellipses tournent lentement, comme le prévoit la relativité générale, et chaque planète garde une face tournée vers le trou.",
    "Une seconde ici vaut 40 M de temps, où M est la masse du trou exprimée en temps. Pour un trou de 100 millions de soleils, cela fait environ 20 000 fois la vitesse réelle. La caméra tourne lentement autour du trou.",
-   "Deux choses ne sont pas à l’échelle. Les orbites, la ceinture et les planètes sont dessinées sans la déviation de leur lumière, qui relèverait l’arrière de chaque orbite au-dessus du trou, et les planètes sont dessinées des milliers de fois plus grandes qu’elles ne le seraient."
+   "La lumière des planètes, de la ceinture et des orbites est déviée par le trou, comme celle des étoiles : l’arrière de chaque orbite paraît donc relevé au-dessus de lui. Seules les planètes ne sont pas à l’échelle : elles sont dessinées des milliers de fois plus grandes qu’elles ne le seraient."
   ]
  },
  "nf": {
@@ -491,7 +489,7 @@ C = {
  },
  "hero": {
   "h": "Tout ce que je construis *gravite* autour de quelque chose de réel.",
-  "p": "Je suis Matheus. Je travaille sur le machine learning et le logiciel, et la plupart de mon code est en Python, TypeScript, React et Rust. Chaque planète ici est l’un de mes projets, en orbite autour d’un trou noir. Cliquez sur l’une d’elles pour y atterrir.",
+  "p": "Je suis Matheus. Je conçois des modèles de machine learning et des logiciels. Chaque planète ici est l’un de mes projets, en orbite autour d’un trou noir. Cliquez sur l’une d’elles pour y atterrir.",
   "cta": [
    "Voir les projets",
    "À propos"

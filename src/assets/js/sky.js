@@ -62,44 +62,65 @@
     return [[tp * ux, tp * uy, rp, tp / s, rp * tp / s], [tm * ux, tm * uy, rm, tm / s, Math.abs(rm * tm / s)]];
   }
 
+  // Where a point of the disc plane (r, azimuth from the camera) is seen: the flat projection, bent
+  // by the hole when the point lies behind it. A point at depth z behind the hole is a source for a
+  // point-mass lens with Einstein radius squared 4 z D / (D + z) (D = CAM), measured at the hole.
+  // Returns [X, Y, radial stretch, tangential stretch, ux, uy] with (ux, uy) the outward direction.
+  function seen(r, ph) {
+    const f = flatP(r, ph), z = -r * Math.cos(ph) * SI;
+    if (z <= 0) return [f[0], f[1], 1, 1, 1, 0];
+    const s = Math.max(.05, Math.hypot(f[0], f[1])), im = lens(f[0], f[1], 4 * z * CAM / (CAM + z))[0];
+    return [im[0], im[1], im[2], im[3], f[0] / s, f[1] / s];
+  }
+
   // ---------- Canvases and layout ----------
   const sky = document.getElementById('sky'), bg = document.getElementById('bg'), fg = document.getElementById('fg'), bhc = document.getElementById('bh');
-  const still = document.getElementById('bhstill'), labs = document.getElementById('labs'), pauseBtn = document.getElementById('pause');
+  const still = document.getElementById('bhstill'), labs = document.getElementById('labs');
   const bx = bg.getContext('2d'), fx = fg.getContext('2d');
-  let dpr = 1, L = null, IR = null;
+  // Quality steps, lowered one at a time while the frame rate stays low (see loop()).
+  const QUAL = [{ dpr: 2, belt: 1, stars: 1, tile: 256 }, { dpr: 1.25, belt: 2, stars: .6, tile: 192 }, { dpr: 1, belt: 3, stars: .35, tile: 128 }];
+  let q = 0, dpr = 1, L = null, IR = null;
   function layout() {
-    dpr = Math.min(devicePixelRatio || 1, 2);
+    dpr = Math.min(devicePixelRatio || 1, QUAL[q].dpr);
     const w = sky.clientWidth, h = sky.clientHeight, mob = innerWidth < 820;
     const it = document.querySelector('.intro'), ir = it.getBoundingClientRect(), sr = sky.getBoundingClientRect();
     IR = mob ? null : { l: ir.left - sr.left - 24, r: ir.right - sr.left + 24, t: ir.top - sr.top - 20, b: ir.bottom - sr.top + 20 };
     // Desktop: fit the outermost planet's orbit (apoapsis APO) in the space beside the intro text,
     // so no planet ever passes under the headline. The belt may run behind the text.
     const APO = Math.max(...PL.map(p => p.a * (1 + p.e)));
+    // Vertical room: the far side of the outer orbit is lifted by the hole's lensing to about 22 M
+    // above it, the near side reaches about 15.5 M below (perspective); planets add their radius.
+    const UP = 24.5, DN = 18.5;
     let cx = w * .5, cy = h * .5, K;
-    if (mob) K = Math.min((w - 16) / (2 * (APO + 3)), h / (2 * 17)); // every planet stays on a phone screen
+    if (mob) K = Math.min((w - 16) / (2 * (APO + 3)), h / (UP + DN + 4)); // every planet stays on a phone screen
     else {
       const free = S.rtl ? IR.l - 16 : w - IR.r - 16;
-      K = Math.max(5, Math.min(h * .86 / (2 * 19), free / (2 * APO + 4)));
+      K = Math.max(5, Math.min(h * .94 / (UP + DN), free / (2 * APO + 4)));
       cx = S.rtl ? IR.l - 8 - (APO + 2) * K : IR.r + 8 + (APO + 2) * K;
+      cy = (h - (UP + DN) * K) / 2 + UP * K;
     }
-    for (const c of [bg, fg]) { c.width = Math.round(w * dpr); c.height = Math.round(h * dpr); }
+    for (const c of [bg, fg, sc]) { c.width = Math.round(w * dpr); c.height = Math.round(h * dpr); }
     L = { w, h, cx, cy, K, mob };
-    BH.place(L);
+    BH.place(L, Math.min(devicePixelRatio || 1, 1.5));
+    BH.lite = q === 2 ? 1 : 0;
+    starT = -1;
     [...labs.children].forEach(b => b._w = null);
     stars = makeStars(L);
   }
 
   // ---------- Stars: a sheet far behind the hole, lensed (Einstein radius about 49 M for a camera 600 M away) ----------
-  let stars = [];
+  let stars = [], starT = -1;
+  const sc = document.createElement('canvas'), sx = sc.getContext('2d');   // the star layer, redrawn four times a second
   const STAR_R2 = 4 * 600;
   function bbTint(T) { T /= 100; const r = T <= 66 ? 255 : 329.7 * Math.pow(T - 60, -.1332), g = T <= 66 ? 99.47 * Math.log(T) - 161.1 : 288.1 * Math.pow(T - 60, -.0755), b = T >= 66 ? 255 : T <= 19 ? 0 : 138.5 * Math.log(T - 10) - 305; return [r, g, b].map(v => Math.max(0, Math.min(255, v | 0))); }
   function makeStars(L) {
     let s = 3; const r = () => (s = (s * 16807) % 2147483647) / 2147483647;
-    const hx = L.w / 2 / L.K + 60, hy = L.h / 2 / L.K + 60, n = Math.min(2600, Math.round(L.w * L.h / 520));
+    const hx = L.w / 2 / L.K + 60, hy = L.h / 2 / L.K + 60, n = Math.round(Math.min(2600, L.w * L.h / 520) * QUAL[q].stars);
     return [...Array(n)].map(() => { const m = Math.pow(r(), 3.2); return { x: (r() * 2 - 1) * hx, y: (r() * 2 - 1) * hy, hx, hy, m, c: bbTint(3200 + r() * 9000) }; });
   }
   function drawStars(t) {
-    const { cx, cy, K } = L, drift = t * SKYV;
+    const { cx, cy, K } = L, drift = t * SKYV, bx = sx;
+    bx.clearRect(0, 0, sc.width, sc.height);
     for (const s of stars) {
       let x = s.x + drift; x = ((x + s.hx) % (2 * s.hx) + 2 * s.hx) % (2 * s.hx) - s.hx;
       const offX = (cx - L.w / 2) / K, X = x - offX, Y = s.y;   // source position relative to the hole
@@ -120,22 +141,29 @@
   // exact null geodesic obeys d2u/dphi2 = 3u^2 - u (u = 1/r); it is integrated with RK4 until it
   // falls through the horizon, crosses the disc between its edges, or escapes. Disc light: gas on
   // circular orbits, observed as g^4 F with F the thin-disc flux and a black-body colour shifted by
-  // g (gravitational redshift, time dilation and Doppler shift together). The disc is symmetric
-  // about its axis, so the picture does not change as the camera drifts round: it is traced once
-  // (a band of rows per frame) and kept.
+  // g (gravitational redshift, time dilation and Doppler shift together).
+  // The rays do not depend on time, so they are traced once (a band of rows per frame) into two
+  // textures: the light of the smooth disc, and where each ray met the disc (r and azimuth). Every
+  // frame a second, cheap pass lays clumps of gas over the disc that orbit at the Kepler rate
+  // Omega = r^-1.5 on the site clock, so the inner edge laps in about 2.3 s and the outer in 9 s.
+  // Clumps are sheared by the differential rotation and fade after a short life, as turbulence does.
   const BH = (function () {
     const D = { HW: 26, HH: 16.25, rIn: 6, rOut: 15 };
-    let gl = null, prog = null, u = {}, ok = false, rect = null, row = 0, rows = 0, ready = false;
+    let gl = null, prog = null, cprog = null, u = {}, cu = {}, ok = false, rect = null, row = 0, rows = 0, ready = false;
+    let fb = null, tC = null, tG = null, hd = 1, lite = 0;
     const VS = '#version 300 es\nin vec2 p;void main(){gl_Position=vec4(p,0.,1.);}';
     const FS = `#version 300 es
 precision highp float;
-uniform vec2 uOrig;uniform float uPix,uCam,uInc,uRin,uRout;out vec4 o;
+uniform vec2 uOrig;uniform float uPix,uCam,uInc,uRin,uRout;
+layout(location=0) out vec4 o;layout(location=1) out vec4 og;
 vec3 blackbody(float T){T=clamp(T,1000.,40000.)/100.;vec3 c;
  if(T<=66.){c.r=1.;c.g=clamp((99.4708025861*log(T)-161.1195681661)/255.,0.,1.);
   c.b=T<=19.?0.:clamp((138.5177312231*log(T-10.)-305.0447927307)/255.,0.,1.);}
  else{c.r=clamp(329.698727446*pow(T-60.,-.1332047592)/255.,0.,1.);c.g=clamp(288.1221695283*pow(T-60.,-.0755148492)/255.,0.,1.);c.b=1.;}
  c=pow(c,vec3(2.2));return c/max(dot(c,vec3(.2126,.7152,.0722)),1e-4);}
+vec2 hit;
 vec4 trace(vec2 S){
+ hit=vec2(0.);
  vec3 P=vec3(0.,uCam*cos(uInc),uCam*sin(uInc)),f=-normalize(P),ex=vec3(1.,0.,0.),ey=cross(ex,f);
  vec3 dir=normalize(f*uCam+ex*S.x+ey*S.y);
  float r0=length(P);vec3 er=P/r0;float c=dot(dir,er);vec3 tp=dir-c*er;float s=length(tp);
@@ -152,52 +180,111 @@ vec4 trace(vec2 S){
   if(prev.y*pos.y<0.){vec3 X=mix(prev,pos,prev.y/(prev.y-pos.y));float r=length(X);
    if(r>uRin&&r<uRout){float Om=pow(r,-1.5),g=sqrt(max(1.-3./r,0.))/(sqrt(1.-2.*u0)*(1.-Om*ly));
     float fl=max(0.,1.-sqrt(uRin/r))/(r*r*r),rp=49./36.*uRin,lv=fl/((1./7.)/(rp*rp*rp));
-    float st=.9+.1*sin(r*7.+3.*sin(r*1.7));
-    return vec4(min(blackbody(4700.*pow(lv,.25)*g)*pow(g,4.)*lv*st*1.25,vec3(1.)),1.);}}
+    hit=vec2(r,atan(X.x,X.z));
+    return vec4(min(blackbody(4700.*pow(lv,.25)*g)*pow(g,4.)*lv*.625,vec3(1.)),1.);}}
   if((u<1./rFar&&du<0.)||u<0.)return vec4(0.);
   prev=pos;}
  return vec4(0.);}
-void main(){vec4 a=vec4(0.);
- for(int j=0;j<2;j++)for(int i=0;i<2;i++)a+=trace(uOrig+(gl_FragCoord.xy+vec2(.25+.5*float(i),.25+.5*float(j))-.5)*uPix*vec2(1.,1.));
- a*=.25;o=vec4(a.rgb,a.a);}`;
+vec2 pk(float x){x=clamp(x,0.,1.)*65535.;float hi=floor(x/256.);return vec2(hi,x-hi*256.)/255.;}
+void main(){vec4 a=vec4(0.);vec2 g0=vec2(0.);
+ for(int j=0;j<2;j++)for(int i=0;i<2;i++){a+=trace(uOrig+(gl_FragCoord.xy+vec2(.25+.5*float(i),.25+.5*float(j))-.5)*uPix);if(i+j==0)g0=hit;}
+ o=a*.25;   // stored at half brightness, so the clumps can brighten or dim it before it is clipped
+ // Where the first sample met the disc: r (0 = it did not) and azimuth, 16 bits each.
+ og=g0.x>0.?vec4(pk((g0.x-5.)/11.),pk(fract(g0.y/6.2831853))):vec4(0.);}`;
+    const CS = `#version 300 es
+precision highp float;
+uniform sampler2D uC,uG;uniform float uTau,uLite;out vec4 o;
+float hs(vec3 p){p=fract(p*.3183099+.1);p*=17.;return fract(p.x*p.y*p.z*(p.x+p.y+p.z));}
+float vn(vec3 x){vec3 i=floor(x),f=fract(x);f=f*f*(3.-2.*f);
+ return mix(mix(mix(hs(i),hs(i+vec3(1,0,0)),f.x),mix(hs(i+vec3(0,1,0)),hs(i+vec3(1,1,0)),f.x),f.y),
+            mix(mix(hs(i+vec3(0,0,1)),hs(i+vec3(1,0,1)),f.x),mix(hs(i+vec3(0,1,1)),hs(i+vec3(1,1,1)),f.x),f.y),f.z)*2.-1.;}
+// Gas in one generation of clumps, born at clock time tb and seen lt later: a clump now at azimuth a
+// was at a - Omega lt. Long along the orbit, thin across it.
+float gas(float r,float a,float lt,float id){float b=a-pow(r,-1.5)*lt;vec3 q=vec3(cos(b)*r*.4,sin(b)*r*.4,r*1.1)+id*vec3(7.13,3.71,11.9);
+ float n=vn(q);if(uLite<.5)n=.62*n+.38*vn(q*2.1+vec3(5.2));return n;}
+void main(){ivec2 p=ivec2(gl_FragCoord.xy);vec4 c=texelFetch(uC,p,0),g=texelFetch(uG,p,0);
+ float rn=(g.x*256.+g.y)*255./65535.;
+ if(rn<=0.){o=vec4(min(2.*c.rgb,vec3(c.a)),c.a);return;}
+ float r=rn*11.+5.,a=(g.z*256.+g.w)*255./65535.*6.2831853;
+ // Two overlapping generations of clumps, each living P = 48 M (1.2 s), faded in and out so that
+ // their sum keeps the same contrast. P is the same at every radius: a lifetime that changed with r
+ // would put the generation boundaries ever closer together in r as the clock runs.
+ float P=48.,s=0.,w2=0.;
+ for(int k=0;k<2;k++){float tk=uTau+float(k)*.5*P,cy=floor(tk/P),lt=tk-cy*P,w=1.-abs(2.*lt/P-1.);
+  s+=w*gas(r,a,lt,cy*2.+float(k));w2+=w*w;}
+ float m=max(.25,1.+.42*s/sqrt(max(w2,1e-3)));
+ o=vec4(min(2.*c.rgb*m,vec3(c.a)),c.a);}`;
     function init() {
       try {
-        gl = bhc.getContext('webgl2', { premultipliedAlpha: true, antialias: false, alpha: true, preserveDrawingBuffer: true });
+        gl = bhc.getContext('webgl2', { premultipliedAlpha: true, antialias: false, alpha: true });
         if (!gl) return false;
         const sh = (t, s) => { const x = gl.createShader(t); gl.shaderSource(x, s); gl.compileShader(x); if (!gl.getShaderParameter(x, gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(x)); return x; };
-        prog = gl.createProgram(); gl.attachShader(prog, sh(gl.VERTEX_SHADER, VS)); gl.attachShader(prog, sh(gl.FRAGMENT_SHADER, FS));
-        gl.bindAttribLocation(prog, 0, 'p'); gl.linkProgram(prog); if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) throw new Error(gl.getProgramInfoLog(prog));
+        const mk = fs => { const p = gl.createProgram(); gl.attachShader(p, sh(gl.VERTEX_SHADER, VS)); gl.attachShader(p, sh(gl.FRAGMENT_SHADER, fs)); gl.bindAttribLocation(p, 0, 'p'); gl.linkProgram(p); if (!gl.getProgramParameter(p, gl.LINK_STATUS)) throw new Error(gl.getProgramInfoLog(p)); return p; };
+        prog = mk(FS); cprog = mk(CS);
         ['uOrig', 'uPix', 'uCam', 'uInc', 'uRin', 'uRout'].forEach(n => u[n] = gl.getUniformLocation(prog, n));
+        ['uC', 'uG', 'uTau', 'uLite'].forEach(n => cu[n] = gl.getUniformLocation(cprog, n));
+        fb = gl.createFramebuffer();
       } catch (e) { console.warn(e); gl = null; return false; }
       const b = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, b);
       gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
       gl.enableVertexAttribArray(0); gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);
       ok = true; return true;
     }
+    function tex(w, h) {
+      const t = gl.createTexture(); gl.bindTexture(gl.TEXTURE_2D, t);
+      gl.texStorage2D(gl.TEXTURE_2D, 1, gl.RGBA8, w, h);
+      for (const k of [gl.TEXTURE_MIN_FILTER, gl.TEXTURE_MAG_FILTER]) gl.texParameteri(gl.TEXTURE_2D, k, gl.NEAREST);
+      for (const k of [gl.TEXTURE_WRAP_S, gl.TEXTURE_WRAP_T]) gl.texParameteri(gl.TEXTURE_2D, k, gl.CLAMP_TO_EDGE);
+      return t;
+    }
     return {
       init,
       get ok() { return ok; },
       get done() { return ready; },
-      place(L) {
+      set lite(v) { lite = v; },
+      place(L, d) {
+        hd = d;
         const w = 2 * D.HW * L.K, h = 2 * D.HH * L.K;
         rect = { x: L.cx - w / 2, y: L.cy - h / 2, w, h };
         for (const el of [bhc, still]) { if (!el) continue; Object.assign(el.style, { left: rect.x + 'px', top: rect.y + 'px', width: w + 'px', height: h + 'px' }); }
-        bhc.width = Math.round(w * dpr); bhc.height = Math.round(h * dpr);
-        row = 0; rows = bhc.height; ready = false;
-        if (gl) { gl.viewport(0, 0, bhc.width, bhc.height); gl.disable(gl.SCISSOR_TEST); gl.clearColor(0, 0, 0, 0); gl.clear(gl.COLOR_BUFFER_BIT); }
+        const W = Math.max(1, Math.round(w * hd)), H = Math.max(1, Math.round(h * hd));
+        row = 0; rows = H; ready = false;
+        if (!gl) return;
+        if (bhc.width !== W || bhc.height !== H || !tC) {
+          bhc.width = W; bhc.height = H;
+          if (tC) { gl.deleteTexture(tC); gl.deleteTexture(tG); }
+          tC = tex(W, H); tG = tex(W, H);
+          gl.bindFramebuffer(gl.FRAMEBUFFER, fb);
+          gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, tC, 0);
+          gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT1, gl.TEXTURE_2D, tG, 0);
+          gl.drawBuffers([gl.COLOR_ATTACHMENT0, gl.COLOR_ATTACHMENT1]);
+          gl.viewport(0, 0, W, H); gl.disable(gl.SCISSOR_TEST); gl.clearColor(0, 0, 0, 0); gl.clear(gl.COLOR_BUFFER_BIT);
+          gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+        } else row = rows;   // same size: the rays have not changed, keep them
+        if (row >= rows) ready = true;
       },
-      // Trace the next band of rows; returns true while there is more to do.
-      draw() {
-        if (!ok || ready || !rect) return false;
-        const band = Math.max(8, Math.round(bhc.height / 24));
-        gl.useProgram(prog); gl.viewport(0, 0, bhc.width, bhc.height);
-        gl.enable(gl.SCISSOR_TEST); gl.scissor(0, row, bhc.width, Math.min(band, rows - row));
-        const pix = 2 * D.HW / bhc.width;   // M per device pixel
-        gl.uniform2f(u.uOrig, -D.HW, -bhc.height * pix / 2); gl.uniform1f(u.uPix, pix);
-        gl.uniform1f(u.uCam, CAM); gl.uniform1f(u.uInc, INC); gl.uniform1f(u.uRin, D.rIn); gl.uniform1f(u.uRout, D.rOut);
-        gl.drawArrays(gl.TRIANGLES, 0, 3); gl.disable(gl.SCISSOR_TEST);
-        row += band;
-        if (row >= rows) { ready = true; bhc.classList.add('on'); if (still) still.classList.add('off'); }
+      // Trace the next band of rows (until done), then shade the disc for clock time tau.
+      draw(tau) {
+        if (!ok || !rect) return false;
+        const W = bhc.width, H = bhc.height;
+        if (!ready) {
+          const band = Math.max(8, Math.round(H / 24));
+          gl.bindFramebuffer(gl.FRAMEBUFFER, fb); gl.useProgram(prog); gl.viewport(0, 0, W, H);
+          gl.enable(gl.SCISSOR_TEST); gl.scissor(0, row, W, Math.min(band, rows - row));
+          const pix = 2 * D.HW / W;   // M per device pixel
+          gl.uniform2f(u.uOrig, -D.HW, -H * pix / 2); gl.uniform1f(u.uPix, pix);
+          gl.uniform1f(u.uCam, CAM); gl.uniform1f(u.uInc, INC); gl.uniform1f(u.uRin, D.rIn); gl.uniform1f(u.uRout, D.rOut);
+          gl.drawArrays(gl.TRIANGLES, 0, 3); gl.disable(gl.SCISSOR_TEST);
+          gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+          row += band;
+          if (row >= rows) ready = true;
+        }
+        gl.useProgram(cprog); gl.viewport(0, 0, W, H);
+        gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_2D, tC);
+        gl.activeTexture(gl.TEXTURE1); gl.bindTexture(gl.TEXTURE_2D, tG);
+        gl.uniform1i(cu.uC, 0); gl.uniform1i(cu.uG, 1); gl.uniform1f(cu.uTau, tau % 1e6); gl.uniform1f(cu.uLite, lite);
+        gl.drawArrays(gl.TRIANGLES, 0, 3);
+        if (ready && !bhc.classList.contains('on')) { bhc.classList.add('on'); }
         return !ready;
       },
     };
@@ -216,7 +303,7 @@ void main(){vec4 a=vec4(0.);
   const ext = p => p.kind === 'gas' ? 2.45 : 1.18;
   function renderAtlas(st, t) {
     if (!PG) return;
-    const need = Math.min(256, Math.max(...PL.map(p => Math.ceil(2 * ext(p) * p.R * L.K * dpr))));
+    const need = Math.min(QUAL[q].tile, Math.max(...PL.map(p => Math.ceil(2 * ext(p) * p.R * L.K * dpr))));
     if (atlas.width !== need * PL.length || atlas.height !== need) { atlas.width = need * PL.length; atlas.height = need; }
     tile = need; PG.clear();
     PL.forEach((p, i) => {
@@ -243,14 +330,14 @@ void main(){vec4 a=vec4(0.);
     b.innerHTML = `<span>${p.name}</span><small>${S.projects[i].sub}</small>`;
     b.setAttribute('aria-label', `${p.name}. ${S.projects[i].sub}. ${T.land}`);
     b.addEventListener('click', () => land(i));
-    const fo = v => () => { focusI = v; needOne = true; };
+    const fo = v => () => { focusI = v; };
     b.addEventListener('mouseenter', fo(i)); b.addEventListener('mouseleave', fo(-1)); b.addEventListener('focus', fo(i)); b.addEventListener('blur', fo(-1));
     labs.appendChild(b);
   });
   fg.addEventListener('pointermove', e => {
     const r = fg.getBoundingClientRect(), X = e.clientX - r.left, Y = e.clientY - r.top; hover = -1;
     scr.forEach((s, i) => { if (s && Math.hypot(s.x - X, s.y - Y) < Math.max(s.R + 16, 26)) hover = i; });
-    fg.style.cursor = hover >= 0 ? 'pointer' : 'default'; needOne = true;
+    fg.style.cursor = hover >= 0 ? 'pointer' : 'default';
   });
   fg.addEventListener('pointerleave', () => hover = -1);
   fg.addEventListener('click', () => { if (hover >= 0) land(hover); });
@@ -261,12 +348,7 @@ void main(){vec4 a=vec4(0.);
   }
 
   // ---------- Clock and drawing ----------
-  const reduce = matchMedia('(prefers-reduced-motion: reduce)');
-  let running = !reduce.matches, tau = 140, t = 0, last = performance.now(), active = true, st = [], needOne = true;
-  function setRun(v) { running = v; pauseBtn.setAttribute('aria-pressed', String(!v)); pauseBtn.textContent = v ? T.pause : T.play; needOne = true; }
-  pauseBtn.addEventListener('click', () => setRun(!running));
-  reduce.addEventListener && reduce.addEventListener('change', () => setRun(!reduce.matches));
-  setRun(running);
+  let tau = 140, t = 0, last = performance.now(), active = true, st = [];
   const front = ph => Math.cos(ph) >= 0;   // nearer than the hole: drawn over its canvas
   function orbitLine(ctxF, ctxB, p, on, alpha) {
     const { cx, cy, K } = L, col = on ? `rgba(${p.rgb.join(',')},.8)` : `rgba(160,205,255,${alpha})`;
@@ -276,36 +358,48 @@ void main(){vec4 a=vec4(0.);
       ctx.strokeStyle = col; ctx.lineWidth = (on ? 1.6 : 1) * dpr; ctx.beginPath();
       let pen = false;
       for (const [r, ph] of pts) {
-        if ((which === 'f') === front(ph)) { const q = flatP(r, ph), x = (cx + q[0] * K) * dpr, y = (cy - q[1] * K) * dpr; pen ? ctx.lineTo(x, y) : ctx.moveTo(x, y); pen = true; } else pen = false;
+        if ((which === 'f') === front(ph)) { const v = seen(r, ph), x = (cx + v[0] * K) * dpr, y = (cy - v[1] * K) * dpr; pen ? ctx.lineTo(x, y) : ctx.moveTo(x, y); pen = true; } else pen = false;
       }
       ctx.stroke();
     }
   }
-  // Planet position on screen now, as seen without the bending of light.
+  // Planet image on screen now, bent by the hole: moved outwards and stretched along the ring
+  // round the hole (M maps the planet's disc to its image, screen axes, Y up).
   function planetImage(p) {
-    const p3 = orbit(p, tau), [r, ph] = polar(p3), f = flatP(r, ph);
-    return { X: f[0], Y: f[1], M: [1, 0, 0, 1], p3, r, ph };
+    const p3 = orbit(p, tau), [r, ph] = polar(p3), v = seen(r, ph);
+    const a = Math.min(3, v[2]), b = Math.min(3, v[3]), ux = v[4], uy = v[5], d = (a - b) * ux * uy;
+    return { X: v[0], Y: v[1], X0: flatP(r, ph)[0], M: [a * ux * ux + b * uy * uy, d, d, a * uy * uy + b * ux * ux], k: Math.sqrt(a * b), p3, r, ph };
   }
   function draw() {
     const { w, h, cx, cy, K } = L, W = w * dpr, H = h * dpr;
     bx.setTransform(1, 0, 0, 1, 0, 0); fx.setTransform(1, 0, 0, 1, 0, 0);
     bx.fillStyle = '#03040a'; bx.fillRect(0, 0, W, H); fx.clearRect(0, 0, W, H);
     let g = bx.createRadialGradient(cx * dpr, cy * dpr, 0, cx * dpr, cy * dpr, K * 60 * dpr); g.addColorStop(0, 'rgba(255,150,70,.045)'); g.addColorStop(1, 'rgba(0,0,0,0)'); bx.fillStyle = g; bx.fillRect(0, 0, W, H);
-    drawStars(t);
+    if (starT < 0 || t - starT > .25 || t < starT) { drawStars(t); starT = t; }
+    bx.drawImage(sc, 0, 0);
     // Planet states, lit and Doppler-shifted.
     st = PL.map(p => {
       const d = planetImage(p), p3 = d.p3;
-      return { p3, im: d, v: view(p3), frame: frameOf(p3), gain: Math.min(2.2, Math.pow(gShift(d.r, d.X), 4)) };
+      return { p3, im: d, v: view(p3), frame: frameOf(p3), gain: Math.min(2.2, Math.pow(gShift(d.r, d.X0), 4)) };
     });
     renderAtlas(st, t);
     PL.forEach((p, i) => orbitLine(fx, bx, p, i === hover || i === focusI, .13));
     // Belt: each grain on a circular orbit, brightened by the Doppler factor.
-    for (const b of BELT) {
-      const ph = b.ph + Om(b.r) * tau - phc, f = flatP(b.r, ph), a = .5 * b.b * Math.min(3, Math.pow(gShift(b.r, f[0]), 4));
+    // Grains are batched by brightness into eight paths per layer, one fill each.
+    const NB = 8, gs = 1.3 * dpr, bk = [[], []];
+    for (let n = 0; n < NB; n++) { bk[0].push([]); bk[1].push([]); }
+    for (let j = 0, step = QUAL[q].belt; j < BELT.length; j += step) {
+      const b = BELT[j], ph = b.ph + Om(b.r) * tau - phc, X0 = flatP(b.r, ph)[0], a = .5 * b.b * Math.min(3, Math.pow(gShift(b.r, X0), 4));
       if (a < .02) continue;
-      const ctx = front(ph) ? fx : bx;
-      ctx.fillStyle = `rgba(214,200,182,${Math.min(1, a)})`; ctx.fillRect((cx + f[0] * K) * dpr, (cy - f[1] * K) * dpr, 1.3 * dpr, 1.3 * dpr);
+      const v = seen(b.r, ph);
+      bk[front(ph) ? 0 : 1][Math.min(NB - 1, Math.floor(Math.min(1, a) * NB))].push((cx + v[0] * K) * dpr, (cy - v[1] * K) * dpr);
     }
+    [fx, bx].forEach((ctx, l) => bk[l].forEach((pts, n) => {
+      if (!pts.length) return;
+      ctx.fillStyle = `rgba(214,200,182,${((n + .5) / NB).toFixed(3)})`; ctx.beginPath();
+      for (let i = 0; i < pts.length; i += 2) ctx.rect(pts[i], pts[i + 1], gs, gs);
+      ctx.fill();
+    }));
     // Planets, farthest first.
     scr = [];
     const order = PL.map((p, i) => i).sort((a, b) => st[a].v[2] - st[b].v[2]);
@@ -313,7 +407,7 @@ void main(){vec4 a=vec4(0.);
       const p = PL[i], S_ = st[i], R = p.R * K, on = i === hover || i === focusI;
       {
         const im = S_.im, per = CAM / (CAM - im.r * Math.cos(im.ph) * SI), M = im.M.map(v => v * per);
-        const ctx = front(im.ph) ? fx : bx, Re = R * per;
+        const ctx = front(im.ph) ? fx : bx, Re = R * per * im.k;
         glow(ctx, p, im.X, im.Y, Re, on);
         drawPlanet(ctx, i, p, im.X, im.Y, M);
         scr[i] = { x: cx + im.X * K, y: cy - im.Y * K, R: Re };
@@ -336,7 +430,7 @@ void main(){vec4 a=vec4(0.);
       if (A_._x < B_._x + B_._lw && B_._x < A_._x + A_._lw && A_._y - B_._y < 20) A_._y = B_._y + 20;
     }
     for (const lb of ls) lb.style.transform = `translate(${Math.round(lb._x)}px,${Math.round(lb._y)}px) translateY(-50%)`;
-    if (BH.draw()) needOne = true;
+    BH.draw(tau);
   }
   function glow(ctx, p, X, Y, R, on) {
     const { cx, cy, K } = L, x = (cx + X * K) * dpr, y = (cy - Y * K) * dpr, rr = R * dpr * (on ? 4.2 : 2.8);
@@ -347,19 +441,33 @@ void main(){vec4 a=vec4(0.);
   const hero = document.querySelector('.hero');
   let visible = true;
   new IntersectionObserver(es => es.forEach(e => visible = e.isIntersecting)).observe(hero);
+  // The sky always moves. Frames are drawn at most about 95 times a second (every other refresh on
+  // 120 Hz and faster screens). If the frame rate stays under about 33 per second for two seconds
+  // once the hole is traced, the next quality step is taken: fewer pixels, stars and belt grains.
+  let ema = 16, slow = 0;
   function loop(now) {
-    const dt = Math.min(.1, Math.max(0, (now - last) / 1000)); last = now;
-    if (running && active) { tau += dt * RATE; t += dt; }
-    phc = t * DRIFT; cph = Math.cos(phc); sph = Math.sin(phc);
-    if (visible && active && (running || needOne)) { draw(); needOne = false; }
     requestAnimationFrame(loop);
+    const ms = now - last;
+    if (ms < 10.5) return;
+    const dt = Math.min(.1, ms / 1000); last = now;
+    if (active) { tau += dt * RATE; t += dt; }
+    phc = t * DRIFT; cph = Math.cos(phc); sph = Math.sin(phc);
+    if (!visible || !active) return;
+    if (BH.done || !BH.ok) {
+      if (ms < 250) { ema += (ms - ema) * .08; slow = ema > 30 ? slow + ms : 0; }
+      if (slow > 2000 && q < QUAL.length - 1) { q++; slow = 0; ema = 16; layout(); }
+    }
+    draw();   // after any resize in layout(), so a cleared canvas is never shown
   }
-  BH.init();
+  // The still picture of the hole stands in only where WebGL 2 is missing; otherwise the sky shows
+  // stars and planets at once and the traced hole fades in when it is ready (a fraction of a second).
+  if (!BH.init() && still) still.classList.add('on');
   layout();
-  if (document.fonts) document.fonts.ready.then(() => { [...labs.children].forEach(b => b._w = null); needOne = true; });
-  let rz; addEventListener('resize', () => { clearTimeout(rz); rz = setTimeout(() => { layout(); needOne = true; }, 120); });
+  if (document.fonts) document.fonts.ready.then(() => { [...labs.children].forEach(b => b._w = null); });
+  let rz; addEventListener('resize', () => { clearTimeout(rz); rz = setTimeout(() => { layout(); if (visible && active) draw(); }, 120); });
   requestAnimationFrame(loop);
   window.SKY = {
+    get quality() { return q; },
     setActive(v) { active = v; },
     planet(i) { const s = scr[i], r = sky.getBoundingClientRect(); return s ? { x: r.left + s.x, y: r.top + s.y, R: s.R, rot: st[i].frame.rot, L: st[i].frame.L } : null; },
     orbitInfo(i) { const p = PL[i]; return { a: p.a, period: 2 * Math.PI / p.O / RATE, days: 2 * Math.PI / p.O * 492.6 / 86400 }; },

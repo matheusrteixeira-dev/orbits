@@ -18,15 +18,13 @@ C = {
  "role": "Machine learning engineer · Software engineer · Quantum computing researcher",
  "hero": {
   "h": "Everything I build *orbits* something real.",
-  "p": "I’m Matheus. I work on machine learning and software, and most of my code is in Python, TypeScript, React and Rust. Each planet here is one of my projects, orbiting a black hole. Click one to land on it.",
+  "p": "I’m Matheus. I build machine learning models and software. Each planet here is a project of mine, orbiting a black hole. Click one to land on it.",
   "cta": [
    "See the projects",
    "About me"
   ]
  },
  "ui": {
-  "pause": "Pause motion",
-  "play": "Play motion",
   "land": "Land on this planet",
   "landBtn": "Land on the planet",
   "back": "Back to the system",
@@ -54,7 +52,7 @@ C = {
  "about": {
   "h": "About",
   "p": [
-   "I’m Matheus Teixeira, from Santos, Brazil. I work on machine learning and software. My research is in quantum machine learning and quantum error correction, and most of my code is in Python, TypeScript, React and Rust.",
+   "I’m Matheus Teixeira, from Santos, Brazil. I build machine learning models and software, and my research is on quantum machine learning and quantum error correction.",
    "I started in 2016 as a web developer and IT support assistant at Orion Benefícios. I have studied at FEI since 2019, first a B.Sc. in Computer Science and then an M.Sc. in Electrical Engineering in AI. My dissertation is a hybrid quantum-classical pipeline for breast cancer histopathology, with the data split by patient so that no patient appears in both training and test sets. I am now doing an MBA in Data Science, AI and Analytics at USP on a full scholarship, and I am enrolled in the Ph.D. at FEI on quantum error correction, with a CAPES scholarship and classes from February 2027.",
    "Below are five of my projects, one per planet."
   ],
@@ -85,7 +83,7 @@ C = {
  },
  "projects": {
   "h": "Projects",
-  "p": "One project per planet. Land on a planet for the full story."
+  "p": "Land on a planet to see the project up close."
  },
  "proj": {
   "isaac": {
@@ -206,11 +204,11 @@ C = {
      "Transcription runs on TensorFlow.js in the browser, so recordings are not uploaded. Scores stay on the device and are shared through a link that carries the whole score."
     ],
     [
-     "Beyond pitch detection",
+     "Tempo, key and chords",
      "Amadeo estimates the tempo, meter, key and chords, gives each hand its own line and engraves the score with VexFlow."
     ],
     [
-     "Live product",
+     "In use",
      "Amadeo is live in nine languages, with a Pro plan paid through Stripe, a repertoire of arrangements, a tuner and a metronome. An Android app is built and waiting for its store release."
     ]
    ],
@@ -330,15 +328,15 @@ C = {
    ],
    "notes": [
     [
-     "Fast",
+     "Static pages",
      "Static pages, built with Astro or with a small Python generator, served by Cloudflare Pages. The company websites score 95 on mobile and 100 on desktop in Lighthouse."
     ],
     [
-     "Accessible",
+     "Tested for accessibility",
      "The company websites are tested against WCAG 2.2 AA in all three browser engines: Chromium, Firefox and WebKit."
     ],
     [
-     "Secure",
+     "The employee portal",
      "The employee portal runs on Cloudflare Workers with a D1 database, behind Content Security Policy headers."
     ]
    ],
@@ -523,15 +521,15 @@ C = {
  },
  "contact": {
   "h": "Contact",
-  "p": "I am open to machine learning and software roles, and to research collaborations. Email is the quickest way to reach me."
+  "p": "I’m looking for machine learning and software roles, and I’m always glad to talk about research. Email is the best way to reach me."
  },
  "sky": {
   "h": "About this sky",
   "p": [
-   "The black hole is drawn with the same ray tracer as Isaac, my physics simulator. Every pixel follows a light ray back through the curved spacetime of a non-rotating hole, seen from 18° above its disc. The disc is hot gas, coloured as a black body, brighter on the side moving towards us and redshifted close to the hole. The thin bright ring around the shadow is light that circled the hole before reaching us.",
+   "The black hole is drawn with the same ray tracer as Isaac, my physics simulator. Every pixel follows a light ray back through the curved spacetime around the hole (which does not spin), seen from 18° above its disc. The disc is hot gas, coloured as a black body, brighter on the side moving towards us and redshifted close to the hole. The gas orbits as fast as it really would: the inner edge goes round in about 2 seconds, the outer edge in about 9. The thin bright ring around the shadow is light that circled the hole before reaching us.",
    "The planets and the asteroid belt orbit in the plane of the disc, all on one clock: the innermost planet laps in about 23 seconds, the outermost in about 46. Their ellipses turn slowly, as general relativity predicts, and each planet keeps one face towards the hole.",
    "One second here is 40 M of time, where M is the hole’s mass in units of time. For a hole of 100 million suns, that is about 20,000 times real speed. The camera drifts slowly around the hole.",
-   "Two things are not to scale. The orbits, the belt and the planets are drawn without the bending of their light, which would lift the far side of every orbit over the hole, and the planets are drawn thousands of times larger than they would be."
+   "The light of the planets, the belt and the orbits is bent by the hole, like the light of the stars, so the far side of every orbit appears lifted over it. Only the planets are not to scale: they are drawn thousands of times larger than they would be."
   ]
  },
  "nf": {

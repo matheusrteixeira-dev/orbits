@@ -35,20 +35,27 @@ stays in the plane through the hole that holds the camera and the ray, where the
 d²u/dφ² = 3u² − u (u = 1/r). It is integrated with RK4 until it falls through the horizon, crosses the
 disc or escapes. The disc runs from the ISCO (6 M) to 15 M with the thin-disc flux F, seen as g⁴F with a
 black-body colour shifted by g (gravitational redshift, time dilation and Doppler shift). Rays that
-circle the hole before reaching the disc draw the thin ring round the shadow. The disc is symmetric
-about its axis, so the image is traced once, a band of rows per frame, and kept; four samples per pixel
-smooth its edges. `src/assets/bh/bh-still.webp` is shown where WebGL 2 is not available.
+circle the hole before reaching the disc draw the thin ring round the shadow. The rays do not change
+with time, so they are traced once, a band of rows per frame with four samples per pixel, into two
+textures: the light of the smooth disc and where each ray met it. Every frame a cheap second pass lays
+clumps of gas over the disc that orbit at Ω = r^−1.5, sheared by the differential rotation, so the
+inner edge laps in about 2.3 s and the outer edge in about 9 s. `src/assets/bh/bh-still.webp` is shown
+only where WebGL 2 is not available.
 
 The planets and the belt orbit in the plane of the disc on one clock (40 M of time per second) and one
 distance scale. Planet orbits precess at Ω − κ, with Ω = r^−1.5 and κ = Ω √(1 − 6/r) the radial
 epicyclic frequency, and planets and belt are brightened or dimmed by g⁴ like the disc. The hole is
 taken as 10⁸ solar masses, so every planet orbits outside its Roche limit. The camera circles the hole
-once every three hours of screen time; the distant stars sweep past at the matching rate and are lensed
-with the point-mass lens.
+once every three hours of screen time; the distant stars sweep past at the matching rate. Stars,
+orbits, belt and planets are all lensed with the point-mass lens (for a point at depth z behind the
+hole, Einstein radius² = 4 z D / (D + z)), which lifts the far side of every orbit over the hole and
+stretches a planet along the ring when it passes behind.
 
-Two display choices are not physical: the orbits, belt and planets are drawn without the bending of
-their light (which would lift the far side of every orbit over the hole), and the planets are drawn
-thousands of times larger than they would be.
+One display choice is not physical: the planets are drawn thousands of times larger than they would be.
+
+The sky always moves. It draws at most about 95 frames a second, and if the frame rate stays below
+about 33 for two seconds it steps down the canvas resolution, the number of stars and belt grains and
+the planet texture size, one step at a time.
 
 ## What is on the site
 
@@ -90,8 +97,8 @@ python3 -m http.server -d dist  # preview on http://localhost:8000
 
 ## Checks
 
-- `node tools/smoke.js` with `dist/` served on port 8111: loads the page, lands on a planet, goes back,
-  and runs again without WebGL.
+- `node tools/smoke.js` with `dist/` served on port 8111: checks that the planets move with reduced
+  motion requested, lands on a planet, goes back, and runs again without WebGL.
 - Every language at 360, 390, 768 and 1440 px, and axe (WCAG 2.2 AA) on the home, Arabic, project and
   404 pages.
 - `src/static/_headers` sets a Content-Security-Policy with no inline script (the page data is JSON in

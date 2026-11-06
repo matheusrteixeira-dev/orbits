@@ -17,8 +17,6 @@ C = {
  },
  "role": "Engenheiro de machine learning · Engenheiro de software · Pesquisador em computação quântica",
  "ui": {
-  "pause": "Pausar movimento",
-  "play": "Retomar movimento",
   "land": "Pousar neste planeta",
   "landBtn": "Pousar no planeta",
   "back": "Voltar ao sistema",
@@ -46,7 +44,7 @@ C = {
  "about": {
   "h": "Sobre",
   "p": [
-   "Sou o Matheus Teixeira, de Santos. Trabalho com machine learning e software. Minha pesquisa é em machine learning quântico e correção quântica de erros, e a maior parte do meu código é em Python, TypeScript, React e Rust.",
+   "Sou o Matheus Teixeira, de Santos. Desenvolvo modelos de machine learning e software, e pesquiso machine learning quântico e correção quântica de erros.",
    "Comecei em 2016 como desenvolvedor web e assistente de suporte de TI na Orion Benefícios. Estudo na FEI desde 2019, primeiro a graduação em Ciência da Computação e depois o mestrado em Engenharia Elétrica em IA. Minha dissertação é um pipeline híbrido quântico-clássico para histopatologia de câncer de mama, com os dados divididos por paciente, de modo que nenhum paciente aparece no treino e no teste ao mesmo tempo. Agora faço um MBA em Data Science, IA e Analytics na USP, com bolsa integral, e estou matriculado no doutorado da FEI em correção quântica de erros, com bolsa CAPES e aulas a partir de fevereiro de 2027.",
    "Abaixo estão cinco dos meus projetos, um por planeta."
   ],
@@ -77,7 +75,7 @@ C = {
  },
  "projects": {
   "h": "Projetos",
-  "p": "Um projeto por planeta. Pouse em um planeta para ver a história completa."
+  "p": "Pouse em um planeta para ver o projeto de perto."
  },
  "proj": {
   "isaac": {
@@ -198,11 +196,11 @@ C = {
      "A transcrição roda com TensorFlow.js no navegador, então as gravações não são enviadas. As partituras ficam no aparelho e são compartilhadas por um link que carrega a partitura inteira."
     ],
     [
-     "Além da detecção de altura",
+     "Andamento, tom e acordes",
      "O Amadeo estima o andamento, o compasso, a tonalidade e os acordes, dá a cada mão a sua linha e grava a partitura com VexFlow."
     ],
     [
-     "No ar",
+     "Em uso",
      "O Amadeo está no ar em nove idiomas, com plano Pro pago pelo Stripe, um repertório de arranjos, afinador e metrônomo. Um app para Android está pronto e aguarda a publicação na loja."
     ]
    ],
@@ -322,15 +320,15 @@ C = {
    ],
    "notes": [
     [
-     "Rápidos",
+     "Páginas estáticas",
      "Páginas estáticas, feitas com Astro ou com um pequeno gerador em Python, servidas pelo Cloudflare Pages. Os sites das empresas têm Lighthouse 95 no celular e 100 no computador."
     ],
     [
-     "Acessíveis",
+     "Acessibilidade testada",
      "Os sites das empresas são testados contra a WCAG 2.2 AA nos três motores de navegador: Chromium, Firefox e WebKit."
     ],
     [
-     "Seguros",
+     "O portal do colaborador",
      "O portal do colaborador roda em Cloudflare Workers com um banco D1, protegido por cabeçalhos Content Security Policy."
     ]
    ],
@@ -473,15 +471,15 @@ C = {
  },
  "contact": {
   "h": "Contato",
-  "p": "Estou aberto a vagas em machine learning e software, e a colaborações de pesquisa. O e-mail é o jeito mais rápido de falar comigo."
+  "p": "Procuro vagas em machine learning e software, e sempre gosto de conversar sobre pesquisa. O e-mail é o melhor jeito de falar comigo."
  },
  "sky": {
   "h": "Sobre este céu",
   "p": [
-   "O buraco negro é desenhado com o mesmo traçador de raios do Isaac, meu simulador de física. Cada pixel segue um raio de luz de volta pelo espaço-tempo curvo de um buraco sem rotação, visto 18° acima do disco. O disco é gás quente, colorido como um corpo negro, mais brilhante do lado que vem em nossa direção e desviado para o vermelho perto do buraco. O anel fino e brilhante em volta da sombra é luz que contornou o buraco antes de chegar até nós.",
+   "O buraco negro é desenhado com o mesmo traçador de raios do Isaac, meu simulador de física. Cada pixel segue um raio de luz de volta pelo espaço-tempo curvo em torno do buraco (que não gira), visto 18° acima do disco. O disco é gás quente, colorido como um corpo negro, mais brilhante do lado que vem em nossa direção e desviado para o vermelho perto do buraco. O gás gira na velocidade que teria de verdade: a borda interna dá uma volta em cerca de 2 segundos, a externa em cerca de 9. O anel fino e brilhante em volta da sombra é luz que contornou o buraco antes de chegar até nós.",
    "Os planetas e o cinturão de asteroides orbitam no plano do disco, todos no mesmo relógio: o planeta mais interno dá uma volta em cerca de 23 segundos, o mais externo em cerca de 46. As elipses giram devagar, como prevê a relatividade geral, e cada planeta mantém uma face voltada para o buraco.",
    "Um segundo aqui são 40 M de tempo, em que M é a massa do buraco em unidades de tempo. Para um buraco de 100 milhões de sóis, isso é cerca de 20.000 vezes a velocidade real. A câmera gira devagar em torno do buraco.",
-   "Duas coisas não estão em escala. As órbitas, o cinturão e os planetas são desenhados sem o desvio da sua luz, que ergueria o lado de trás de cada órbita acima do buraco, e os planetas aparecem milhares de vezes maiores do que seriam."
+   "A luz dos planetas, do cinturão e das órbitas é desviada pelo buraco, como a das estrelas, e por isso o lado de trás de cada órbita aparece erguido acima dele. Só os planetas não estão em escala: aparecem milhares de vezes maiores do que seriam."
   ]
  },
  "nf": {
@@ -491,7 +489,7 @@ C = {
  },
  "hero": {
   "h": "Tudo o que eu construo *orbita* algo real.",
-  "p": "Sou o Matheus. Trabalho com machine learning e software, e a maior parte do meu código é em Python, TypeScript, React e Rust. Cada planeta aqui é um dos meus projetos, orbitando um buraco negro. Clique em um para pousar nele.",
+  "p": "Sou o Matheus. Desenvolvo modelos de machine learning e software. Cada planeta aqui é um projeto meu, orbitando um buraco negro. Clique em um para pousar nele.",
   "cta": [
    "Ver os projetos",
    "Sobre mim"

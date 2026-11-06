@@ -326,7 +326,7 @@ def render(lang, C, ver, all_c):
 <main id="main">
 <section class="hero" id="top">
 <div class="sky" id="sky"><canvas id="bg" aria-hidden="true"></canvas><img class="still" id="bhstill" src="{b}assets/bh/bh-still.webp" alt="" aria-hidden="true"><canvas id="bh" aria-hidden="true"></canvas><canvas id="fg" aria-hidden="true"></canvas><div class="shade"></div>
-<div id="labs" role="group" aria-label="{e(T["planets"])}"></div><button class="pz" id="pause" type="button" aria-pressed="false">{e(T["pause"])}</button></div>
+<div id="labs" role="group" aria-label="{e(T["planets"])}"></div></div>
 <div class="intro"><span class="k">{e(C["role"])}</span>
 <h1{" class=\"long\"" if len(H["h"]) > 48 else ""}>{hero_title(H["h"])}</h1>
 <p>{e(H["p"])}</p>

@@ -1,13 +1,15 @@
 const {chromium}=require('playwright');
 (async()=>{
  const b=await chromium.launch({args:['--use-angle=swiftshader','--enable-unsafe-swiftshader']});
- // Reduced motion
+ // The sky moves even when the system asks for reduced motion.
  let p=await b.newPage({viewport:{width:1280,height:800},reducedMotion:'reduce'});const e=[];p.on('pageerror',x=>e.push(x.message));
  await p.goto('http://localhost:8111/fr/');await p.waitForTimeout(3000);
- console.log('reduced: pause label =',await p.textContent('#pause'),'| errors',e.length);
- await p.click('button.land >> nth=2');await p.waitForTimeout(1500);
+ const pos=()=>p.evaluate(()=>[...document.querySelectorAll('#labs .lab')].map(l=>l.style.transform).join());
+ const p0=await pos();await p.waitForTimeout(1500);
+ console.log('reduced motion: planets moving =',p0!==await pos(),'| pause button =',!!(await p.$('#pause')),'| errors',e.length);
+ await p.click('button.land >> nth=2');await p.waitForTimeout(3500);
  console.log('landed:',await p.evaluate(()=>document.getElementById('world').className),location=await p.evaluate(()=>location.hash));
- await p.keyboard.press('Escape');await p.waitForTimeout(800);
+ await p.keyboard.press('Escape');await p.waitForTimeout(2500);
  console.log('after esc hidden:',await p.evaluate(()=>document.getElementById('world').hidden),'hash',await p.evaluate(()=>location.hash));
  await p.close();
  // No WebGL

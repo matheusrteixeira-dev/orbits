@@ -9,7 +9,6 @@
   const arts = [...wp.querySelectorAll('article.cs')];
   const bBack = document.getElementById('w-back'), bPrev = document.getElementById('w-prev'), bNext = document.getElementById('w-next');
   const PG = window.PlanetGL ? window.PlanetGL.create(wc) : null;
-  const reduce = matchMedia('(prefers-reduced-motion: reduce)');
   const KIND = { rock: 0, ocean: 1, gas: 2, storm: 3, ice: 4 };
   const hex = h => [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16) / 255);
   const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
@@ -101,8 +100,8 @@
       if (k >= 1) { if (st.phase === 'in') landed(); else closed(); }
     } else if (st.phase === 'landed') {
       // The surface is hidden once the case study covers the screen; skip drawing it then.
-      if (PG && wp.scrollTop < innerHeight * .9) render(endCam(n, reduce.matches ? 0 : st.time), 1, 1, reduce.matches ? 0 : st.time);
-      if (viz) viz.draw(now, reduce.matches);
+      if (PG && wp.scrollTop < innerHeight * .9) render(endCam(n, st.time), 1, 1, st.time);
+      if (viz) viz.draw(now, false);
     }
   }
   function landed() { st.phase = 'landed'; el.classList.add('landed'); el.classList.remove('fly'); const h = arts[cur] && arts[cur].querySelector('h2'); if (h) h.focus({ preventScroll: true }); }
@@ -129,7 +128,7 @@
     cur = i; size(); fill(i);
     const p = S.projects[i], la = p.site[0] * Math.PI / 180, lo = p.site[1] * Math.PI / 180;
     const rot = from.rot || [1, 0, 0, 0, 1, 0, 0, 0, 1];
-    st = { phase: 'in', t0: performance.now(), dur: reduce.matches || !PG ? 1 : switching ? 1700 : 2300, a: startCam(switching ? { x: innerWidth * .5, y: innerHeight * .45, R: innerHeight * .16 } : from), rot, L: from.L || [-.6, .3, .74], site: [Math.cos(la) * Math.cos(lo), Math.cos(la) * Math.sin(lo), Math.sin(la)], time: 0 };
+    st = { phase: 'in', t0: performance.now(), dur: !PG ? 1 : switching ? 1700 : 2300, a: startCam(switching ? { x: innerWidth * .5, y: innerHeight * .45, R: innerHeight * .16 } : from), rot, L: from.L || [-.6, .3, .74], site: [Math.cos(la) * Math.cos(lo), Math.cos(la) * Math.sin(lo), Math.sin(la)], time: 0 };
     el.classList.remove('landed'); el.classList.add('fly');
     if (el.hidden) { el.hidden = false; void el.offsetWidth; }
     el.classList.add('on');
@@ -146,7 +145,7 @@
     if (!fromPop && pushed) { pushed = false; history.back(); return; }
     if (!fromPop) history.replaceState(null, '', location.pathname + location.search);
     pushed = false;
-    if (!PG || reduce.matches) { closed(); return; }
+    if (!PG) { closed(); return; }
     el.classList.remove('landed'); el.classList.add('fly');
     st.phase = 'out'; st.t0 = performance.now(); st.dur = 1500;
   }

@@ -1,14 +1,14 @@
 // Page wiring: project visuals, landing buttons, deep links, e-mail copy, language menu.
 (function () {
   'use strict';
-  const S = window.SITE, T = S.t, reduce = matchMedia('(prefers-reduced-motion: reduce)');
+  const S = window.SITE, T = S.t;
   // Project visuals run only while on screen.
   const cards = [...document.querySelectorAll('canvas[data-viz]')].map(c => ({ c, v: window.VIZ.attach(c, c.dataset.viz), on: false }));
   const io = new IntersectionObserver(es => es.forEach(e => { const k = cards.find(x => x.c === e.target); if (k) k.on = e.isIntersecting; }), { rootMargin: '80px' });
   cards.forEach(k => io.observe(k.c));
   (function tick(now) {
     const busy = window.WORLD && window.WORLD.open_ >= 0;
-    if (!busy) for (const k of cards) if (k.on && (!reduce.matches || !k.v.once)) k.v.draw(now, reduce.matches);
+    if (!busy) for (const k of cards) if (k.on) k.v.draw(now, false);
     requestAnimationFrame(tick);
   })(performance.now());
   document.querySelectorAll('button.land').forEach(b => b.addEventListener('click', () => window.WORLD.open(+b.dataset.i)));

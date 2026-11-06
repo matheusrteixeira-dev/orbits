@@ -17,8 +17,6 @@ C = {
  },
  "role": "Ingeniero de machine learning · Ingeniero de software · Investigador en computación cuántica",
  "ui": {
-  "pause": "Pausar el movimiento",
-  "play": "Reanudar el movimiento",
   "land": "Aterrizar en este planeta",
   "landBtn": "Aterrizar en el planeta",
   "back": "Volver al sistema",
@@ -46,7 +44,7 @@ C = {
  "about": {
   "h": "Sobre mí",
   "p": [
-   "Soy Matheus Teixeira, de Santos, Brasil. Trabajo en machine learning y software. Mi investigación es en machine learning cuántico y corrección cuántica de errores, y la mayor parte de mi código está en Python, TypeScript, React y Rust.",
+   "Soy Matheus Teixeira, de Santos, Brasil. Desarrollo modelos de machine learning y software, e investigo machine learning cuántico y corrección cuántica de errores.",
    "Empecé en 2016 como desarrollador web y asistente de soporte informático en Orion Benefícios. Estudio en la FEI desde 2019, primero el grado en Ciencias de la Computación y después el máster en Ingeniería Eléctrica en IA. Mi tesis de máster es un pipeline híbrido cuántico-clásico para histopatología de cáncer de mama, con los datos divididos por paciente, de modo que ningún paciente aparece a la vez en entrenamiento y en prueba. Ahora curso un MBA en Data Science, IA y Analytics en la USP con beca completa, y estoy matriculado en el doctorado de la FEI en corrección cuántica de errores, con beca CAPES y clases desde febrero de 2027.",
    "Abajo están cinco de mis proyectos, uno por planeta."
   ],
@@ -77,7 +75,7 @@ C = {
  },
  "projects": {
   "h": "Proyectos",
-  "p": "Un proyecto por planeta. Aterriza en un planeta para ver la historia completa."
+  "p": "Aterriza en un planeta para ver el proyecto de cerca."
  },
  "proj": {
   "isaac": {
@@ -198,11 +196,11 @@ C = {
      "La transcripción funciona con TensorFlow.js en el navegador, así que las grabaciones no se suben. Las partituras se quedan en el dispositivo y se comparten con un enlace que lleva la partitura entera."
     ],
     [
-     "Más allá de detectar alturas",
+     "Tempo, tonalidad y acordes",
      "Amadeo estima el tempo, el compás, la tonalidad y los acordes, da a cada mano su propia línea y graba la partitura con VexFlow."
     ],
     [
-     "En línea",
+     "En uso",
      "Amadeo está en línea en nueve idiomas, con un plan Pro pagado con Stripe, un repertorio de arreglos, un afinador y un metrónomo. Una app para Android está lista y espera su publicación en la tienda."
     ]
    ],
@@ -322,15 +320,15 @@ C = {
    ],
    "notes": [
     [
-     "Rápidos",
+     "Páginas estáticas",
      "Páginas estáticas, hechas con Astro o con un pequeño generador en Python, servidas por Cloudflare Pages. Los sitios de las empresas sacan 95 en móvil y 100 en ordenador en Lighthouse."
     ],
     [
-     "Accesibles",
+     "Accesibilidad probada",
      "Los sitios de las empresas se prueban contra WCAG 2.2 AA en los tres motores de navegador: Chromium, Firefox y WebKit."
     ],
     [
-     "Seguros",
+     "El portal de empleados",
      "El portal de empleados funciona en Cloudflare Workers con una base de datos D1, detrás de cabeceras Content Security Policy."
     ]
    ],
@@ -473,15 +471,15 @@ C = {
  },
  "contact": {
   "h": "Contacto",
-  "p": "Estoy abierto a puestos en machine learning y software, y a colaboraciones de investigación. El correo es la forma más rápida de contactarme."
+  "p": "Busco puestos en machine learning y software, y siempre me gusta hablar de investigación. El correo es la mejor forma de contactarme."
  },
  "sky": {
   "h": "Sobre este cielo",
   "p": [
-   "El agujero negro se dibuja con el mismo trazador de rayos que Isaac, mi simulador de física. Cada píxel sigue un rayo de luz hacia atrás por el espacio-tiempo curvo de un agujero sin rotación, visto 18° por encima de su disco. El disco es gas caliente, coloreado como un cuerpo negro, más brillante en el lado que se acerca y desplazado al rojo cerca del agujero. El anillo fino y brillante alrededor de la sombra es luz que rodeó el agujero antes de llegar hasta nosotros.",
+   "El agujero negro se dibuja con el mismo trazador de rayos que Isaac, mi simulador de física. Cada píxel sigue un rayo de luz hacia atrás por el espacio-tiempo curvo alrededor del agujero (que no gira), visto 18° por encima de su disco. El disco es gas caliente, coloreado como un cuerpo negro, más brillante en el lado que se acerca y desplazado al rojo cerca del agujero. El gas gira a la velocidad que tendría de verdad: el borde interior da una vuelta en unos 2 segundos, el exterior en unos 9. El anillo fino y brillante alrededor de la sombra es luz que rodeó el agujero antes de llegar hasta nosotros.",
    "Los planetas y el cinturón de asteroides orbitan en el plano del disco, todos con el mismo reloj: el planeta más interior da una vuelta en unos 23 segundos, el más exterior en unos 46. Sus elipses giran despacio, como predice la relatividad general, y cada planeta muestra siempre la misma cara al agujero.",
    "Un segundo aquí equivale a 40 M de tiempo, donde M es la masa del agujero en unidades de tiempo. Para un agujero de 100 millones de soles, son unas 20.000 veces la velocidad real. La cámara gira despacio alrededor del agujero.",
-   "Dos cosas no están a escala. Las órbitas, el cinturón y los planetas se dibujan sin la curvatura de su luz, que levantaría la parte trasera de cada órbita sobre el agujero, y los planetas se dibujan miles de veces más grandes de lo que serían."
+   "La luz de los planetas, del cinturón y de las órbitas se curva junto al agujero, como la de las estrellas, y por eso la parte trasera de cada órbita aparece levantada sobre él. Solo los planetas no están a escala: se dibujan miles de veces más grandes de lo que serían."
   ]
  },
  "nf": {
@@ -491,7 +489,7 @@ C = {
  },
  "hero": {
   "h": "Todo lo que construyo *orbita* algo real.",
-  "p": "Soy Matheus. Trabajo en machine learning y software, y la mayor parte de mi código está en Python, TypeScript, React y Rust. Cada planeta de aquí es uno de mis proyectos, en órbita alrededor de un agujero negro. Haz clic en uno para aterrizar en él.",
+  "p": "Soy Matheus. Desarrollo modelos de machine learning y software. Cada planeta de aquí es un proyecto mío, en órbita alrededor de un agujero negro. Haz clic en uno para aterrizar en él.",
   "cta": [
    "Ver los proyectos",
    "Sobre mí"
