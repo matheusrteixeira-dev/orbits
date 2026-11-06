@@ -55,8 +55,9 @@ thousands of times larger than they would be.
 4. Pages > Custom domains: add the domain. A domain registered with Cloudflare Registrar is
    connected without DNS changes.
 
-Each push to `main` then builds and deploys. `src/static/_headers` sets the security and cache
-headers. `.github/workflows/pages.yml` can publish the same site to GitHub Pages instead; it only
+Each push to `main` then builds and deploys. `src/static/_headers` sets the security headers (including a
+Content-Security-Policy that allows no inline script: the page data is JSON in `#site-data`) and
+the cache headers. `.github/workflows/pages.yml` can publish the same site to GitHub Pages instead; it only
 runs when started by hand.
 
 ## Project pages

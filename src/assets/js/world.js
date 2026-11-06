@@ -2,6 +2,8 @@
 // site on its surface, and the project opens there.
 (function () {
   'use strict';
+  // world.js is the first script to read the page data, which the page carries as JSON.
+  window.SITE = window.SITE || JSON.parse(document.getElementById('site-data').textContent);
   const S = window.SITE, T = S.t;
   const el = document.getElementById('world'), wc = document.getElementById('wc'), wp = document.getElementById('wp');
   const arts = [...wp.querySelectorAll('article.cs')];

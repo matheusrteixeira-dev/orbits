@@ -122,9 +122,7 @@ def worldline(C, rtl=False):
         out.append(f'<line class="gy" x1="{xx:.1f}" y1="30" x2="{xx:.1f}" y2="{YB + 26}"/><text class="ty" x="{xx:.1f}" y="{YB + 46}">{yr}</text>')
     out.append(f'<text class="rl" x="12" y="{YB + 4}">{e(iso(R["br"]))}</text><text class="rl" x="12" y="{YC + 4}">{e(iso(R["ch"]))}</text>')
     out.append(f'<line class="rail" x1="{X0}" y1="{YB}" x2="{X1}" y2="{YB}"/><line class="rail" x1="{X0}" y1="{YC}" x2="{X1}" y2="{YC}"/>')
-    # Light cones at the present: the past cone filled, the future cone outlined.
-    xn, cl = x(NOW), 80
-    out.append(f'<path class="fc" d="M{xn - cl:.1f} {YB - cl:.1f} L{xn + cl:.1f} {YB + cl * .2:.1f} M{xn - cl * .2:.1f} {YB + cl * .2:.1f} L{xn + cl:.1f} {YB - cl:.1f}"/>')
+    xn = x(NOW)
     # The worldline: solid up to now, dashed after; up to Zurich and back for the ETH year.
     a0, a1 = ETH
     out.append(f'<path class="wl" d="M{x(2016.25):.1f} {YB} L{xn:.1f} {YB}"/>')
@@ -177,12 +175,16 @@ def worldline(C, rtl=False):
     return svg, f'<ol class="wll">{"".join(items)}</ol>'
 
 
+# Open Graph locales, one per page language.
+OG_LOCALE = {"en": "en_US", "pt": "pt_BR", "es": "es_ES", "fr": "fr_FR", "de": "de_DE", "zh": "zh_CN", "hi": "hi_IN", "ar": "ar_AR"}
+
+
 # ---------- Case studies: one article per project, shown on its planet ----------
 SHOTS = {
     "isaac": [("isaac-scene", "isaac3d.com/scene/chaos"), ("isaac-home", "isaac3d.com"), ("isaac-library", "isaac3d.com/library")],
     "amadeo": [("amadeo-home", "amadeosheets.com"), ("amadeo-score", "amadeosheets.com/repertoire/fur-elise"), ("amadeo-keys", "amadeosheets.com/repertoire/fur-elise")],
     # Allwinner is a local app; captured offline on the repository's fixed BTC/USDT test history.
-    "allwinner": [("allwinner-signals", "127.0.0.1:8000"), ("allwinner-scoreboard", "127.0.0.1:8000/advanced"), ("allwinner-chart", "127.0.0.1:8000/advanced")],
+    "allwinner": [("allwinner-signals", "allwinner · local dashboard"), ("allwinner-scoreboard", "allwinner · local dashboard"), ("allwinner-chart", "allwinner · local dashboard")],
     # Orion's site is not live yet: captured from its local build.
     "websites": [("lider-home", "liderplustelemedicina.com.br"), ("orion-about", "orion beneficios · local build"), ("mis-home", "esthetics studio · local build"), ("lider-org", "liderplustelemedicina.com.br/organizacoes/"), ("mis-treatments", "esthetics studio · local build")],
     # Brectus is a desktop app; these are the images published on LinkedIn.
@@ -238,10 +240,11 @@ def render(lang, C, ver, all_c):
     if lang in GFONTS:
         gf = ('<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>'
               f'<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family={GFONTS[lang]}&display=swap">')
+    og_alt = "".join(f'<meta property="og:locale:alternate" content="{OG_LOCALE[l]}">' for l in LANGS if l != lang)
     ld = {"@context": "https://schema.org", "@type": "Person", "name": "Matheus Teixeira", "url": SITE_URL,
           "jobTitle": C["role"].replace(" · ", ", "), "email": f"mailto:{EMAIL}",
           "address": {"@type": "PostalAddress", "addressLocality": "Santos", "addressCountry": "BR"},
-          "alumniOf": [{"@type": "CollegeOrUniversity", "name": "Centro Universitário FEI"}],
+          "alumniOf": [{"@type": "CollegeOrUniversity", "name": "Centro Universitário FEI"}, {"@type": "CollegeOrUniversity", "name": "Universidade de São Paulo"}],
           "sameAs": [LINKS["github"], LINKS["linkedin"], LINKS["orcid"]]}
     langmenu = "".join(
         f'<li><a href="{b}{page_path(l)}" hreflang="{l}" lang="{l}"{" aria-current=\"page\"" if l == lang else ""}>{e(all_c[l]["name"])}</a></li>' for l in LANGS)
@@ -289,6 +292,8 @@ def render(lang, C, ver, all_c):
             "t": {k: T[k] for k in T},
             "projects": [dict(id=p["id"], name=p["name"], col=p["col"], kind=p["kind"], urls=p["urls"], tags=p["tags"], orbit=p["orbit"], site=p["site"],
                               **{k: C["proj"][p["id"]][k] for k in ("sub", "world", "viz")}) for p in PROJECTS]}
+    # Page data for the scripts, as JSON (not inline script) so the CSP can stay script-src 'self'.
+    site_json = json.dumps(site, ensure_ascii=False).replace("</", "<\\/")
     title = C["meta"]["title"]
     H = C["hero"]
     return f'''<!doctype html>
@@ -303,7 +308,7 @@ def render(lang, C, ver, all_c):
 <meta name="color-scheme" content="dark">
 <link rel="canonical" href="{SITE_URL}{page_path(lang)}">
 {alts}
-<meta property="og:type" content="website"><meta property="og:site_name" content="Matheus Teixeira"><meta property="og:title" content="{e(title)}"><meta property="og:description" content="{e(C["meta"]["desc"])}"><meta property="og:url" content="{SITE_URL}{page_path(lang)}"><meta property="og:image" content="{SITE_URL}og.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:locale" content="{lang}">
+<meta property="og:type" content="website"><meta property="og:site_name" content="Matheus Teixeira"><meta property="og:title" content="{e(title)}"><meta property="og:description" content="{e(C["meta"]["desc"])}"><meta property="og:url" content="{SITE_URL}{page_path(lang)}"><meta property="og:image" content="{SITE_URL}og.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:locale" content="{OG_LOCALE[lang]}">{og_alt}
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="{b}favicon.svg" type="image/svg+xml"><link rel="icon" href="{b}favicon.png" sizes="64x64" type="image/png"><link rel="apple-touch-icon" href="{b}apple-touch-icon.png">
 <link rel="preload" href="{b}assets/fonts/unbounded-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
@@ -358,7 +363,7 @@ def render(lang, C, ver, all_c):
 <div class="wbar"><button type="button" id="w-back"><span aria-hidden="true">←</span> {e(T["back"])}</button><span class="sp"></span><button type="button" id="w-prev"><span aria-hidden="true">‹</span> <span class="t">{e(T["prev"])}</span></button><button type="button" id="w-next"><span class="t">{e(T["next"])}</span> <span aria-hidden="true">›</span></button></div>
 <div class="wp" id="wp">{studies}</div>
 </div>
-<script>window.SITE={json.dumps(site, ensure_ascii=False)};</script>
+<script type="application/json" id="site-data">{site_json}</script>
 <script src="{b}assets/js/planet.js?v={ver}" defer></script>
 <script src="{b}assets/js/viz.js?v={ver}" defer></script>
 <script src="{b}assets/js/world.js?v={ver}" defer></script>
