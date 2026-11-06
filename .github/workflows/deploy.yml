@@ -1,5 +1,5 @@
 # Build the site and deploy dist/ to Cloudflare Pages (project "orbits") on every push to main.
-# Needs two repository secrets: CLOUDFLARE_API_TOKEN (Pages: Edit) and CLOUDFLARE_ACCOUNT_ID.
+# Needs one repository secret, CLOUDFLARE_API_TOKEN (Cloudflare Pages: Edit). The account ID is not secret.
 name: Deploy
 on:
   push:
@@ -26,10 +26,10 @@ jobs:
         continue-on-error: true
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          accountId: 68d8d1208738455968f33253baea3ed9
           command: pages project create orbits --production-branch=main
       - uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          accountId: 68d8d1208738455968f33253baea3ed9
           command: pages deploy dist --project-name=orbits --branch=main

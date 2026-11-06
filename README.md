@@ -100,8 +100,8 @@ python3 -m http.server -d dist  # preview on http://localhost:8000
 ## Deployment
 
 The site is on Cloudflare Pages, project `orbits`. `.github/workflows/deploy.yml` builds it and runs
-`wrangler pages deploy` on every push to `main`, using two repository secrets: `CLOUDFLARE_API_TOKEN`
-(Cloudflare Pages: Edit) and `CLOUDFLARE_ACCOUNT_ID`. The domain `sectus.dev` and `www.sectus.dev` are
+`wrangler pages deploy` on every push to `main`, using one repository secret, `CLOUDFLARE_API_TOKEN`
+(Cloudflare Pages: Edit). The domain `sectus.dev` and `www.sectus.dev` are
 attached to the Pages project.
 
 <p align="center"><sub>Matheus Teixeira · <a href="https://sectus.dev">sectus.dev</a> · <a href="https://github.com/matheusrteixeira-dev">GitHub</a> · <a href="https://www.linkedin.com/in/matheusrteixeira/">LinkedIn</a> · <a href="https://orcid.org/0009-0001-1816-632X">ORCID</a></sub></p>
