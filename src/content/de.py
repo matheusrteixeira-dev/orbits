@@ -479,7 +479,7 @@ C = {
    "Das Schwarze Loch wird mit demselben Raytracer gezeichnet wie in Isaac, meinem Physiksimulator. Jedes Pixel folgt einem Lichtstrahl rückwärts durch die gekrümmte Raumzeit um das Loch (das sich nicht dreht), gesehen 18° über seiner Scheibe. Die Scheibe ist heißes Gas, gefärbt wie ein schwarzer Körper, heller auf der Seite, die auf uns zukommt, und nahe am Loch rotverschoben. Das Gas kreist so schnell, wie es das wirklich täte: Der innere Rand braucht für eine Runde etwa 2 Sekunden, der äußere etwa 9. Der dünne helle Ring um den Schatten ist Licht, das das Loch umrundet hat, bevor es uns erreicht.",
    "Die Planeten und der Asteroidengürtel umkreisen das Loch in der Ebene der Scheibe, alle nach derselben Uhr: Der innerste Planet braucht für eine Runde etwa 23 Sekunden, der äußerste etwa 46. Ihre Ellipsen drehen sich langsam, wie die allgemeine Relativitätstheorie vorhersagt, und jeder Planet wendet dem Loch stets dieselbe Seite zu.",
    "Eine Sekunde hier sind 40 M Zeit, wobei M die Masse des Lochs in Zeiteinheiten ist. Für ein Loch von 100 Millionen Sonnen sind das etwa 20.000-fache Echtzeit. Die Kamera kreist langsam um das Loch.",
-   "Das Licht der Planeten, des Gürtels und der Umlaufbahnen wird vom Loch abgelenkt wie das der Sterne, deshalb erscheint die Rückseite jeder Umlaufbahn über das Loch gehoben. Nur die Planeten sind nicht maßstabsgetreu: Sie sind tausendfach größer gezeichnet, als sie wären."
+   "Zwei Dinge sind nicht maßstabsgetreu. Umlaufbahnen, Gürtel und Planeten sind ohne die Ablenkung ihres Lichts gezeichnet, die die Rückseite jeder Umlaufbahn über das Loch heben würde, und die Planeten sind tausendfach größer gezeichnet, als sie wären."
   ]
  },
  "nf": {

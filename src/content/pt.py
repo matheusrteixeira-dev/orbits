@@ -479,7 +479,7 @@ C = {
    "O buraco negro é desenhado com o mesmo traçador de raios do Isaac, meu simulador de física. Cada pixel segue um raio de luz de volta pelo espaço-tempo curvo em torno do buraco (que não gira), visto 18° acima do disco. O disco é gás quente, colorido como um corpo negro, mais brilhante do lado que vem em nossa direção e desviado para o vermelho perto do buraco. O gás gira na velocidade que teria de verdade: a borda interna dá uma volta em cerca de 2 segundos, a externa em cerca de 9. O anel fino e brilhante em volta da sombra é luz que contornou o buraco antes de chegar até nós.",
    "Os planetas e o cinturão de asteroides orbitam no plano do disco, todos no mesmo relógio: o planeta mais interno dá uma volta em cerca de 23 segundos, o mais externo em cerca de 46. As elipses giram devagar, como prevê a relatividade geral, e cada planeta mantém uma face voltada para o buraco.",
    "Um segundo aqui são 40 M de tempo, em que M é a massa do buraco em unidades de tempo. Para um buraco de 100 milhões de sóis, isso é cerca de 20.000 vezes a velocidade real. A câmera gira devagar em torno do buraco.",
-   "A luz dos planetas, do cinturão e das órbitas é desviada pelo buraco, como a das estrelas, e por isso o lado de trás de cada órbita aparece erguido acima dele. Só os planetas não estão em escala: aparecem milhares de vezes maiores do que seriam."
+   "Duas coisas não estão em escala. As órbitas, o cinturão e os planetas são desenhados sem o desvio da sua luz, que ergueria o lado de trás de cada órbita acima do buraco, e os planetas aparecem milhares de vezes maiores do que seriam."
   ]
  },
  "nf": {

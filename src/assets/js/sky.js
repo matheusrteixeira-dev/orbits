@@ -62,17 +62,6 @@
     return [[tp * ux, tp * uy, rp, tp / s, rp * tp / s], [tm * ux, tm * uy, rm, tm / s, Math.abs(rm * tm / s)]];
   }
 
-  // Where a point of the disc plane (r, azimuth from the camera) is seen: the flat projection, bent
-  // by the hole when the point lies behind it. A point at depth z behind the hole is a source for a
-  // point-mass lens with Einstein radius squared 4 z D / (D + z) (D = CAM), measured at the hole.
-  // Returns [X, Y, radial stretch, tangential stretch, ux, uy] with (ux, uy) the outward direction.
-  function seen(r, ph) {
-    const f = flatP(r, ph), z = -r * Math.cos(ph) * SI;
-    if (z <= 0) return [f[0], f[1], 1, 1, 1, 0];
-    const s = Math.max(.05, Math.hypot(f[0], f[1])), im = lens(f[0], f[1], 4 * z * CAM / (CAM + z))[0];
-    return [im[0], im[1], im[2], im[3], f[0] / s, f[1] / s];
-  }
-
   // ---------- Canvases and layout ----------
   const sky = document.getElementById('sky'), bg = document.getElementById('bg'), fg = document.getElementById('fg'), bhc = document.getElementById('bh');
   const still = document.getElementById('bhstill'), labs = document.getElementById('labs');
@@ -88,16 +77,12 @@
     // Desktop: fit the outermost planet's orbit (apoapsis APO) in the space beside the intro text,
     // so no planet ever passes under the headline. The belt may run behind the text.
     const APO = Math.max(...PL.map(p => p.a * (1 + p.e)));
-    // Vertical room: the far side of the outer orbit is lifted by the hole's lensing to about 22 M
-    // above it, the near side reaches about 15.5 M below (perspective); planets add their radius.
-    const UP = 24.5, DN = 18.5;
     let cx = w * .5, cy = h * .5, K;
-    if (mob) K = Math.min((w - 16) / (2 * (APO + 3)), h / (UP + DN + 4)); // every planet stays on a phone screen
+    if (mob) K = Math.min((w - 16) / (2 * (APO + 3)), h / (2 * 17)); // every planet stays on a phone screen
     else {
       const free = S.rtl ? IR.l - 16 : w - IR.r - 16;
-      K = Math.max(5, Math.min(h * .94 / (UP + DN), free / (2 * APO + 4)));
+      K = Math.max(5, Math.min(h * .86 / (2 * 19), free / (2 * APO + 4)));
       cx = S.rtl ? IR.l - 8 - (APO + 2) * K : IR.r + 8 + (APO + 2) * K;
-      cy = (h - (UP + DN) * K) / 2 + UP * K;
     }
     K = Math.max(.5, K);   // a hidden or collapsed pane can report no width or height
     for (const c of [bg, fg, sc]) { c.width = Math.round(w * dpr); c.height = Math.round(h * dpr); }
@@ -359,17 +344,15 @@ void main(){ivec2 p=ivec2(gl_FragCoord.xy);vec4 c=texelFetch(uC,p,0),g=texelFetc
       ctx.strokeStyle = col; ctx.lineWidth = (on ? 1.6 : 1) * dpr; ctx.beginPath();
       let pen = false;
       for (const [r, ph] of pts) {
-        if ((which === 'f') === front(ph)) { const v = seen(r, ph), x = (cx + v[0] * K) * dpr, y = (cy - v[1] * K) * dpr; pen ? ctx.lineTo(x, y) : ctx.moveTo(x, y); pen = true; } else pen = false;
+        if ((which === 'f') === front(ph)) { const v = flatP(r, ph), x = (cx + v[0] * K) * dpr, y = (cy - v[1] * K) * dpr; pen ? ctx.lineTo(x, y) : ctx.moveTo(x, y); pen = true; } else pen = false;
       }
       ctx.stroke();
     }
   }
-  // Planet image on screen now, bent by the hole: moved outwards and stretched along the ring
-  // round the hole (M maps the planet's disc to its image, screen axes, Y up).
+  // Planet position on screen now, as seen without the bending of light: the orbits stay flat.
   function planetImage(p) {
-    const p3 = orbit(p, tau), [r, ph] = polar(p3), v = seen(r, ph);
-    const a = Math.min(3, v[2]), b = Math.min(3, v[3]), ux = v[4], uy = v[5], d = (a - b) * ux * uy;
-    return { X: v[0], Y: v[1], X0: flatP(r, ph)[0], M: [a * ux * ux + b * uy * uy, d, d, a * uy * uy + b * ux * ux], k: Math.sqrt(a * b), p3, r, ph };
+    const p3 = orbit(p, tau), [r, ph] = polar(p3), f = flatP(r, ph);
+    return { X: f[0], Y: f[1], X0: f[0], M: [1, 0, 0, 1], k: 1, p3, r, ph };
   }
   function draw() {
     const { w, h, cx, cy, K } = L, W = w * dpr, H = h * dpr;
@@ -390,9 +373,8 @@ void main(){ivec2 p=ivec2(gl_FragCoord.xy);vec4 c=texelFetch(uC,p,0),g=texelFetc
     const NB = 8, gs = 1.3 * dpr, bk = [[], []];
     for (let n = 0; n < NB; n++) { bk[0].push([]); bk[1].push([]); }
     for (let j = 0, step = QUAL[q].belt; j < BELT.length; j += step) {
-      const b = BELT[j], ph = b.ph + Om(b.r) * tau - phc, X0 = flatP(b.r, ph)[0], a = .5 * b.b * Math.min(3, Math.pow(gShift(b.r, X0), 4));
+      const b = BELT[j], ph = b.ph + Om(b.r) * tau - phc, v = flatP(b.r, ph), a = .5 * b.b * Math.min(3, Math.pow(gShift(b.r, v[0]), 4));
       if (a < .02) continue;
-      const v = seen(b.r, ph);
       bk[front(ph) ? 0 : 1][Math.min(NB - 1, Math.floor(Math.min(1, a) * NB))].push((cx + v[0] * K) * dpr, (cy - v[1] * K) * dpr);
     }
     [fx, bx].forEach((ctx, l) => bk[l].forEach((pts, n) => {

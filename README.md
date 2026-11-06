@@ -46,12 +46,12 @@ The planets and the belt orbit in the plane of the disc on one clock (40 M of ti
 distance scale. Planet orbits precess at Ω − κ, with Ω = r^−1.5 and κ = Ω √(1 − 6/r) the radial
 epicyclic frequency, and planets and belt are brightened or dimmed by g⁴ like the disc. The hole is
 taken as 10⁸ solar masses, so every planet orbits outside its Roche limit. The camera circles the hole
-once every three hours of screen time; the distant stars sweep past at the matching rate. Stars,
-orbits, belt and planets are all lensed with the point-mass lens (for a point at depth z behind the
-hole, Einstein radius² = 4 z D / (D + z)), which lifts the far side of every orbit over the hole and
-stretches a planet along the ring when it passes behind.
+once every three hours of screen time; the distant stars sweep past at the matching rate and are lensed
+with the point-mass lens.
 
-One display choice is not physical: the planets are drawn thousands of times larger than they would be.
+Two display choices are not physical: the orbits, belt and planets are drawn without the bending of
+their light (which would lift the far side of every orbit over the hole), and the planets are drawn
+thousands of times larger than they would be.
 
 The sky always moves. It draws at most about 95 frames a second, and if the frame rate stays below
 about 33 for two seconds it steps down the canvas resolution, the number of stars and belt grains and
