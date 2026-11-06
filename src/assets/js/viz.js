@@ -63,7 +63,8 @@
       if (!off || off.width !== W) { off = document.createElement('canvas'); off.width = W; off.height = Math.round(sh); off.getContext('2d').fillStyle = '#02030a'; off.getContext('2d').fillRect(0, 0, W, off.height); off.last = Math.max(0, T - 4.2); }
       const o = off.getContext('2d'), Ho = off.height, fy = f => Ho - (Math.log2(f / 110) / 5) * Ho; // 110 Hz to 3.5 kHz
       // Shift left and paint the new columns at the detector.
-      const pxPerS = px / span, cols = Math.round((T - off.last) * pxPerS);
+      // At most a tenth of the width per frame, so the first fill is spread over a few frames.
+      const pxPerS = px / span, cols = Math.min(Math.round((T - off.last) * pxPerS), Math.max(8, Math.round(px / 10)));
       if (cols > 0) {
         o.drawImage(off, -cols, 0); off.last += cols / pxPerS;
         const img = o.createImageData(cols, Ho);
