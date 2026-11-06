@@ -26,7 +26,7 @@ GFONTS = {
     "hi": "Noto+Sans+Devanagari:wght@400;500;700;800",
     "ar": "Noto+Kufi+Arabic:wght@400;500;700;800",
 }
-EMAIL = "rmatheusteixeira@pm.me"
+EMAIL = "matheus@sectus.dev"
 LINKS = {
     "github": "https://github.com/matheusrteixeira-dev",
     "linkedin": "https://www.linkedin.com/in/matheusrteixeira/",
