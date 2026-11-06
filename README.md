@@ -1,62 +1,63 @@
-# matheusrteixeira-dev.github.io
+# Orbits
 
-Personal website of Matheus Teixeira: a planetary system around a spinning black hole, where each
-planet holds one project. Static HTML, CSS and JavaScript in eight languages (en, pt, es, fr, de,
-zh, hi, ar), with no framework. The build needs only Python 3; the black hole tools also need
-NumPy, Pillow and SciPy.
+Personal website of Matheus Teixeira: a planetary system around a black hole, where each planet
+holds one project. Static HTML, CSS and JavaScript in eight languages (en, pt, es, fr, de, zh, hi,
+ar), with no framework. The build needs only Python 3.
 
 ## Layout
 
 - `src/content/<lang>.py`: all text, one file per language.
-- `src/assets/`: CSS, JavaScript, fonts, the portrait and the black hole data maps.
-- `src/static/`: files copied to the site root (favicons, Open Graph image).
+- `src/assets/`: CSS, JavaScript, fonts, images and the still of the black hole.
+- `src/static/`: files copied to the site root (favicons, Open Graph image, `_headers`).
 - `tools/build.py`: writes the site to `dist/` (one `index.html` per language, `404.html`,
   `robots.txt`, `sitemap.xml`).
-- `tools/kerr.py`, `tools/kerr_part.py`, `tools/pack_bh.py`, `tools/plane_lens.py`: the light-path
-  pipeline (below); `tools/shade2.py` renders a still of the disc offline.
 - `tools/smoke.js`: Playwright smoke test against a local server on port 8111.
-- `.github/workflows/pages.yml`: builds `dist/` and publishes it to GitHub Pages on every push to `main`.
+- `.github/workflows/pages.yml`: optional manual publish to GitHub Pages.
 
 ## Build
 
     python3 tools/build.py          # writes dist/
     python3 -m http.server -d dist  # preview on http://localhost:8000
 
-`dist/` is not committed. GitHub Pages is set to "GitHub Actions" as its source, and the workflow
-builds and deploys on each push to `main`.
+`dist/` is not committed. Set `SITE_URL` to build for another address.
 
 ## The black hole
 
-`tools/kerr.py` traces null geodesics backwards from the camera through the Kerr metric
-(spin a = 0.9, camera 18° above the disc, i = 72°) with RK4 in Boyer–Lindquist coordinates, and
-records the first two crossings of the equatorial disc for every pixel together with the redshift
-factor of a circular prograde emitter. `tools/kerr_part.py` is the same tracer for a band of rows,
-so that four processes can share the image. `tools/pack_bh.py` packs the geometry into `bh-map.png`.
-In the browser, `assets/js/sky.js` shades the disc from those maps every frame on the GPU: an
-optically thick thin disc with the Novikov–Thorne flux, observed bolometric intensity g⁴F,
-blackbody colours shifted by g, fine orbital streaks and a faint spiral texture carried round at
-the Kerr rate Ω = 1 / (r^1.5 + a), a camera-like exposure curve and a light bloom. The disc has a
-sharp outer edge at 12 M.
+`assets/js/sky.js` traces the black hole on the GPU with the same tracer as Isaac
+(`isaac3d.com`): every pixel follows its light ray backwards from the camera (600 M away, 18°
+above the disc) through the Schwarzschild metric. The ray stays in the plane through the hole that
+holds the camera and the ray, where the null geodesic obeys d²u/dφ² = 3u² − u (u = 1/r), integrated
+with RK4 until it falls through the horizon, crosses the disc or escapes. The disc is a thin disc
+from the ISCO (6 M) to 15 M with the thin-disc flux F, observed as g⁴F with a black-body colour
+shifted by g (gravitational redshift, time dilation and Doppler shift). Rays that circle the hole
+before reaching the disc draw the thin ring round the shadow. The disc is symmetric about its axis,
+so the image is traced once, a band of rows per frame, and kept; four samples per pixel smooth its
+edges. `assets/bh/bh-still.webp` is the image shown where WebGL 2 is not available.
 
-The planets and the belt orbit in the equatorial plane, the plane of the disc, so frame dragging
-does not precess their orbital planes. Disc, planets and belt share one clock (40 M of time per
-second) and one distance scale. Planet orbits precess at Ω − κ, with κ the Kerr radial epicyclic
-frequency. The hole is taken as 10⁸ solar masses, so every planet orbits outside its Roche limit.
+The planets and the belt orbit in the plane of the disc on one clock (40 M of time per second) and
+one distance scale. Planet orbits precess at Ω − κ, with Ω = r^−1.5 and κ = Ω √(1 − 6/r) the radial
+epicyclic frequency, and planets and belt are brightened or dimmed by g⁴ like the disc. The hole is
+taken as 10⁸ solar masses, so every planet orbits outside its Roche limit. The camera circles the
+hole once every three hours of screen time; the distant stars sweep past at the matching rate and
+are lensed with the point-mass lens.
 
-`tools/plane_lens.py` traces about 890,000 rays from the same camera and inverts their equatorial
-crossings into `assets/bh/plane.json`: for each point of the plane between r = 25 and 53 M, where
-its direct image and its image round the hole land on the screen, and how long its light takes.
-Every entry is checked by tracing it forward. In the browser each planet and belt grain is drawn
-at both images, at the moment its light left it (light-travel delay), stretched by the local lens
-matrix and brightened or dimmed by g⁴ like the disc. The camera circles the hole once every three
-hours of screen time; the distant stars sweep past at the matching rate, and are lensed with the
-point-mass lens. Planet sizes, the exposure and the disc texture are display choices; positions,
-motions, light paths, delays and Doppler shifts are computed.
+Two display choices are not physical: the orbits, belt and planets are drawn without the bending of
+their light (which would lift the far side of every orbit over the hole), and the planets are drawn
+thousands of times larger than they would be.
 
-    for k in 0 1 2 3; do python3 tools/kerr_part.py 1600 1000 part$k 0.9 72 $((k*250)) $((k*250+250)) & done; wait
-    # merge part0..3.npz into kerr.npz (hit_r, hit_phi, g, captured stacked by rows; W, H, halfWidthM, a, rIn, rOut)
-    python3 tools/pack_bh.py kerr.npz src/assets/bh 72
-    python3 tools/plane_lens.py 4    # needs numpy and scipy; writes src/assets/bh/plane.json
+## Deployment (Cloudflare Pages)
+
+1. Push this repository to GitHub.
+2. Cloudflare dashboard > Workers & Pages > Create > Pages > Connect to Git, and pick the repository.
+3. Build command `python3 tools/build.py`, build output directory `dist`, root directory empty.
+   Environment variable `SITE_URL` = the site's address (for example `https://sectus.dev/`);
+   it sets canonical links, the sitemap and the social cards. `PYTHON_VERSION` = `3.12`.
+4. Pages > Custom domains: add the domain. A domain registered with Cloudflare Registrar is
+   connected without DNS changes.
+
+Each push to `main` then builds and deploys. `src/static/_headers` sets the security and cache
+headers. `.github/workflows/pages.yml` can publish the same site to GitHub Pages instead; it only
+runs when started by hand.
 
 ## Project pages
 

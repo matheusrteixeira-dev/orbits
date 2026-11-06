@@ -478,10 +478,10 @@ C = {
  "sky": {
   "h": "Sobre este céu",
   "p": [
-   "O buraco negro gira a 90% da velocidade máxima e é visto 18° acima do seu disco. A imagem vem de raios de luz traçados na métrica de Kerr, e o disco é sombreado ao vivo na sua placa de vídeo, com cores de corpo negro, feixe Doppler no lado que se aproxima e desvio gravitacional para o vermelho.",
-   "Os planetas e o cinturão de asteroides orbitam no plano do disco, o plano equatorial do buraco, onde a rotação não inclina as órbitas. Tudo segue um só relógio, na taxa orbital de Kerr: a borda interna do disco dá uma volta em menos de um segundo, o planeta mais externo em cerca de 45 segundos. As elipses giram devagar, como prevê a relatividade geral, e cada planeta mantém uma face voltada para o buraco.",
-   "Um segundo aqui são 40 M de tempo, em que M é a massa do buraco em unidades de tempo. Para um buraco de 100 milhões de sóis, isso é cerca de 20.000 vezes a velocidade real. A câmera gira devagar em torno do buraco. A luz dos planetas, do cinturão e das estrelas é desviada pela gravidade do buraco, por isso o lado de trás de cada órbita aparece erguido acima dele.",
-   "As distâncias estão na mesma escala, mas os planetas aparecem milhares de vezes maiores do que seriam."
+   "O buraco negro é desenhado com o mesmo traçador de raios do Isaac, meu simulador de física. Cada pixel segue um raio de luz de volta pelo espaço-tempo curvo de um buraco sem rotação, visto 18° acima do disco. O disco é gás quente, colorido como um corpo negro, mais brilhante do lado que vem em nossa direção e desviado para o vermelho perto do buraco. O anel fino e brilhante em volta da sombra é luz que contornou o buraco antes de chegar até nós.",
+   "Os planetas e o cinturão de asteroides orbitam no plano do disco, todos no mesmo relógio: o planeta mais interno dá uma volta em cerca de 23 segundos, o mais externo em cerca de 46. As elipses giram devagar, como prevê a relatividade geral, e cada planeta mantém uma face voltada para o buraco.",
+   "Um segundo aqui são 40 M de tempo, em que M é a massa do buraco em unidades de tempo. Para um buraco de 100 milhões de sóis, isso é cerca de 20.000 vezes a velocidade real. A câmera gira devagar em torno do buraco.",
+   "Duas coisas não estão em escala. As órbitas, o cinturão e os planetas são desenhados sem o desvio da sua luz, que ergueria o lado de trás de cada órbita acima do buraco, e os planetas aparecem milhares de vezes maiores do que seriam."
   ]
  },
  "nf": {
@@ -491,7 +491,7 @@ C = {
  },
  "hero": {
   "h": "Tudo o que eu construo *orbita* algo real.",
-  "p": "Sou o Matheus. Trabalho com machine learning e software, e a maior parte do meu código é em Python, TypeScript, React e Rust. Cada planeta aqui é um dos meus projetos, orbitando um buraco negro em rotação. Clique em um para pousar nele.",
+  "p": "Sou o Matheus. Trabalho com machine learning e software, e a maior parte do meu código é em Python, TypeScript, React e Rust. Cada planeta aqui é um dos meus projetos, orbitando um buraco negro. Clique em um para pousar nele.",
   "cta": [
    "Ver os projetos",
    "Sobre mim"

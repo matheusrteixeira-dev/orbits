@@ -18,7 +18,7 @@ C = {
  "role": "Machine learning engineer · Software engineer · Quantum computing researcher",
  "hero": {
   "h": "Everything I build *orbits* something real.",
-  "p": "I’m Matheus. I work on machine learning and software, and most of my code is in Python, TypeScript, React and Rust. Each planet here is one of my projects, orbiting a spinning black hole. Click one to land on it.",
+  "p": "I’m Matheus. I work on machine learning and software, and most of my code is in Python, TypeScript, React and Rust. Each planet here is one of my projects, orbiting a black hole. Click one to land on it.",
   "cta": [
    "See the projects",
    "About me"
@@ -528,10 +528,10 @@ C = {
  "sky": {
   "h": "About this sky",
   "p": [
-   "The black hole spins at 90% of the maximum rate and is seen from 18° above its disc. Its image comes from light rays traced through the Kerr metric, and the disc is shaded live on your graphics card, with blackbody colours, Doppler beaming on the approaching side and gravitational redshift.",
-   "The planets and the asteroid belt orbit in the plane of the disc, the hole’s equatorial plane, where the spin cannot tilt their orbits. Everything runs on one clock at the Kerr orbital rate: the inner edge of the disc laps in under a second, the outermost planet in about 45 seconds. Their ellipses turn slowly, as general relativity predicts, and each planet keeps one face towards the hole.",
-   "One second here is 40 M of time, where M is the hole’s mass in units of time. For a hole of 100 million suns, that is about 20,000 times real speed. The camera drifts slowly around the hole. Light from the planets, the belt and the stars is bent by the hole’s gravity, so the far side of every orbit appears raised above the hole.",
-   "Distances share one scale, but the planets are drawn thousands of times larger than they would be."
+   "The black hole is drawn with the same ray tracer as Isaac, my physics simulator. Every pixel follows a light ray back through the curved spacetime of a non-rotating hole, seen from 18° above its disc. The disc is hot gas, coloured as a black body, brighter on the side moving towards us and redshifted close to the hole. The thin bright ring around the shadow is light that circled the hole before reaching us.",
+   "The planets and the asteroid belt orbit in the plane of the disc, all on one clock: the innermost planet laps in about 23 seconds, the outermost in about 46. Their ellipses turn slowly, as general relativity predicts, and each planet keeps one face towards the hole.",
+   "One second here is 40 M of time, where M is the hole’s mass in units of time. For a hole of 100 million suns, that is about 20,000 times real speed. The camera drifts slowly around the hole.",
+   "Two things are not to scale. The orbits, the belt and the planets are drawn without the bending of their light, which would lift the far side of every orbit over the hole, and the planets are drawn thousands of times larger than they would be."
   ]
  },
  "nf": {

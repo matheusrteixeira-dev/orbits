@@ -16,7 +16,9 @@ import sys
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 SRC = ROOT / "src"
 OUT = pathlib.Path(sys.argv[1]) if len(sys.argv) > 1 else ROOT / "dist"
-SITE_URL = "https://matheusrteixeira-dev.github.io/"
+# Public address of the site, used for canonical links, the sitemap and social cards. Set SITE_URL
+# in the host's build settings (Cloudflare Pages: Settings > Environment variables).
+SITE_URL = os.environ.get("SITE_URL", "https://sectus.dev/").rstrip("/") + "/"
 LANGS = ["en", "pt", "es", "fr", "de", "zh", "hi", "ar"]
 RTL = {"ar"}
 GFONTS = {
@@ -387,7 +389,6 @@ def main():
         shutil.rmtree(OUT)
     OUT.mkdir(parents=True)
     shutil.copytree(SRC / "assets", OUT / "assets", ignore=shutil.ignore_patterns("*.json"))
-    shutil.copy(SRC / "assets" / "bh" / "plane.json", OUT / "assets" / "bh" / "plane.json")  # light-path table, read by sky.js
     for f in (SRC / "static").iterdir():
         shutil.copy(f, OUT / f.name)
     h = hashlib.sha1()

@@ -478,10 +478,10 @@ C = {
  "sky": {
   "h": "Über diesen Himmel",
   "p": [
-   "Das Schwarze Loch rotiert mit 90 % der maximalen Rate und ist 18° über seiner Scheibe zu sehen. Das Bild stammt aus Lichtstrahlen, die durch die Kerr-Metrik verfolgt wurden, und die Scheibe wird live auf Ihrer Grafikkarte schattiert, mit Schwarzkörperfarben, Doppler-Beaming auf der sich nähernden Seite und gravitativer Rotverschiebung.",
-   "Die Planeten und der Asteroidengürtel kreisen in der Ebene der Scheibe, der Äquatorebene des Lochs, wo die Rotation ihre Bahnen nicht kippen kann. Alles läuft auf einer Uhr mit der Kerr-Umlauffrequenz: Der Innenrand der Scheibe dreht sich in weniger als einer Sekunde einmal, der äußerste Planet in etwa 45 Sekunden. Ihre Ellipsen drehen sich langsam, wie es die allgemeine Relativitätstheorie vorhersagt, und jeder Planet zeigt dem Loch immer dieselbe Seite.",
-   "Eine Sekunde hier sind 40 M Zeit, wobei M die Masse des Lochs in Zeiteinheiten ist. Für ein Loch von 100 Millionen Sonnen sind das etwa 20.000-fache Echtzeit. Die Kamera kreist langsam um das Loch. Das Licht der Planeten, des Gürtels und der Sterne wird von der Schwerkraft des Lochs abgelenkt, deshalb erscheint die Rückseite jeder Umlaufbahn über das Loch angehoben.",
-   "Die Entfernungen teilen sich einen Maßstab, aber die Planeten sind tausendfach größer gezeichnet, als sie wären."
+   "Das Schwarze Loch wird mit demselben Raytracer gezeichnet wie in Isaac, meinem Physiksimulator. Jedes Pixel folgt einem Lichtstrahl rückwärts durch die gekrümmte Raumzeit eines nicht rotierenden Lochs, gesehen 18° über seiner Scheibe. Die Scheibe ist heißes Gas, gefärbt wie ein schwarzer Körper, heller auf der Seite, die auf uns zukommt, und nahe am Loch rotverschoben. Der dünne helle Ring um den Schatten ist Licht, das das Loch umrundet hat, bevor es uns erreicht.",
+   "Die Planeten und der Asteroidengürtel umkreisen das Loch in der Ebene der Scheibe, alle nach derselben Uhr: Der innerste Planet braucht für eine Runde etwa 23 Sekunden, der äußerste etwa 46. Ihre Ellipsen drehen sich langsam, wie die allgemeine Relativitätstheorie vorhersagt, und jeder Planet wendet dem Loch stets dieselbe Seite zu.",
+   "Eine Sekunde hier sind 40 M Zeit, wobei M die Masse des Lochs in Zeiteinheiten ist. Für ein Loch von 100 Millionen Sonnen sind das etwa 20.000-fache Echtzeit. Die Kamera kreist langsam um das Loch.",
+   "Zwei Dinge sind nicht maßstabsgetreu. Umlaufbahnen, Gürtel und Planeten sind ohne die Ablenkung ihres Lichts gezeichnet, die die Rückseite jeder Umlaufbahn über das Loch heben würde, und die Planeten sind tausendfach größer gezeichnet, als sie wären."
   ]
  },
  "nf": {
@@ -491,7 +491,7 @@ C = {
  },
  "hero": {
   "h": "Alles, was ich baue, *kreist* um etwas Echtes.",
-  "p": "Ich bin Matheus. Ich arbeite an maschinellem Lernen und Software, und der Großteil meines Codes ist in Python, TypeScript, React und Rust. Jeder Planet hier ist eines meiner Projekte und umkreist ein rotierendes Schwarzes Loch. Klicken Sie auf einen, um darauf zu landen.",
+  "p": "Ich bin Matheus. Ich arbeite an maschinellem Lernen und Software, und der Großteil meines Codes ist in Python, TypeScript, React und Rust. Jeder Planet hier ist eines meiner Projekte und umkreist ein Schwarzes Loch. Klicken Sie auf einen, um darauf zu landen.",
   "cta": [
    "Zu den Projekten",
    "Über mich"

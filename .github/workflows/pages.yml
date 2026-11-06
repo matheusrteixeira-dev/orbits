@@ -1,8 +1,7 @@
-# Build the site with tools/build.py and publish dist/ to GitHub Pages.
+# Optional: build the site and publish dist/ to GitHub Pages. The site is hosted on Cloudflare
+# Pages (see README), so this only runs when started by hand from the Actions tab.
 name: Pages
 on:
-  push:
-    branches: [main]
   workflow_dispatch:
 permissions:
   contents: read
@@ -20,6 +19,8 @@ jobs:
         with:
           python-version: "3.12"
       - run: python3 tools/build.py
+        env:
+          SITE_URL: https://matheusrteixeira-dev.github.io/
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:

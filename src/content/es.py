@@ -478,10 +478,10 @@ C = {
  "sky": {
   "h": "Sobre este cielo",
   "p": [
-   "El agujero negro gira al 90 % de la velocidad máxima y se ve 18° por encima de su disco. Su imagen sale de rayos de luz trazados en la métrica de Kerr, y el disco se sombrea en vivo en tu tarjeta gráfica, con colores de cuerpo negro, haz Doppler en el lado que se acerca y corrimiento al rojo gravitacional.",
-   "Los planetas y el cinturón de asteroides orbitan en el plano del disco, el plano ecuatorial del agujero, donde el giro no inclina sus órbitas. Todo sigue un único reloj a la frecuencia orbital de Kerr: el borde interior del disco da una vuelta en menos de un segundo y el planeta más exterior en unos 45 segundos. Sus elipses giran despacio, como predice la relatividad general, y cada planeta muestra siempre la misma cara al agujero.",
-   "Un segundo aquí equivale a 40 M de tiempo, donde M es la masa del agujero en unidades de tiempo. Para un agujero de 100 millones de soles, son unas 20.000 veces la velocidad real. La cámara gira despacio alrededor del agujero. La luz de los planetas, el cinturón y las estrellas se curva por la gravedad del agujero, por eso la parte trasera de cada órbita aparece levantada sobre él.",
-   "Las distancias comparten una misma escala, pero los planetas se dibujan miles de veces más grandes de lo que serían."
+   "El agujero negro se dibuja con el mismo trazador de rayos que Isaac, mi simulador de física. Cada píxel sigue un rayo de luz hacia atrás por el espacio-tiempo curvo de un agujero sin rotación, visto 18° por encima de su disco. El disco es gas caliente, coloreado como un cuerpo negro, más brillante en el lado que se acerca y desplazado al rojo cerca del agujero. El anillo fino y brillante alrededor de la sombra es luz que rodeó el agujero antes de llegar hasta nosotros.",
+   "Los planetas y el cinturón de asteroides orbitan en el plano del disco, todos con el mismo reloj: el planeta más interior da una vuelta en unos 23 segundos, el más exterior en unos 46. Sus elipses giran despacio, como predice la relatividad general, y cada planeta muestra siempre la misma cara al agujero.",
+   "Un segundo aquí equivale a 40 M de tiempo, donde M es la masa del agujero en unidades de tiempo. Para un agujero de 100 millones de soles, son unas 20.000 veces la velocidad real. La cámara gira despacio alrededor del agujero.",
+   "Dos cosas no están a escala. Las órbitas, el cinturón y los planetas se dibujan sin la curvatura de su luz, que levantaría la parte trasera de cada órbita sobre el agujero, y los planetas se dibujan miles de veces más grandes de lo que serían."
   ]
  },
  "nf": {
@@ -491,7 +491,7 @@ C = {
  },
  "hero": {
   "h": "Todo lo que construyo *orbita* algo real.",
-  "p": "Soy Matheus. Trabajo en machine learning y software, y la mayor parte de mi código está en Python, TypeScript, React y Rust. Cada planeta de aquí es uno de mis proyectos, en órbita alrededor de un agujero negro en rotación. Haz clic en uno para aterrizar en él.",
+  "p": "Soy Matheus. Trabajo en machine learning y software, y la mayor parte de mi código está en Python, TypeScript, React y Rust. Cada planeta de aquí es uno de mis proyectos, en órbita alrededor de un agujero negro. Haz clic en uno para aterrizar en él.",
   "cta": [
    "Ver los proyectos",
    "Sobre mí"

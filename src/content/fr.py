@@ -478,10 +478,10 @@ C = {
  "sky": {
   "h": "À propos de ce ciel",
   "p": [
-   "Le trou noir tourne à 90 % de la vitesse maximale et il est vu 18° au-dessus de son disque. Son image vient de rayons lumineux tracés dans la métrique de Kerr, et le disque est ombré en direct sur votre carte graphique, avec des couleurs de corps noir, l’effet Doppler relativiste du côté qui s’approche et le décalage gravitationnel vers le rouge.",
-   "Les planètes et la ceinture d’astéroïdes orbitent dans le plan du disque, le plan équatorial du trou noir, où sa rotation ne peut pas incliner leurs orbites. Tout suit une seule horloge, à la fréquence orbitale de Kerr : le bord intérieur du disque fait un tour en moins d’une seconde, la planète la plus éloignée en 45 secondes environ. Leurs ellipses tournent lentement, comme le prévoit la relativité générale, et chaque planète montre toujours la même face au trou noir.",
-   "Une seconde ici vaut 40 M de temps, où M est la masse du trou exprimée en temps. Pour un trou de 100 millions de soleils, cela fait environ 20 000 fois la vitesse réelle. La caméra tourne lentement autour du trou. La lumière des planètes, de la ceinture et des étoiles est déviée par la gravité du trou, c’est pourquoi l’arrière de chaque orbite paraît relevé au-dessus de lui.",
-   "Les distances partagent une même échelle, mais les planètes sont dessinées des milliers de fois plus grandes qu’elles ne le seraient."
+   "Le trou noir est dessiné avec le même lancer de rayons qu’Isaac, mon simulateur de physique. Chaque pixel suit un rayon de lumière à rebours dans l’espace-temps courbe d’un trou sans rotation, vu 18° au-dessus de son disque. Le disque est un gaz chaud, coloré comme un corps noir, plus brillant du côté qui vient vers nous et décalé vers le rouge près du trou. L’anneau fin et brillant autour de l’ombre est de la lumière qui a fait le tour du trou avant de nous atteindre.",
+   "Les planètes et la ceinture d’astéroïdes orbitent dans le plan du disque, toutes sur la même horloge : la planète la plus proche fait un tour en environ 23 secondes, la plus éloignée en environ 46. Leurs ellipses tournent lentement, comme le prévoit la relativité générale, et chaque planète garde une face tournée vers le trou.",
+   "Une seconde ici vaut 40 M de temps, où M est la masse du trou exprimée en temps. Pour un trou de 100 millions de soleils, cela fait environ 20 000 fois la vitesse réelle. La caméra tourne lentement autour du trou.",
+   "Deux choses ne sont pas à l’échelle. Les orbites, la ceinture et les planètes sont dessinées sans la déviation de leur lumière, qui relèverait l’arrière de chaque orbite au-dessus du trou, et les planètes sont dessinées des milliers de fois plus grandes qu’elles ne le seraient."
   ]
  },
  "nf": {
@@ -491,7 +491,7 @@ C = {
  },
  "hero": {
   "h": "Tout ce que je construis *gravite* autour de quelque chose de réel.",
-  "p": "Je suis Matheus. Je travaille sur le machine learning et le logiciel, et la plupart de mon code est en Python, TypeScript, React et Rust. Chaque planète ici est l’un de mes projets, en orbite autour d’un trou noir en rotation. Cliquez sur l’une d’elles pour y atterrir.",
+  "p": "Je suis Matheus. Je travaille sur le machine learning et le logiciel, et la plupart de mon code est en Python, TypeScript, React et Rust. Chaque planète ici est l’un de mes projets, en orbite autour d’un trou noir. Cliquez sur l’une d’elles pour y atterrir.",
   "cta": [
    "Voir les projets",
    "À propos"
