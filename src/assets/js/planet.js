@@ -40,8 +40,10 @@ void surf(vec3 q,int n,float night,out vec3 base,out vec3 emis,out float wet){
   vec3 p1=q*1.8+uSeed;vec3 wv=vec3(fbm(p1,max(n-2,2)),fbm(p1+5.2,max(n-2,2)),fbm(p1+9.1,max(n-2,2)));
   float w=fbm(q*3.+wv*3.,n);float b=sin(lat*9.+w*9.);
   base=mix(vec3(.07,.025,.15),c*.9,.5+.45*b);base=mix(base,vec3(.88,.8,1.),smoothstep(.6,.8,w)*.5);base*=.8+.35*fbm(q*12.+wv,n);
-  float f=h3(floor(q*7.)+vec3(0,0,floor(uTime*3.)*17.+uSeed));
-  emis=vec3(.75,.7,1.)*step(.992,f)*night*2.;
+  // Lightning: now and then a small soft flash in a cell of the night side, fading as it ends.
+  vec3 cq=q*7.,ci=floor(cq);float tt=uTime*3.,f=h3(ci+vec3(0,0,floor(tt)*17.+uSeed));
+  if(f>.992){vec3 ctr=ci+.5+.3*(vec3(h3(ci+3.1),h3(ci+7.7),h3(ci+1.3))-.5);vec3 dd=cq-ctr;float lf=1.-fract(tt);
+   emis=vec3(.75,.7,1.)*exp(-dot(dd,dd)*30.)*lf*lf*night*2.4;}
  }else{ // ice world with aurorae
   float h=fbm(q*3.+uSeed,n),r=1.-abs(2.*fbm(q*6.+2.,max(n-1,1))-1.);
   base=mix(vec3(.62,.78,.84),vec3(.95,.98,1.),h);base=mix(base,c*.55,smoothstep(.88,.97,r)*.8);

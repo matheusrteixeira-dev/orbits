@@ -453,7 +453,7 @@ void main(){ivec2 p=ivec2(gl_FragCoord.xy);vec4 c=texelFetch(uC,p,0),g=texelFetc
     // Stop (or restart) the sky while a project is open. The planet being flown to is drawn by the
     // landing view instead, so the sky draws one last frame without it.
     setActive(v, i) { hideI = v ? -1 : (i == null ? -1 : i); if (L && L.w >= 2) draw(); active = v; },
-    planet(i) { const s = scr[i], r = sky.getBoundingClientRect(); return s ? { x: r.left + s.x, y: r.top + s.y, R: s.R, rot: st[i].frame.rot, L: st[i].frame.L } : null; },
+    planet(i) { const s = scr[i], r = sky.getBoundingClientRect(); return s ? { x: r.left + s.x, y: r.top + s.y, R: s.R, rot: st[i].frame.rot, L: st[i].frame.L, gain: st[i].gain } : null; },
     orbitInfo(i) { const p = PL[i]; return { a: p.a, period: 2 * Math.PI / p.O / RATE, days: 2 * Math.PI / p.O * 492.6 / 86400 }; },
     planets: PL, KIND,
   };
