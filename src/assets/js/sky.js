@@ -334,7 +334,7 @@ void main(){ivec2 p=ivec2(gl_FragCoord.xy);vec4 c=texelFetch(uC,p,0),g=texelFetc
   }
 
   // ---------- Clock and drawing ----------
-  let tau = 140, t = 0, last = performance.now(), active = true, st = [];
+  let tau = 140, t = 0, last = performance.now(), active = true, st = [], hideI = -1;
   const front = ph => Math.cos(ph) >= 0;   // nearer than the hole: drawn over its canvas
   function orbitLine(ctxF, ctxB, p, on, alpha) {
     const { cx, cy, K } = L, col = on ? `rgba(${p.rgb.join(',')},.8)` : `rgba(160,205,255,${alpha})`;
@@ -391,8 +391,7 @@ void main(){ivec2 p=ivec2(gl_FragCoord.xy);vec4 c=texelFetch(uC,p,0),g=texelFetc
       {
         const im = S_.im, per = CAM / (CAM - im.r * Math.cos(im.ph) * SI), M = im.M.map(v => v * per);
         const ctx = front(im.ph) ? fx : bx, Re = R * per * im.k;
-        glow(ctx, p, im.X, im.Y, Re, on);
-        drawPlanet(ctx, i, p, im.X, im.Y, M);
+        if (i !== hideI) { glow(ctx, p, im.X, im.Y, Re, on); drawPlanet(ctx, i, p, im.X, im.Y, M); }
         scr[i] = { x: cx + im.X * K, y: cy - im.Y * K, R: Re };
       }
       const lb = labs.children[i], s_ = scr[i];
@@ -404,7 +403,7 @@ void main(){ivec2 p=ivec2(gl_FragCoord.xy);vec4 c=texelFetch(uC,p,0),g=texelFetc
       const lw = lb._w[k_] || 80, left = s_.x + s_.R + 8 + lw > L.w - 4;
       const lxp = left ? s_.x - s_.R - 8 - lw : s_.x + s_.R + 8;
       lb._x = Math.max(4, lxp); lb._y = s_.y; lb._lw = lw;
-      lb.style.visibility = s_.x < -s_.R || s_.x > L.w + s_.R || s_.y < 0 || s_.y > L.h ? 'hidden' : '';
+      lb.style.visibility = i === hideI || s_.x < -s_.R || s_.x > L.w + s_.R || s_.y < 0 || s_.y > L.h ? 'hidden' : '';
       lb.classList.toggle('on', on);
     }
     const ls = [...labs.children].sort((a, b) => a._y - b._y);
@@ -451,7 +450,9 @@ void main(){ivec2 p=ivec2(gl_FragCoord.xy);vec4 c=texelFetch(uC,p,0),g=texelFetc
   requestAnimationFrame(loop);
   window.SKY = {
     get quality() { return q; },
-    setActive(v) { active = v; },
+    // Stop (or restart) the sky while a project is open. The planet being flown to is drawn by the
+    // landing view instead, so the sky draws one last frame without it.
+    setActive(v, i) { hideI = v ? -1 : (i == null ? -1 : i); if (L && L.w >= 2) draw(); active = v; },
     planet(i) { const s = scr[i], r = sky.getBoundingClientRect(); return s ? { x: r.left + s.x, y: r.top + s.y, R: s.R, rot: st[i].frame.rot, L: st[i].frame.L } : null; },
     orbitInfo(i) { const p = PL[i]; return { a: p.a, period: 2 * Math.PI / p.O / RATE, days: 2 * Math.PI / p.O * 492.6 / 86400 }; },
     planets: PL, KIND,

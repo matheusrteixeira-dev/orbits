@@ -81,7 +81,19 @@
     PG.clear();
     PG.draw({ vp: [0, 0, wc.width, wc.height], ortho: 0, cam: cam.pos, camM: q2m(cam.q), tanF: TANF, rot: s.rot, L: s.L, col: hex(p.col), kind: KIND[p.kind], site: s.site, time, glow, seed: cur * 3.7 + 1, bg });
   }
-  const ease = x => x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
+  // A gentle start and stop; with the log-linear distance this reads as a steady approach.
+  const glide = x => .5 - .5 * Math.cos(Math.PI * x);
+  const sstep = (a, b, x) => { const k = Math.min(1, Math.max(0, (x - a) / (b - a))); return k * k * (3 - 2 * k); };
+  // The flight, for progress e from 0 (the planet where it is in the sky) to 1 (low over the site).
+  // The distance shrinks at a constant rate (log-linear), so the planet grows steadily. For the first
+  // part the camera only moves straight towards the planet, which therefore grows in place on the
+  // screen; then it swings round to the site. Space behind the planet fades in late, so the page is
+  // seen behind the planet until it fills much of the screen; the way back is the same path reversed.
+  function flight(n, e) {
+    const a = st.a, b = endCam(n, st.time), da = len(a.pos), db = len(b.pos), w = sstep(.38, 1, e);
+    const pos = mul(slerpV(nrm(a.pos), nrm(b.pos), w), Math.exp(Math.log(da) + (Math.log(db) - Math.log(da)) * e));
+    return { cam: { pos, q: slerpQ(a.q, b.q, w) }, bg: st.sw ? 1 : sstep(.3, .78, e), glow: sstep(.35, 1, e) };
+  }
 
   function loop(now) {
     raf = requestAnimationFrame(loop);
@@ -90,13 +102,9 @@
     st.time += dt;
     const n = mv(st.rot, st.site);
     if (st.phase === 'in' || st.phase === 'out') {
-      const k = Math.min(1, (now - st.t0) / st.dur), e = ease(st.phase === 'in' ? k : 1 - k);
-      const a = st.a, b = endCam(n, st.time), da = len(a.pos), db = len(b.pos);
-      const pos = mul(slerpV(nrm(a.pos), nrm(b.pos), e), Math.exp(Math.log(da) + (Math.log(db) - Math.log(da)) * e));
-      const camQ = slerpQ(a.q, b.q, Math.min(1, e * 1.15));
-      const bg = Math.min(1, Math.max(0, (e - .04) / .4));
-      el.style.setProperty('--bgA', bg);
-      if (PG) render({ pos, q: camQ }, Math.max(0, e * 1.4 - .4), bg, st.time);
+      const k = Math.min(1, (now - st.t0) / st.dur), e = glide(st.phase === 'in' ? k : 1 - k), f = flight(n, e);
+      el.style.setProperty('--bgA', f.bg);
+      if (PG) render(f.cam, f.glow, f.bg, st.time);
       if (k >= 1) { if (st.phase === 'in') landed(); else closed(); }
     } else if (st.phase === 'landed') {
       // The surface is hidden once the case study covers the screen; skip drawing it then.
@@ -128,13 +136,13 @@
     cur = i; size(); fill(i);
     const p = S.projects[i], la = p.site[0] * Math.PI / 180, lo = p.site[1] * Math.PI / 180;
     const rot = from.rot || [1, 0, 0, 0, 1, 0, 0, 0, 1];
-    st = { phase: 'in', t0: performance.now(), dur: !PG ? 1 : switching ? 1700 : 2300, a: startCam(switching ? { x: innerWidth * .5, y: innerHeight * .45, R: innerHeight * .16 } : from), rot, L: from.L || [-.6, .3, .74], site: [Math.cos(la) * Math.cos(lo), Math.cos(la) * Math.sin(lo), Math.sin(la)], time: 0 };
+    st = { phase: 'in', t0: performance.now(), dur: !PG ? 1 : switching ? 1700 : 2200, sw: switching, a: startCam(switching ? { x: innerWidth * .5, y: innerHeight * .45, R: innerHeight * .16 } : from), rot, L: from.L || [-.6, .3, .74], site: [Math.cos(la) * Math.cos(lo), Math.cos(la) * Math.sin(lo), Math.sin(la)], time: 0 };
     el.classList.remove('landed'); el.classList.add('fly');
     if (el.hidden) { el.hidden = false; void el.offsetWidth; }
     el.classList.add('on');
     wp.scrollTo({ top: 0, behavior: 'instant' }); el.classList.remove('sc');
     setInert(true); document.documentElement.style.overflow = 'hidden';
-    if (window.SKY) window.SKY.setActive(false);
+    if (window.SKY) window.SKY.setActive(false, i);
     if (opts.push !== false) { const h = '#' + p.id; if (location.hash !== h) { history.pushState({ w: i }, '', h); pushed = true; } }
     if (!raf) { last = 0; raf = requestAnimationFrame(loop); }
     if (!PG) { el.classList.add('nogl'); landed(); }
@@ -146,8 +154,11 @@
     if (!fromPop) history.replaceState(null, '', location.pathname + location.search);
     pushed = false;
     if (!PG) { closed(); return; }
+    // Fly back to where the planet is in the sky (after a switch the flight started elsewhere).
+    const P = window.SKY ? window.SKY.planet(cur) : null;
+    if (P && P.rot) { st.a = startCam(P); st.rot = P.rot; st.L = P.L; st.sw = false; }
     el.classList.remove('landed'); el.classList.add('fly');
-    st.phase = 'out'; st.t0 = performance.now(); st.dur = 1500;
+    st.phase = 'out'; st.t0 = performance.now(); st.dur = 1800;
   }
   bBack.addEventListener('click', () => close(false));
   bPrev.addEventListener('click', () => switchTo((cur + 4) % 5));
@@ -169,5 +180,7 @@
   });
   addEventListener('resize', () => { if (st) size(); });
   wp.addEventListener('scroll', () => el.classList.toggle('sc', wp.scrollTop > 40), { passive: true });
+  // Compile the planet shader before the first landing, so the flight does not start with a stall.
+  if (PG) setTimeout(() => { if (st) return; wc.width = wc.height = 4; PG.clear(); PG.draw({ vp: [0, 0, 4, 4], ortho: 0, cam: [0, 0, 3], camM: [1, 0, 0, 0, 1, 0, 0, 0, 1], tanF: TANF, rot: [1, 0, 0, 0, 1, 0, 0, 0, 1], L: [0, 0, 1], col: [1, 1, 1], kind: 0, site: [0, 0, 1], time: 0, glow: 0, seed: 1, bg: 1 }); }, 1200);
   window.WORLD = { open, close: () => close(false), get open_() { return cur; } };
 })();
