@@ -44,7 +44,7 @@ C = {
  "about": {
   "h": "Über mich",
   "p": [
-   "Ich bin Matheus Teixeira aus Santos, Brasilien. Ich entwickle Modelle für maschinelles Lernen und Software und forsche zu Quanten-Machine-Learning und Quantenfehlerkorrektur.",
+   "Ich bin Matheus Teixeira aus Santos, Brasilien. Ich forsche zu Quanten-Machine-Learning und Quantenfehlerkorrektur.",
    "Ich habe 2016 als Webentwickler und IT-Support-Assistent bei Orion Benefícios angefangen. Seit 2019 studiere ich an der FEI, zuerst einen Bachelor in Informatik, dann einen Master in Elektrotechnik mit Schwerpunkt KI. Meine Masterarbeit ist eine hybride quantenklassische Pipeline für die Histopathologie von Brustkrebs, mit nach Patienten getrennten Daten, sodass kein Patient zugleich in Training und Test vorkommt. Jetzt mache ich einen MBA in Data Science, KI und Analytics an der USP mit Vollstipendium, und ich bin für die Promotion an der FEI zur Quantenfehlerkorrektur eingeschrieben, mit CAPES-Stipendium und Kursen ab Februar 2027.",
    "Unten sind fünf meiner Projekte, eines pro Planet."
   ],

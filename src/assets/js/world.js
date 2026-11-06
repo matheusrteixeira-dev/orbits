@@ -32,7 +32,7 @@
 
   const TANF = Math.tan(25 * Math.PI / 180);
   let cur = -1, st = null, viz = null, raf = 0, last = 0, pushed = false, opener = null, q = 1;
-  function size() { q = Math.min(devicePixelRatio || 1, 1.5) * (innerWidth * innerHeight > 2.2e6 ? .8 : 1); wc.width = Math.round(innerWidth * q); wc.height = Math.round(innerHeight * q); }
+  function size() { q = Math.min(devicePixelRatio || 1, 1.5) * (innerWidth * innerHeight > 2.2e6 ? .8 : 1); const w = Math.round(innerWidth * q), h = Math.round(innerHeight * q); if (wc.width !== w || wc.height !== h) { wc.width = w; wc.height = h; } }
 
   function fill(i) {
     const p = S.projects[i], art = arts[i];
@@ -103,7 +103,7 @@
     // While the camera swings, it keeps turning to the planet (lookQ) and only near the end settles
     // on the view over the site, so the planet never leaves the screen.
     const q = slerpQ(lookQ(pos, a.c), b.q, sstep(.5, 1, e));
-    return { cam: { pos, q }, bg: st.sw ? 1 : sstep(.3, .78, e), glow: sstep(.35, 1, e), gain: 1 + ((st.gain || 1) - 1) * (1 - sstep(0, .4, e)) };
+    return { cam: { pos, q }, bg: st.sw ? 1 : sstep(.4, .86, e), glow: sstep(.35, 1, e), gain: 1 + ((st.gain || 1) - 1) * (1 - sstep(0, .4, e)) };
   }
 
   function loop(now) {
@@ -193,5 +193,8 @@
   wp.addEventListener('scroll', () => el.classList.toggle('sc', wp.scrollTop > 40), { passive: true });
   // Compile the planet shader before the first landing, so the flight does not start with a stall.
   if (PG) setTimeout(() => { if (st) return; size(); PG.clear(); PG.draw({ vp: [0, 0, wc.width, wc.height], ortho: 0, cam: [0, 0, 3], camM: [1, 0, 0, 0, 1, 0, 0, 0, 1], tanF: TANF, rot: [1, 0, 0, 0, 1, 0, 0, 0, 1], L: [0, 0, 1], col: [1, 1, 1], kind: 0, site: [0, 0, 1], time: 0, glow: 0, seed: 1, bg: 1 }); }, 1200);
+  // Decode the first screenshot of each project while the page is idle, so showing a project does not stall.
+  const idle = window.requestIdleCallback || (f => setTimeout(f, 1500));
+  idle(() => arts.forEach(a => { const im = a.querySelector('.vp img:not([hidden])'); if (im && im.decode) { im.loading = 'eager'; im.decode().catch(() => {}); } }));
   window.WORLD = { open, close: () => close(false), get open_() { return cur; } };
 })();

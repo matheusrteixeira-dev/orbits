@@ -44,8 +44,8 @@ C = {
  "about": {
   "h": "À propos",
   "p": [
-   "Je suis Matheus Teixeira, de Santos, au Brésil. Je conçois des modèles de machine learning et des logiciels, et mes recherches portent sur le machine learning quantique et la correction d’erreurs quantiques.",
-   "J’ai commencé en 2016 comme développeur web et assistant de support informatique chez Orion Benefícios. J’étudie à la FEI depuis 2019, d’abord une licence en informatique, puis un master en génie électrique en IA. Mon mémoire est un pipeline hybride quantique-classique pour l’histopathologie du cancer du sein, avec des données séparées par patient, si bien qu’aucun patient n’apparaît à la fois dans l’entraînement et dans le test. Je fais maintenant un MBA en Data Science, IA et Analytics à l’USP avec une bourse complète, et je suis inscrit en doctorat à la FEI sur la correction d’erreurs quantiques, avec une bourse CAPES et des cours à partir de février 2027.",
+   "Je suis Matheus Teixeira, de Santos, au Brésil. Mes recherches portent sur le machine learning quantique et la correction d’erreurs quantiques.",
+   "J’ai commencé en 2016 comme développeur web et assistant de support informatique chez Orion Benefícios. J’étudie à la FEI depuis 2019, d’abord une licence en informatique, puis un master en génie électrique, axé sur l’IA. Mon mémoire est un pipeline hybride quantique-classique pour l’histopathologie du cancer du sein, avec des données séparées par patient, si bien qu’aucun patient n’apparaît à la fois dans l’entraînement et dans le test. Je fais maintenant un MBA en Data Science, IA et Analytics à l’USP avec une bourse complète, et je suis inscrit en doctorat à la FEI sur la correction d’erreurs quantiques, avec une bourse CAPES et des cours à partir de février 2027.",
    "Voici cinq de mes projets, un par planète."
   ],
   "facts": [

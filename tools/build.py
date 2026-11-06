@@ -352,7 +352,7 @@ def render(lang, C, ver, all_c):
 
 <section class="sec" id="contact" aria-labelledby="h-contact"><div class="ct"><span class="k" id="h-contact">{e(C["contact"]["h"])}</span>
 <p>{e(C["contact"]["p"])}</p>
-<div class="em"><span>{EMAIL}</span><button type="button" id="cp">{e(T["copy"])}</button><span class="sr" aria-live="polite" id="cpst"></span></div>
+<div class="em"><a href="mailto:{EMAIL}">{EMAIL}</a><button type="button" id="cp">{e(T["copy"])}</button><span class="sr" aria-live="polite" id="cpst"></span></div>
 <div class="ln"><a href="{LINKS["github"]}" target="_blank" rel="noopener">GitHub</a><a href="{LINKS["linkedin"]}" target="_blank" rel="noopener">LinkedIn</a><a href="{LINKS["orcid"]}" target="_blank" rel="noopener">ORCID</a></div></div></section>
 </main>
 <footer><div class="fr"><span>© 2026 Matheus Teixeira</span><nav class="fl" aria-label="{e(nav["lang"])}">{footlangs}</nav></div>

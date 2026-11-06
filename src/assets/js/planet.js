@@ -31,7 +31,7 @@ void surf(vec3 q,int n,float night,out vec3 base,out vec3 emis,out float wet){
   vec3 wat=mix(vec3(.01,.035,.13),c*.55,smoothstep(.25,.53,h));
   vec3 gr=mix(vec3(.12,.23,.09),vec3(.55,.47,.32),smoothstep(.56,.72,h));
   base=mix(wat,gr,land);wet=1.-land;
-  base=mix(base,vec3(.93,.96,1.),smoothstep(.8,.86,abs(lat)+.05*h));
+  base=mix(base,vec3(.93,.96,1.),smoothstep(.77,.88,abs(lat)+.14*(h-.5)+.07*(fbm(q*7.3+uSeed,2)-.5)));   // ice caps with a ragged edge
   float cl=fbm(q*3.2+vec3(uTime*.004,0,0),max(n-1,1));base=mix(base,vec3(.94,.96,1.),smoothstep(.56,.76,cl)*.85);
  }else if(uKind==2){ // banded gas giant
   vec3 wq=q*vec3(1.,1.,3.2);float w=fbm(wq*1.6+uSeed,n),w2=fbm(wq*4.2+vec3(w*2.),n);float b=sin(lat*21.+w*6.+w2*2.5);

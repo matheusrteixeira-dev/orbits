@@ -52,8 +52,8 @@ C = {
  "about": {
   "h": "About",
   "p": [
-   "I’m Matheus Teixeira, from Santos, Brazil. I build machine learning models and software, and my research is on quantum machine learning and quantum error correction.",
-   "I started in 2016 as a web developer and IT support assistant at Orion Benefícios. I have studied at FEI since 2019, first a B.Sc. in Computer Science and then an M.Sc. in Electrical Engineering in AI. My dissertation is a hybrid quantum-classical pipeline for breast cancer histopathology, with the data split by patient so that no patient appears in both training and test sets. I am now doing an MBA in Data Science, AI and Analytics at USP on a full scholarship, and I am enrolled in the Ph.D. at FEI on quantum error correction, with a CAPES scholarship and classes from February 2027.",
+   "I’m Matheus Teixeira, from Santos, Brazil. My research is on quantum machine learning and quantum error correction.",
+   "I started in 2016 as a web developer and IT support assistant at Orion Benefícios. I have studied at FEI since 2019, first a B.Sc. in Computer Science and then an M.Sc. in Electrical Engineering, focused on AI. My dissertation is a hybrid quantum-classical pipeline for breast cancer histopathology, with the data split by patient so that no patient appears in both training and test sets. I am now doing an MBA in Data Science, AI and Analytics at USP on a full scholarship, and I am enrolled in the Ph.D. at FEI on quantum error correction, with a CAPES scholarship and classes from February 2027.",
    "Below are five of my projects, one per planet."
   ],
   "facts": [
@@ -399,7 +399,7 @@ C = {
     ]
    ],
    "shots": [
-    "Signals screen, on the project's test history",
+    "Signals screen, on the project’s test history",
     "Strategy scoreboard, walk-forward",
     "Price and ensemble stance"
    ]

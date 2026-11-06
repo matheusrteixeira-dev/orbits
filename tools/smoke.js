@@ -9,7 +9,7 @@ const {chromium}=require('playwright');
  console.log('reduced motion: planets moving =',p0!==await pos(),'| pause button =',!!(await p.$('#pause')),'| errors',e.length);
  await p.click('button.land >> nth=2');await p.waitForTimeout(3500);
  console.log('landed:',await p.evaluate(()=>document.getElementById('world').className),location=await p.evaluate(()=>location.hash));
- await p.keyboard.press('Escape');await p.waitForTimeout(2500);
+ await p.keyboard.press('Escape');await p.waitForTimeout(4000);
  console.log('after esc hidden:',await p.evaluate(()=>document.getElementById('world').hidden),'hash',await p.evaluate(()=>location.hash));
  await p.close();
  // No WebGL
