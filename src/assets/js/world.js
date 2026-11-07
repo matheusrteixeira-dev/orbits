@@ -121,10 +121,11 @@
     st.time += dt;
     const n = mv(st.rot, st.site);
     // The first frames of a landing pay for painting the project page (it is drawn faintly during the
-    // flight); the camera holds still on the planet's place in the sky until frames are quick again
+    // flight); the camera holds still on the planet's place in the sky until two frames in a row are quick
     // (at most 0.4 s), so that cost never shows as a jerk in the motion.
     if (st.phase === 'in' && st.hold) {
-      if ((dt < .03 && now - st.t0 > 60) || now - st.t0 > 400) { st.hold = false; st.t0 = now; }
+      st.quick = dt < .03 && now - st.t0 > 60 ? (st.quick || 0) + 1 : 0;   // two quick frames in a row
+      if (st.quick >= 2 || now - st.t0 > 400) { st.hold = false; st.t0 = now; }
       else { const f = flight(n, 0); if (PG) render(f.cam, f.glow, f.bg, st.time, f.gain); return; }
     }
     if (st.phase === 'in' || st.phase === 'out') {
