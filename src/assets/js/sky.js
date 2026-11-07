@@ -29,7 +29,7 @@
     const la = p.site[0] * Math.PI / 180, lo = p.site[1] * Math.PI / 180;
     p.siteN = [Math.cos(la) * Math.cos(lo), Math.cos(la) * Math.sin(lo), Math.sin(la)];
   });
-  const BELT = (() => { let s = 7; const r = () => (s = (s * 16807) % 2147483647) / 2147483647; return [...Array(1500)].map(() => ({ r: 47.5 + r() * 3, ph: r() * 6.2832, z: (r() - .5) * .5, b: .35 + .65 * r() })); })();
+  const BELT = (() => { let s = 7; const r = () => (s = (s * 16807) % 2147483647) / 2147483647; return [...Array(1500)].map(() => ({ r: 50 + r() * 3, ph: r() * 6.2832, z: (r() - .5) * .5, b: .35 + .65 * r() })); })();
 
   // Planet position at time tau: a precessing ellipse. The periapsis advances at Omega - kappa
   // (general relativity), the radial motion follows the epicyclic frequency kappa.
@@ -78,7 +78,7 @@
     IR = mob ? null : { l: ir.left - sr.left - 24, r: ir.right - sr.left + 24, t: ir.top - sr.top - 20, b: ir.bottom - sr.top + 20 };
     // Desktop: fit the outermost planet's orbit (apoapsis APO) in the space beside the intro text,
     // so no planet ever passes under the headline. The belt may run behind the text.
-    const APO = Math.max(...PL.map(p => p.a * (1 + p.e)));
+    const APO = Math.max(...PL.map(p => p.a * (1 + p.e)), 51);   // the outermost orbit, or the belt's middle
     let cx = w * .5, cy = h * .5, K;
     if (mob) { K = Math.min((w - 16) / (2 * (APO + 3)), h / (2 * 17)); cy = h * .42; } // every planet stays on a phone screen; the hole sits high enough to show on the first screen
     else {
@@ -313,13 +313,17 @@ void main(){ivec2 p=ivec2(gl_FragCoord.xy);vec4 c=texelFetch(uC,p,0),g=texelFetc
   })();
 
   // ---------- Planets: rendered on the GPU into an atlas, then drawn in 2D ----------
-  const atlas = document.createElement('canvas');
-  // The planet shader is compiled in the background once the first frame is on screen; until it is
-  // ready the planets are drawn as shaded discs.
-  let PG = null, PGH = null, pgT = 0, pgFade = 1;
-  let pgReady = false;
-  requestAnimationFrame(() => setTimeout(() => { PGH = window.PlanetGL ? window.PlanetGL.begin(atlas, { preserveDrawingBuffer: true }) : null; if (!PGH) pgReady = true; }, 0));
-  function pollPG() { if (PGH && PGH.ready()) { PG = PGH.finish(); PGH = null; pgReady = true; pgT = performance.now(); pgFade = 0; } if (PG && pgFade < 1) pgFade = Math.min(1, (performance.now() - pgT) / 600); }
+  // The planets are rendered by the landing view's planet program (world.js) and copied into this
+  // 2D atlas, which keeps them while a project is open. Until the program is compiled they are drawn
+  // as shaded discs, and the detailed ones fade in over them.
+  const atlas = document.createElement('canvas'), ax = atlas.getContext('2d');
+  let PG = null, pgT = 0, pgFade = 1, pend = -1;
+  function pollPG() {
+    const G = window.WORLD && window.WORLD.planetGL();
+    if (G && !PG) { pgT = performance.now(); pgFade = 0; }
+    PG = G || (PG && window.WORLD.open_ >= 0 ? PG : null);
+    if (PG && pgFade < 1) pgFade = Math.min(1, (performance.now() - pgT) / 600);
+  }
   let tile = 128;
   function frameOf(p3) {
     const r = Math.hypot(...p3), ex = p3.map(v => -v / r), ez = NR;
@@ -329,14 +333,17 @@ void main(){ivec2 p=ivec2(gl_FragCoord.xy);vec4 c=texelFetch(uC,p,0),g=texelFetc
   }
   const ext = p => p.kind === 'gas' ? 2.45 : 1.18;
   function renderAtlas(st, t) {
-    if (!PG) return;
+    if (!PG || window.WORLD.open_ >= 0) return;   // a project is open: its view owns the canvas
     const need = Math.min(QUAL[q].tile, Math.max(...PL.map(p => Math.ceil(2 * ext(p) * p.R * L.K * dpr))));
-    if (atlas.width !== need * PL.length || atlas.height !== need) { atlas.width = need * PL.length; atlas.height = need; }
+    const gc = PG.gl.canvas;
+    if (gc.width !== need * PL.length || gc.height !== need) { gc.width = need * PL.length; gc.height = need; }
+    if (atlas.width !== gc.width || atlas.height !== gc.height) { atlas.width = gc.width; atlas.height = gc.height; }
     tile = need; PG.clear();
     PL.forEach((p, i) => {
       const f = st[i].frame;
       PG.draw({ vp: [i * tile, 0, tile, tile], ortho: 1, ext: ext(p), rot: f.rot, L: f.L, col: p.rgb.map(v => v / 255), kind: KIND[p.kind], site: p.siteN, time: t, glow: 0, seed: i * 3.7 + 1, gain: st[i].gain });
     });
+    ax.clearRect(0, 0, atlas.width, atlas.height); ax.drawImage(gc, 0, 0);
   }
   const KIND = { rock: 0, ocean: 1, gas: 2, storm: 3, ice: 4 };
   function drawPlanet(ctx, i, p, X, Y, M) {
@@ -493,7 +500,8 @@ void main(){ivec2 p=ivec2(gl_FragCoord.xy);vec4 c=texelFetch(uC,p,0),g=texelFetc
   requestAnimationFrame(loop);
   window.SKY = {
     get quality() { return q; },
-    get planetsReady() { return pgReady || performance.now() > 6000; },
+    // A planet clicked before the landing view is ready: its label pulses until the flight starts.
+    pending(i) { if (pend === i) return; pend = i; [...labs.children].forEach((b, k) => b.classList.toggle('busy', k === i)); },
     // Stop (or restart) the sky while a project is open. The planet being flown to is drawn by the
     // landing view instead, so the sky draws one last frame without it.
     setActive(v, i) { hideI = v ? -1 : (i == null ? -1 : i); if (L && L.w >= 2) draw(); active = v; },

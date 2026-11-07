@@ -8,13 +8,15 @@
   const el = document.getElementById('world'), wc = document.getElementById('wc'), wp = document.getElementById('wp');
   const arts = [...wp.querySelectorAll('article.cs')];
   const bBack = document.getElementById('w-back'), bPrev = document.getElementById('w-prev'), bNext = document.getElementById('w-next');
-  // The planet shader is compiled in the background once the page is up (see the end of this file);
-  // pg() finishes it, waiting for it only if a landing starts before it is ready.
+  // One planet program serves both the landing view and the sky's planets (sky.js renders them on
+  // this canvas while no project is open), so the costly shader is compiled once. It is handed to the
+  // driver after the first frame and compiled in the background; pg() returns it once it is ready.
   let PG = null, PGH = null, pgDone = false;
   function pg() {
-    if (!pgDone) { if (!PGH && window.PlanetGL) PGH = window.PlanetGL.begin(wc); PG = PGH ? PGH.finish() : null; pgDone = true; }
+    if (!pgDone && PGH && PGH.ready()) { PG = PGH.finish(); pgDone = true; }
     return PG;
   }
+  requestAnimationFrame(() => setTimeout(() => { PGH = window.PlanetGL ? window.PlanetGL.begin(wc, { preserveDrawingBuffer: true }) : null; if (!PGH) pgDone = true; }, 0));
   const KIND = { rock: 0, ocean: 1, gas: 2, storm: 3, ice: 4 };
   const hex = h => [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16) / 255);
   const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
@@ -146,20 +148,18 @@
     if (cur === i && st) return;
     // A planet clicked while its shader is still compiling: keep the sky running and start the flight
     // as soon as the shader is ready, instead of freezing the page while it compiles.
-    if (!pgDone && window.PlanetGL) {
-      if (!PGH) PGH = window.PlanetGL.begin(wc);
-      if (PGH && !PGH.ready()) {
-        clearTimeout(waitT); document.documentElement.classList.add('wait');
-        waitT = setTimeout(() => open(i, null, opts), 80); return;
-      }
+    if (!pg() && !pgDone) {
+      clearTimeout(waitT); document.documentElement.classList.add('wait');
+      if (window.SKY) window.SKY.pending(i);
+      waitT = setTimeout(() => open(i, null, opts), 50); return;
     }
     document.documentElement.classList.remove('wait');
+    if (window.SKY) window.SKY.pending(-1);
     const P = window.SKY ? window.SKY.planet(i) : null;
     from = from || P;
     if (!from || !from.rot) { // no sky position (no WebGL or not drawn yet): open without the flight
       from = Object.assign({ x: innerWidth * .62, y: innerHeight * .5, R: innerHeight * .1 }, P || {});
     }
-    pg();
     if (cur < 0) opener = document.activeElement;
     const switching = cur >= 0;
     cur = i; size(); fill(i);
@@ -209,22 +209,8 @@
   });
   addEventListener('resize', () => { if (st) size(); });
   wp.addEventListener('scroll', () => el.classList.toggle('sc', wp.scrollTop > 40), { passive: true });
-  // Compile the planet shader in the background once the sky's planets are ready (the two would
-  // otherwise compete for the driver), then draw one frame so the first landing does not stall.
   const idle = window.requestIdleCallback || (f => setTimeout(f, 300));
-  function warm() {
-    if (st || pgDone) return;
-    if (!PGH) {
-      if (!window.PlanetGL) { pgDone = true; return; }
-      if (window.SKY && !window.SKY.planetsReady) { setTimeout(warm, 100); return; }
-      PGH = window.PlanetGL.begin(wc); if (!PGH) { pgDone = true; return; }
-    }
-    if (!PGH.ready()) { setTimeout(warm, 100); return; }
-    if (!pg()) return;
-    size(); PG.clear(); PG.draw({ vp: [0, 0, wc.width, wc.height], ortho: 0, cam: [0, 0, 3], camM: [1, 0, 0, 0, 1, 0, 0, 0, 1], tanF: TANF, rot: [1, 0, 0, 0, 1, 0, 0, 0, 1], L: [0, 0, 1], col: [1, 1, 1], kind: 0, site: [0, 0, 1], time: 0, glow: 0, seed: 1, bg: 1 });
-  }
-  requestAnimationFrame(() => setTimeout(warm, 0));
   // Decode the first screenshot of each project while the page is idle, so showing a project does not stall.
   idle(() => arts.forEach(a => { const im = a.querySelector('.vp img:not([hidden])'); if (im && im.decode) { im.loading = 'eager'; im.decode().catch(() => {}); } }));
-  window.WORLD = { open, close: () => close(false), get open_() { return cur; } };
+  window.WORLD = { open, close: () => close(false), get open_() { return cur; }, planetGL: () => (cur < 0 ? pg() : null) };
 })();

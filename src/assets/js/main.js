@@ -2,11 +2,11 @@
 (function () {
   'use strict';
   const S = window.SITE, T = S.t;
-  // Show the headline and the name once their fonts are in (at most 2 s), so they never appear in a
+  // Show the headline and the name once their fonts are in (at most 0.7 s), so they never appear in a
   // stand-in font and re-wrap (site.css hides them until then).
   const done = () => document.documentElement.classList.add('fonts');
   if (document.fonts && document.fonts.load) {
-    Promise.race([Promise.all(['800 40px Unbounded', '400 16px "Space Grotesk"', '600 11px "JetBrains Mono"', '400 12px "JetBrains Mono"'].map(f => document.fonts.load(f))), new Promise(r => setTimeout(r, 2000))]).then(done, done);
+    Promise.race([Promise.all(['800 40px Unbounded', '400 16px "Space Grotesk"', '600 11px "JetBrains Mono"', '400 12px "JetBrains Mono"'].map(f => document.fonts.load(f))), new Promise(r => setTimeout(r, 700))]).then(done, done);
   } else done();
   // Project visuals run only while on screen.
   const cards = [...document.querySelectorAll('canvas[data-viz]')].map(c => ({ c, v: window.VIZ.attach(c, c.dataset.viz), on: false }));

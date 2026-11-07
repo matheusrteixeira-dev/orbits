@@ -527,7 +527,7 @@ C = {
   "h": "About this sky",
   "p": [
    "The black hole is drawn with a ray tracer grown from the one in Isaac, my physics simulator. Every pixel follows a light ray back through the curved spacetime around the hole (which spins at 90% of the fastest rate a black hole can have), seen from 18° above its disc. The disc is hot gas, coloured as a black body, brighter on the side moving towards us and redshifted close to the hole. The gas orbits as fast as it really would: the inner edge goes round in under a second, the outer edge in about 9. The thin bright ring around the shadow is light that circled the hole before reaching us.",
-   "The planets and the asteroid belt orbit in the plane of the disc, all on one clock: the innermost planet laps in about 23 seconds, the outermost in about 46. Their ellipses turn slowly, as general relativity predicts, and each planet keeps one face towards the hole.",
+   "The planets and the asteroid belt orbit in the plane of the disc, all on one clock: the innermost planet laps in about 23 seconds, the outermost in about 48. Their ellipses turn slowly, as general relativity predicts, and each planet keeps one face towards the hole.",
    "One second here is 40 M of time, where M is the hole’s mass in units of time. For a hole of 100 million suns, that is about 20,000 times real speed. The camera drifts slowly around the hole.",
    "Two things are not to scale. The orbits, the belt and the planets are drawn without the bending of their light, which would lift the far side of every orbit over the hole, and the planets are drawn thousands of times larger than they would be."
   ]

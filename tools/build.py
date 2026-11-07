@@ -41,15 +41,15 @@ PAPER = "Systematic Review of Quantum Machine Learning for Healthcare"
 # site: latitude and longitude (degrees) of the project's site; longitude 0 faces the hole.
 PROJECTS = [
     {"id": "isaac", "name": "Isaac", "col": "#ff5a3c", "kind": "rock", "urls": ["isaac3d.com"],
-     "tags": ["Rust", "WebAssembly", "React", "Three.js"], "orbit": {"a": 28, "e": .05, "w0": .5, "m0": 0, "R": 1.6}, "site": [18, 35]},
+     "tags": ["Rust", "WebAssembly", "React", "Three.js"], "orbit": {"a": 27.5, "e": .012, "w0": .5, "m0": 0, "R": 1.06}, "site": [18, 35]},
     {"id": "amadeo", "name": "Amadeo", "col": "#3d7bff", "kind": "ocean", "urls": ["amadeosheets.com"],
-     "tags": ["TensorFlow.js", "React", "TypeScript", "VexFlow"], "orbit": {"a": 31.5, "e": .04, "w0": 2.6, "m0": 1, "R": 1.85}, "site": [12, 30]},
+     "tags": ["TensorFlow.js", "React", "TypeScript", "VexFlow"], "orbit": {"a": 38.7, "e": .01, "w0": 2.6, "m0": 1, "R": 1.22}, "site": [12, 30]},
     {"id": "brectus", "name": "Brectus", "col": "#b45cff", "kind": "storm", "urls": [],
-     "tags": ["Node.js", "Electron"], "orbit": {"a": 35.5, "e": .06, "w0": 4.3, "m0": 2, "R": 2.0}, "site": [-10, 40]},
+     "tags": ["Node.js", "Electron"], "orbit": {"a": 34.8, "e": .012, "w0": 4.3, "m0": 2, "R": 1.32}, "site": [-10, 40]},
     {"id": "websites", "name": "Websites", "col": "#2de0a5", "kind": "ice", "urls": ["liderplustelemedicina.com.br"],
-     "tags": ["Astro", "TypeScript", "Cloudflare"], "orbit": {"a": 39.5, "e": .035, "w0": 1.4, "m0": .5, "R": 1.7}, "site": [22, 25]},
+     "tags": ["Astro", "TypeScript", "Cloudflare"], "orbit": {"a": 31, "e": .014, "w0": 1.4, "m0": .5, "R": 1.12}, "site": [22, 25]},
     {"id": "allwinner", "name": "Allwinner", "col": "#ffc23d", "kind": "gas", "urls": [],
-     "tags": ["Python", "pandas", "FastAPI", "SQLite"], "orbit": {"a": 44, "e": .045, "w0": 3.6, "m0": 3, "R": 2.5}, "site": [8, 30]},
+     "tags": ["Python", "pandas", "FastAPI", "SQLite"], "orbit": {"a": 45, "e": .01, "w0": 3.6, "m0": 3, "R": 1.65}, "site": [8, 30]},
 ]
 TOOLS = [
     ["Python", "PyTorch", "scikit-learn", "TensorFlow", "pandas", "NumPy", "SQL"],
@@ -311,9 +311,9 @@ def render(lang, C, ver, all_c):
 <meta property="og:type" content="website"><meta property="og:site_name" content="Matheus Teixeira"><meta property="og:title" content="{e(title)}"><meta property="og:description" content="{e(C["meta"]["desc"])}"><meta property="og:url" content="{SITE_URL}{page_path(lang)}"><meta property="og:image" content="{SITE_URL}og.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:locale" content="{OG_LOCALE[lang]}">{og_alt}
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="{b}favicon.svg" type="image/svg+xml"><link rel="icon" href="{b}favicon.png" sizes="64x64" type="image/png"><link rel="apple-touch-icon" href="{b}apple-touch-icon.png">
-<link rel="preload" href="{b}assets/fonts/unbounded-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="{b}assets/fonts/space-grotesk-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="{b}assets/fonts/jetbrains-mono-latin-600-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="{b}assets/fonts/unbounded-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin fetchpriority="high">
+<link rel="preload" href="{b}assets/fonts/space-grotesk-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin fetchpriority="high">
+<link rel="preload" href="{b}assets/fonts/jetbrains-mono-latin-600-normal.woff2" as="font" type="font/woff2" crossorigin fetchpriority="high">
 <style>html{{background:#03040a;color:#e8f0ff}}</style>
 <noscript><style>.intro,.top>*{{opacity:1;animation:none}}</style></noscript>
 {gf}
