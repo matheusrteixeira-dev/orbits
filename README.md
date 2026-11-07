@@ -85,6 +85,7 @@ src/static/             copied to the site root: favicons, Open Graph image, _he
 tools/build.py          writes dist/: one index.html per language, 404.html, robots.txt, sitemap.xml
 tools/smoke.js          Playwright smoke test against a local server on port 8111
 tools/readme_art.py     draws the images in docs/readme/ (this README)
+tools/og.js             renders the link-preview image (src/static/og.png) from the built homepage
 .github/workflows/      deploy.yml: build and deploy to Cloudflare Pages on every push to main
 ```
 

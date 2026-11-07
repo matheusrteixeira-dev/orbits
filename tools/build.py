@@ -16,6 +16,8 @@ import sys
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 SRC = ROOT / "src"
 OUT = pathlib.Path(sys.argv[1]) if len(sys.argv) > 1 else ROOT / "dist"
+# The preview image is linked with its own hash, so link previews are refetched whenever it changes.
+OG_V = hashlib.sha1((ROOT / "src" / "static" / "og.png").read_bytes()).hexdigest()[:10]
 # Public address of the site, used for canonical links, the sitemap and social cards. Set SITE_URL
 # in the host's build settings (Cloudflare Pages: Settings > Environment variables).
 SITE_URL = os.environ.get("SITE_URL", "https://sectus.dev/").rstrip("/") + "/"
@@ -308,7 +310,7 @@ def render(lang, C, ver, all_c):
 <meta name="color-scheme" content="dark">
 <link rel="canonical" href="{SITE_URL}{page_path(lang)}">
 {alts}
-<meta property="og:type" content="website"><meta property="og:site_name" content="Matheus Teixeira"><meta property="og:title" content="{e(title)}"><meta property="og:description" content="{e(C["meta"]["desc"])}"><meta property="og:url" content="{SITE_URL}{page_path(lang)}"><meta property="og:image" content="{SITE_URL}og.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:locale" content="{OG_LOCALE[lang]}">{og_alt}
+<meta property="og:type" content="website"><meta property="og:site_name" content="Matheus Teixeira"><meta property="og:title" content="{e(title)}"><meta property="og:description" content="{e(C["meta"]["desc"])}"><meta property="og:url" content="{SITE_URL}{page_path(lang)}"><meta property="og:image" content="{SITE_URL}og.png?v={OG_V}"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:locale" content="{OG_LOCALE[lang]}">{og_alt}
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="{b}favicon.svg" type="image/svg+xml"><link rel="icon" href="{b}favicon.png" sizes="64x64" type="image/png"><link rel="apple-touch-icon" href="{b}apple-touch-icon.png">
 <link rel="preload" href="{b}assets/fonts/unbounded-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin fetchpriority="high">
