@@ -316,9 +316,10 @@ void main(){ivec2 p=ivec2(gl_FragCoord.xy);vec4 c=texelFetch(uC,p,0),g=texelFetc
   const atlas = document.createElement('canvas');
   // The planet shader is compiled in the background once the first frame is on screen; until it is
   // ready the planets are drawn as shaded discs.
-  let PG = null, PGH = null;
-  requestAnimationFrame(() => setTimeout(() => { if (window.PlanetGL) PGH = window.PlanetGL.begin(atlas, { preserveDrawingBuffer: true }); }, 0));
-  function pollPG() { if (PGH && PGH.ready()) { PG = PGH.finish(); PGH = null; } }
+  let PG = null, PGH = null, pgT = 0, pgFade = 1;
+  let pgReady = false;
+  requestAnimationFrame(() => setTimeout(() => { PGH = window.PlanetGL ? window.PlanetGL.begin(atlas, { preserveDrawingBuffer: true }) : null; if (!PGH) pgReady = true; }, 0));
+  function pollPG() { if (PGH && PGH.ready()) { PG = PGH.finish(); PGH = null; pgReady = true; pgT = performance.now(); pgFade = 0; } if (PG && pgFade < 1) pgFade = Math.min(1, (performance.now() - pgT) / 600); }
   let tile = 128;
   function frameOf(p3) {
     const r = Math.hypot(...p3), ex = p3.map(v => -v / r), ez = NR;
@@ -343,8 +344,9 @@ void main(){ivec2 p=ivec2(gl_FragCoord.xy);vec4 c=texelFetch(uC,p,0),g=texelFetc
     // is applied when the planet is rendered into the atlas.
     const { cx, cy, K } = L, half = ext(p) * p.R * K * dpr, px = (cx + X * K) * dpr, py = (cy - Y * K) * dpr;
     ctx.save(); ctx.setTransform(M[0], -M[2], -M[1], M[3], px, py);
-    if (PG) ctx.drawImage(atlas, i * tile, 0, tile, tile, -half, -half, 2 * half, 2 * half);
-    else { const R = p.R * K * dpr, g = ctx.createRadialGradient(-R * .35, -R * .35, R * .1, 0, 0, R); g.addColorStop(0, p.col); g.addColorStop(1, '#05060c'); ctx.fillStyle = g; ctx.beginPath(); ctx.arc(0, 0, R, 0, 7); ctx.fill(); }
+    if (PG && pgFade >= 1) ctx.drawImage(atlas, i * tile, 0, tile, tile, -half, -half, 2 * half, 2 * half);
+    else { const R = p.R * K * dpr, g = ctx.createRadialGradient(-R * .35, -R * .35, R * .1, 0, 0, R); g.addColorStop(0, p.col); g.addColorStop(1, '#05060c'); ctx.fillStyle = g; ctx.beginPath(); ctx.arc(0, 0, R, 0, 7); ctx.fill();
+      if (PG) { ctx.globalAlpha = pgFade; ctx.drawImage(atlas, i * tile, 0, tile, tile, -half, -half, 2 * half, 2 * half); ctx.globalAlpha = 1; } }   // the detailed planet fades in over the plain disc
     ctx.restore();
   }
 
@@ -491,6 +493,7 @@ void main(){ivec2 p=ivec2(gl_FragCoord.xy);vec4 c=texelFetch(uC,p,0),g=texelFetc
   requestAnimationFrame(loop);
   window.SKY = {
     get quality() { return q; },
+    get planetsReady() { return pgReady || performance.now() > 6000; },
     // Stop (or restart) the sky while a project is open. The planet being flown to is drawn by the
     // landing view instead, so the sky draws one last frame without it.
     setActive(v, i) { hideI = v ? -1 : (i == null ? -1 : i); if (L && L.w >= 2) draw(); active = v; },

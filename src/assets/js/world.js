@@ -140,9 +140,20 @@
   }
   function setInert(v) { for (const s of ['main', 'header.top', 'footer', '.skip']) { const n = document.querySelector(s); if (n) n.inert = v; } }
 
+  let waitT = 0;
   function open(i, from, opts) {
     opts = opts || {};
     if (cur === i && st) return;
+    // A planet clicked while its shader is still compiling: keep the sky running and start the flight
+    // as soon as the shader is ready, instead of freezing the page while it compiles.
+    if (!pgDone && window.PlanetGL) {
+      if (!PGH) PGH = window.PlanetGL.begin(wc);
+      if (PGH && !PGH.ready()) {
+        clearTimeout(waitT); document.documentElement.classList.add('wait');
+        waitT = setTimeout(() => open(i, null, opts), 80); return;
+      }
+    }
+    document.documentElement.classList.remove('wait');
     const P = window.SKY ? window.SKY.planet(i) : null;
     from = from || P;
     if (!from || !from.rot) { // no sky position (no WebGL or not drawn yet): open without the flight
@@ -198,16 +209,21 @@
   });
   addEventListener('resize', () => { if (st) size(); });
   wp.addEventListener('scroll', () => el.classList.toggle('sc', wp.scrollTop > 40), { passive: true });
-  // Compile the planet shader in the background after the page has painted, then draw one frame so
-  // the first landing does not start with a stall.
+  // Compile the planet shader in the background once the sky's planets are ready (the two would
+  // otherwise compete for the driver), then draw one frame so the first landing does not stall.
   const idle = window.requestIdleCallback || (f => setTimeout(f, 300));
   function warm() {
     if (st || pgDone) return;
-    if (!PGH.ready()) { setTimeout(warm, 200); return; }
+    if (!PGH) {
+      if (!window.PlanetGL) { pgDone = true; return; }
+      if (window.SKY && !window.SKY.planetsReady) { setTimeout(warm, 100); return; }
+      PGH = window.PlanetGL.begin(wc); if (!PGH) { pgDone = true; return; }
+    }
+    if (!PGH.ready()) { setTimeout(warm, 100); return; }
     if (!pg()) return;
     size(); PG.clear(); PG.draw({ vp: [0, 0, wc.width, wc.height], ortho: 0, cam: [0, 0, 3], camM: [1, 0, 0, 0, 1, 0, 0, 0, 1], tanF: TANF, rot: [1, 0, 0, 0, 1, 0, 0, 0, 1], L: [0, 0, 1], col: [1, 1, 1], kind: 0, site: [0, 0, 1], time: 0, glow: 0, seed: 1, bg: 1 });
   }
-  setTimeout(() => idle(() => { if (pgDone || !window.PlanetGL) return; PGH = window.PlanetGL.begin(wc); if (PGH) warm(); else pgDone = true; }), 1500);
+  requestAnimationFrame(() => setTimeout(warm, 0));
   // Decode the first screenshot of each project while the page is idle, so showing a project does not stall.
   idle(() => arts.forEach(a => { const im = a.querySelector('.vp img:not([hidden])'); if (im && im.decode) { im.loading = 'eager'; im.decode().catch(() => {}); } }));
   window.WORLD = { open, close: () => close(false), get open_() { return cur; } };
