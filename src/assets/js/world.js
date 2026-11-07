@@ -120,6 +120,13 @@
     if (!st) return;
     st.time += dt;
     const n = mv(st.rot, st.site);
+    // The first frames of a landing pay for painting the project page (it is drawn faintly during the
+    // flight); the camera holds still on the planet's place in the sky until frames are quick again
+    // (at most 0.4 s), so that cost never shows as a jerk in the motion.
+    if (st.phase === 'in' && st.hold) {
+      if ((dt < .03 && now - st.t0 > 60) || now - st.t0 > 400) { st.hold = false; st.t0 = now; }
+      else { const f = flight(n, 0); if (PG) render(f.cam, f.glow, f.bg, st.time, f.gain); return; }
+    }
     if (st.phase === 'in' || st.phase === 'out') {
       const k = Math.min(1, (now - st.t0) / st.dur), e = glide(st.phase === 'in' ? k : 1 - k), f = flight(n, e);
       el.style.setProperty('--bgA', f.bg);
@@ -165,7 +172,7 @@
     cur = i; size(); fill(i);
     const p = S.projects[i], la = p.site[0] * Math.PI / 180, lo = p.site[1] * Math.PI / 180;
     const rot = from.rot || [1, 0, 0, 0, 1, 0, 0, 0, 1];
-    st = { phase: 'in', t0: performance.now(), dur: !PG ? 1 : switching ? 1700 : 2200, sw: switching, gain: switching ? 1 : from.gain, a: startCam(switching ? { x: innerWidth * .5, y: innerHeight * .45, R: innerHeight * .16 } : from), rot, L: from.L || [-.6, .3, .74], site: [Math.cos(la) * Math.cos(lo), Math.cos(la) * Math.sin(lo), Math.sin(la)], time: 0 };
+    st = { phase: 'in', hold: !switching, t0: performance.now(), dur: !PG ? 1 : switching ? 1700 : 2200, sw: switching, gain: switching ? 1 : from.gain, a: startCam(switching ? { x: innerWidth * .5, y: innerHeight * .45, R: innerHeight * .16 } : from), rot, L: from.L || [-.6, .3, .74], site: [Math.cos(la) * Math.cos(lo), Math.cos(la) * Math.sin(lo), Math.sin(la)], time: 0 };
     el.classList.remove('landed'); el.classList.add('fly');
     if (el.hidden) { el.hidden = false; void el.offsetWidth; }
     el.classList.add('on');
