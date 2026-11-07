@@ -27,24 +27,26 @@ languages, with no framework, and the build needs only Python 3.
 
 ## The black hole
 
-<p align="center"><img src="docs/readme/light.svg" alt="Light rays passing a non-rotating black hole, computed from d2u/dphi2 = 3u^2 - u: some fall in, some circle the photon sphere at 3 M, the rest are bent and escape" width="100%"/></p>
+<p align="center"><img src="docs/readme/light.svg" alt="Light rays passing a black hole (shown without spin for clarity), computed from d2u/dphi2 = 3u^2 - u: some fall in, some circle the photon sphere at 3 M, the rest are bent and escape" width="100%"/></p>
 
-`src/assets/js/sky.js` traces the hole in a WebGL 2 fragment shader. Every pixel follows its light ray
-backwards from the camera (600 M away, 18° above the disc) through the Schwarzschild metric. The ray
-stays in the plane through the hole that holds the camera and the ray, where the null geodesic obeys
-d²u/dφ² = 3u² − u (u = 1/r). It is integrated with RK4 until it falls through the horizon, crosses the
-disc or escapes. The disc runs from the ISCO (6 M) to 15 M with the thin-disc flux F, seen as g⁴F with a
-black-body colour shifted by g (gravitational redshift, time dilation and Doppler shift). Rays that
-circle the hole before reaching the disc draw the thin ring round the shadow. The rays do not change
-with time, so they are traced once, a band of rows per frame with four samples per pixel, into two
-textures: the light of the smooth disc and where each ray met it. Every frame a cheap second pass lays
-clumps of gas over the disc that orbit at Ω = r^−1.5, sheared by the differential rotation, so the
-inner edge laps in about 2.3 s and the outer edge in about 9 s. `src/assets/bh/bh-still.webp` is shown
-only where WebGL 2 is not available.
+`src/assets/js/sky.js` traces the hole in a WebGL 2 fragment shader. The hole spins, with a = 0.9 M (90% of
+the maximum). Every pixel follows its light ray backwards from the camera (600 M away, 18° above the disc)
+through the Kerr metric in Boyer-Lindquist coordinates. Each ray keeps its energy, angular momentum L and
+Carter constant Q, set by where it leaves the camera; r and θ are integrated as second-order equations in
+Mino time and projected back onto the null cone after every step, so round-off cannot make a ray turn
+round early. The ray is followed until it falls through the horizon, crosses the disc or escapes. The disc
+runs from the prograde ISCO (about 2.32 M) to 15 M with the thin-disc flux profile F ∝ (1 − √(r_in/r))/r³,
+seen as g⁴F with a black-body colour shifted by g (gravitational redshift, time dilation, frame dragging and Doppler shift).
+The shadow is flattened on the side where the disc comes towards us, and rays that circle the hole before
+reaching the disc draw the thin ring round it. The rays do not change with time, so they are traced once,
+a band of rows per frame with four samples per pixel, into two textures: the light of the smooth disc and
+where each ray met it. Every frame a cheap second pass lays clumps of gas over the disc that orbit at
+Ω = 1/(r^1.5 + a), sheared by the differential rotation, so the inner edge laps in about 0.7 s and the
+outer edge in about 9 s. `src/assets/bh/bh-still.webp` is shown only where WebGL 2 is not available.
 
 The planets and the belt orbit in the plane of the disc on one clock (40 M of time per second) and one
-distance scale. Planet orbits precess at Ω − κ, with Ω = r^−1.5 and κ = Ω √(1 − 6/r) the radial
-epicyclic frequency, and planets and belt are brightened or dimmed by g⁴ like the disc. The hole is
+distance scale. Planet orbits precess at Ω − κ, with Ω = 1/(r^1.5 + a) and κ = Ω √(1 − 6/r + 8a/r^1.5 − 3a²/r²) the
+radial epicyclic frequency, and planets and belt are brightened or dimmed by g⁴ like the disc. The hole is
 taken as 10⁸ solar masses, so every planet orbits outside its Roche limit. The camera circles the hole
 once every three hours of screen time; the distant stars sweep past at the matching rate and are lensed
 with the point-mass lens.

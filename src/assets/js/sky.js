@@ -1,4 +1,4 @@
-// The hero sky: a black hole (Schwarzschild) with five planets, an asteroid belt and a star field,
+// The hero sky: a spinning (Kerr) black hole with five planets, an asteroid belt and a star field,
 // all on one clock and one distance scale. Units are G = c = M = 1 (M is the hole's mass). The
 // hole is taken as 1e8 solar masses (M = 1.48e8 km, 493 s), so every planet orbits outside its
 // Roche limit (a gas giant would be torn apart inside about 6 M). The hole and its disc are ray
@@ -7,11 +7,13 @@
 (function () {
   'use strict';
   const S = window.SITE;
-  const A = 0, INC = 72 * Math.PI / 180, CI = Math.cos(INC), SI = Math.sin(INC);
+  const A = 0.9, INC = 72 * Math.PI / 180, CI = Math.cos(INC), SI = Math.sin(INC);
   const RATE = 40;                      // M of time per second on screen
   const CAM = 600;                      // camera distance (M)
   const DRIFT = 2 * Math.PI / 10800;    // the camera circles the hole once every three hours on screen (radians per second)
   const SKYV = DRIFT * CAM * SI;        // so the distant stars sweep past at this speed (M per second at the hole), to the right
+  // Innermost stable circular orbit of the spinning hole (prograde), about 2.32 M for A = 0.9.
+  const ISCO = (() => { const z1 = 1 + Math.cbrt(1 - A * A) * (Math.cbrt(1 + A) + Math.cbrt(1 - A)), z2 = Math.sqrt(3 * A * A + z1 * z1); return 3 + z2 - Math.sqrt((3 - z1) * (3 + z1 + 2 * z2)); })();
   const Om = r => 1 / (Math.pow(r, 1.5) + A);                       // circular orbital rate (A = spin, here 0)
   const kap = r => Om(r) * Math.sqrt(Math.max(0, 1 - 6 / r + 8 * A / Math.pow(r, 1.5) - 3 * A * A / (r * r))); // radial epicyclic rate
   // The planets and the belt orbit in the hole's equatorial plane, the plane of the disc.
@@ -121,26 +123,27 @@
     }
   }
 
-  // ---------- Black hole: every pixel traced on the GPU, with the tracer of Isaac ----------
-  // Schwarzschild hole, thin disc from the ISCO (6 M) to 15 M, camera CAM away at inclination INC.
-  // Each ray stays in the plane through the hole that holds the camera and the ray, where the
-  // exact null geodesic obeys d2u/dphi2 = 3u^2 - u (u = 1/r); it is integrated with RK4 until it
-  // falls through the horizon, crosses the disc between its edges, or escapes. Disc light: gas on
-  // circular orbits, observed as g^4 F with F the thin-disc flux and a black-body colour shifted by
-  // g (gravitational redshift, time dilation and Doppler shift together).
+  // ---------- Black hole: every pixel traced on the GPU, with a tracer grown from the one in Isaac ----------
+  // Kerr hole with spin A, thin disc from the prograde ISCO to 15 M, camera CAM away at inclination INC.
+  // Each ray carries its constants of motion (L, Carter constant Q) from the camera and is integrated in
+  // Boyer-Lindquist coordinates and Mino time: r and theta as second-order equations, phi from its first
+  // integral. After every step the radial and polar velocities are projected back onto the null cone, so
+  // drift cannot fake a turning point. The ray stops when it falls through the horizon, crosses the disc
+  // between its edges, or escapes. Disc light: gas on prograde circular orbits, observed as g^4 F with F
+  // = (1 - sqrt(rIn/r)) / r^3 the thin-disc flux profile and a black-body colour shifted by g (redshift, frame dragging and Doppler shift).
   // The rays do not depend on time, so they are traced once (a band of rows per frame) into two
   // textures: the light of the smooth disc, and where each ray met the disc (r and azimuth). Every
   // frame a second, cheap pass lays clumps of gas over the disc that orbit at the Kepler rate
-  // Omega = r^-1.5 on the site clock, so the inner edge laps in about 2.3 s and the outer in 9 s.
+  // Omega = 1/(r^1.5 + A) on the site clock, so the inner edge laps in about 0.7 s and the outer in 9 s.
   // Clumps are sheared by the differential rotation and fade after a short life, as turbulence does.
   const BH = (function () {
-    const D = { HW: 26, HH: 16.25, rIn: 6, rOut: 15 };
+    const D = { HW: 26, HH: 16.25, rIn: ISCO, rOut: 15 };
     let gl = null, prog = null, cprog = null, u = {}, cu = {}, ok = false, rect = null, row = 0, rows = 0, ready = false;
     let fb = null, tC = null, tG = null, hd = 1, lite = 0;
     const VS = '#version 300 es\nin vec2 p;void main(){gl_Position=vec4(p,0.,1.);}';
     const FS = `#version 300 es
 precision highp float;
-uniform vec2 uOrig;uniform float uPix,uCam,uInc,uRin,uRout;
+uniform vec2 uOrig;uniform float uPix,uCam,uInc,uRin,uRout,uA;
 layout(location=0) out vec4 o;layout(location=1) out vec4 og;
 vec3 blackbody(float T){T=clamp(T,1000.,40000.)/100.;vec3 c;
  if(T<=66.){c.r=1.;c.g=clamp((99.4708025861*log(T)-161.1195681661)/255.,0.,1.);
@@ -148,35 +151,55 @@ vec3 blackbody(float T){T=clamp(T,1000.,40000.)/100.;vec3 c;
  else{c.r=clamp(329.698727446*pow(T-60.,-.1332047592)/255.,0.,1.);c.g=clamp(288.1221695283*pow(T-60.,-.0755148492)/255.,0.,1.);c.b=1.;}
  c=pow(c,vec3(2.2));return c/max(dot(c,vec3(.2126,.7152,.0722)),1e-4);}
 vec2 hit;
+// Right-hand side of the Kerr geodesic equations (see trace).
+void der(float R_,float T_,float U_,float W_,out float dr,out float dt,out float du,out float dw,out float dp,float a,float a2,float L,float K){
+ float sn=sin(T_),cs=cos(T_);sn=abs(sn)<1e-3?(sn<0.?-1e-3:1e-3):sn;float,Pp=R_*R_+a2-a*L,Dd=R_*R_-2.*R_+a2;
+ dr=U_;dt=W_;du=2.*R_*Pp-(R_-1.)*K;dw=-a2*cs*sn+L*L*cs/(sn*sn*sn);dp=a*Pp/max(Dd,1e-4)+L/(sn*sn)-a;}
 vec4 trace(vec2 S){
+ // Kerr null geodesic in Boyer-Lindquist coordinates, Mino time, energy 1. From the screen point
+ // (alpha, beta) at the hole: L = -alpha sin(th0), Carter Q = beta^2 + (alpha^2 - a^2) cos^2(th0).
+ // r and theta follow d2r/dl2 = R'(r)/2 and d2th/dl2 = Th'(th)/2, so turning points need no care.
  hit=vec2(0.);
- vec3 P=vec3(0.,uCam*cos(uInc),uCam*sin(uInc)),f=-normalize(P),ex=vec3(1.,0.,0.),ey=cross(ex,f);
- vec3 dir=normalize(f*uCam+ex*S.x+ey*S.y);
- float r0=length(P);vec3 er=P/r0;float c=dot(dir,er);vec3 tp=dir-c*er;float s=length(tp);
- vec3 ep=s>1e-6?tp/s:vec3(1.,0.,0.);s=max(s,1e-6);
- float u0=1./r0,u=u0,du=-u*sqrt(max(1.-2.*u,0.))*c/s;
- float ly=-cross(P,dir).y/sqrt(max(1.-2.*u0,1e-6)),rFar=1.5*r0,phi=0.;vec3 prev=P;
- for(int i=0;i<2000;i++){
-  float h=u>.08?.012:(u>.02?.03:.07),uPrev=u;
-  float k1u=du,k1v=3.*u*u-u,u2=u+.5*h*k1u,v2=du+.5*h*k1v,k2u=v2,k2v=3.*u2*u2-u2;
-  float u3=u+.5*h*k2u,v3=du+.5*h*k2v,k3u=v3,k3v=3.*u3*u3-u3,u4=u+h*k3u,v4=du+h*k3v,k4u=v4,k4v=3.*u4*u4-u4;
-  u+=h/6.*(k1u+2.*k2u+2.*k3u+k4u);du+=h/6.*(k1v+2.*k2v+2.*k3v+k4v);phi+=h;
-  if(u>=.5)return vec4(0.,0.,0.,1.);
-  vec3 pos=(cos(phi)*er+sin(phi)*ep)/max(u,1e-6);
-  if(prev.y*pos.y<0.){vec3 X=mix(prev,pos,prev.y/(prev.y-pos.y));float r=length(X);
-   if(r>uRin&&r<uRout){float Om=pow(r,-1.5),g=sqrt(max(1.-3./r,0.))/(sqrt(1.-2.*u0)*(1.-Om*ly));
-    float fl=max(0.,1.-sqrt(uRin/r))/(r*r*r),rp=49./36.*uRin,lv=fl/((1./7.)/(rp*rp*rp));
-    hit=vec2(r,atan(X.x,X.z));
-    return vec4(min(blackbody(4700.*pow(lv,.25)*g)*pow(g,4.)*lv*.625,vec3(1.)),1.);}}
-  if((u<1./rFar&&du<0.)||u<0.)return vec4(0.);
-  prev=pos;}
+ float a=uA,a2=a*a,th0=uInc,s0=sin(th0),c0=cos(th0);
+ S.x=abs(S.x)<2e-3?2e-3:S.x;   // rays with L = 0 pass over the pole, where the coordinates break down
+ float L=-S.x*s0,Q=S.y*S.y+(S.x*S.x-a2)*c0*c0,K=Q+(L-a)*(L-a);
+ float r=uCam,th=th0,ph=0.;
+ float P0=r*r+a2-a*L,D0=r*r-2.*r+a2;
+ float vr=-sqrt(max(P0*P0-D0*K,0.)),vt=-sign(S.y)*sqrt(max(Q+a2*c0*c0-L*L*c0*c0/(s0*s0),0.));
+ float rh=1.+sqrt(1.-a2);
+ for(int i=0;i<2400;i++){
+  float h=.035/(r+1.)*clamp(abs(sin(th))*8.,.01,1.);   // finer steps close to the poles
+  // RK4 on (r, th, vr, vt, ph)
+  float r1=r,t1=th,u1=vr,w1=vt;
+  float k1r,k1t,k1u,k1w,k1p,k2r,k2t,k2u,k2w,k2p,k3r,k3t,k3u,k3w,k3p,k4r,k4t,k4u,k4w,k4p;
+  der(r1,t1,u1,w1,k1r,k1t,k1u,k1w,k1p,a,a2,L,K);
+  der(r1+.5*h*k1r,t1+.5*h*k1t,u1+.5*h*k1u,w1+.5*h*k1w,k2r,k2t,k2u,k2w,k2p,a,a2,L,K);
+  der(r1+.5*h*k2r,t1+.5*h*k2t,u1+.5*h*k2u,w1+.5*h*k2w,k3r,k3t,k3u,k3w,k3p,a,a2,L,K);
+  der(r1+h*k3r,t1+h*k3t,u1+h*k3u,w1+h*k3w,k4r,k4t,k4u,k4w,k4p,a,a2,L,K);
+  float rp=r,tp=th,pp=ph;
+  r+=h/6.*(k1r+2.*k2r+2.*k3r+k4r);th+=h/6.*(k1t+2.*k2t+2.*k3t+k4t);
+  vr+=h/6.*(k1u+2.*k2u+2.*k3u+k4u);vt+=h/6.*(k1w+2.*k2w+2.*k3w+k4w);ph+=h/6.*(k1p+2.*k2p+2.*k3p+k4p);
+  // Keep the speeds on the null cone: vr^2 = R(r), vt^2 = Th(th), away from turning points. Without
+  // this, tiny relative errors made far out grow into false turning points near the hole.
+  {float Pp=r*r+a2-a*L,Rr=Pp*Pp-(r*r-2.*r+a2)*K;if(Rr>0.)vr=sign(vr)*sqrt(Rr);
+   float sn=sin(th),cs=cos(th),Tt=Q+a2*cs*cs-L*L*cs*cs/max(sn*sn,1e-6);if(Tt>0.)vt=sign(vt)*sqrt(Tt);}
+  if(r<=rh*1.01)return vec4(0.,0.,0.,1.);
+  if(cos(tp)*cos(th)<0.){float f=cos(tp)/(cos(tp)-cos(th)),rx=mix(rp,r,f);
+   if(rx>uRin&&rx<uRout){
+    float sq=sqrt(rx),Om=1./(rx*sq+a),ut=(rx*sq+a)/(pow(rx,.75)*sqrt(max(rx*sq-3.*sq+2.*a,1e-4)));
+    float g=1./(ut*(1.-Om*L)*sqrt(1.-2./uCam));
+    float fl=max(0.,1.-sqrt(uRin/rx))/(rx*rx*rx),rq=49./36.*uRin,lv=fl/((1./7.)/(rq*rq*rq));
+    hit=vec2(rx,mix(pp,ph,f));
+    return vec4(min(blackbody(4700.*pow(lv,.25)*g)*pow(g,4.)*pow(lv,.7)*.625,vec3(1.)),1.);}}   // brightness shown with a softer curve (exposure), colour from the true temperature
+  if(r>uCam*1.05&&vr>0.)return vec4(0.);
+ }
  return vec4(0.);}
 vec2 pk(float x){x=clamp(x,0.,1.)*65535.;float hi=floor(x/256.);return vec2(hi,x-hi*256.)/255.;}
 void main(){vec4 a=vec4(0.);vec2 g0=vec2(0.);
  for(int j=0;j<2;j++)for(int i=0;i<2;i++){a+=trace(uOrig+(gl_FragCoord.xy+vec2(.25+.5*float(i),.25+.5*float(j))-.5)*uPix);if(i+j==0)g0=hit;}
  o=a*.25;   // stored at half brightness, so the clumps can brighten or dim it before it is clipped
  // Where the first sample met the disc: r (0 = it did not) and azimuth, 16 bits each.
- og=g0.x>0.?vec4(pk((g0.x-5.)/11.),pk(fract(g0.y/6.2831853))):vec4(0.);}`;
+ og=g0.x>0.?vec4(pk((g0.x-1.)/15.),pk(fract(g0.y/6.2831853))):vec4(0.);}`;
     const CS = `#version 300 es
 precision highp float;
 uniform sampler2D uC,uG;uniform float uTau,uLite;out vec4 o;
@@ -186,16 +209,16 @@ float vn(vec3 x){vec3 i=floor(x),f=fract(x);f=f*f*(3.-2.*f);
             mix(mix(hs(i+vec3(0,0,1)),hs(i+vec3(1,0,1)),f.x),mix(hs(i+vec3(0,1,1)),hs(i+vec3(1,1,1)),f.x),f.y),f.z)*2.-1.;}
 // Gas in one generation of clumps, born at clock time tb and seen lt later: a clump now at azimuth a
 // was at a - Omega lt. Long along the orbit, thin across it.
-float gas(float r,float a,float lt,float id){float b=a-pow(r,-1.5)*lt;vec3 q=vec3(cos(b)*r*.4,sin(b)*r*.4,r*1.1)+id*vec3(7.13,3.71,11.9);
+float gas(float r,float a,float lt,float id){float b=a-lt/(pow(r,1.5)+${A.toFixed(3)});vec3 q=vec3(cos(b)*r*.4,sin(b)*r*.4,r*1.1)+id*vec3(7.13,3.71,11.9);
  float n=vn(q);if(uLite<.5)n=.62*n+.38*vn(q*2.1+vec3(5.2));return n;}
 void main(){ivec2 p=ivec2(gl_FragCoord.xy);vec4 c=texelFetch(uC,p,0),g=texelFetch(uG,p,0);
  float rn=(g.x*256.+g.y)*255./65535.;
  if(rn<=0.){o=vec4(min(2.*c.rgb,vec3(c.a)),c.a);return;}
- float r=rn*11.+5.,a=(g.z*256.+g.w)*255./65535.*6.2831853;
- // Two overlapping generations of clumps, each living P = 48 M (1.2 s), faded in and out so that
+ float r=rn*15.+1.,a=(g.z*256.+g.w)*255./65535.*6.2831853;
+ // Two overlapping generations of clumps, each living P = 24 M (0.6 s), faded in and out so that
  // their sum keeps the same contrast. P is the same at every radius: a lifetime that changed with r
  // would put the generation boundaries ever closer together in r as the clock runs.
- float P=48.,s=0.,w2=0.;
+ float P=24.,s=0.,w2=0.;
  for(int k=0;k<2;k++){float tk=uTau+float(k)*.5*P,cy=floor(tk/P),lt=tk-cy*P,w=1.-abs(2.*lt/P-1.);
   s+=w*gas(r,a,lt,cy*2.+float(k));w2+=w*w;}
  float m=max(.25,1.+.42*s/sqrt(max(w2,1e-3)));
@@ -207,7 +230,7 @@ void main(){ivec2 p=ivec2(gl_FragCoord.xy);vec4 c=texelFetch(uC,p,0),g=texelFetc
         const sh = (t, s) => { const x = gl.createShader(t); gl.shaderSource(x, s); gl.compileShader(x); if (!gl.getShaderParameter(x, gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(x)); return x; };
         const mk = fs => { const p = gl.createProgram(); gl.attachShader(p, sh(gl.VERTEX_SHADER, VS)); gl.attachShader(p, sh(gl.FRAGMENT_SHADER, fs)); gl.bindAttribLocation(p, 0, 'p'); gl.linkProgram(p); if (!gl.getProgramParameter(p, gl.LINK_STATUS)) throw new Error(gl.getProgramInfoLog(p)); return p; };
         prog = mk(FS); cprog = mk(CS);
-        ['uOrig', 'uPix', 'uCam', 'uInc', 'uRin', 'uRout'].forEach(n => u[n] = gl.getUniformLocation(prog, n));
+        ['uOrig', 'uPix', 'uCam', 'uInc', 'uRin', 'uRout', 'uA'].forEach(n => u[n] = gl.getUniformLocation(prog, n));
         ['uC', 'uG', 'uTau', 'uLite'].forEach(n => cu[n] = gl.getUniformLocation(cprog, n));
         fb = gl.createFramebuffer();
       } catch (e) { console.warn(e); gl = null; return false; }
@@ -259,7 +282,7 @@ void main(){ivec2 p=ivec2(gl_FragCoord.xy);vec4 c=texelFetch(uC,p,0),g=texelFetc
           gl.enable(gl.SCISSOR_TEST); gl.scissor(0, row, W, Math.min(band, rows - row));
           const pix = 2 * D.HW / W;   // M per device pixel
           gl.uniform2f(u.uOrig, -D.HW, -H * pix / 2); gl.uniform1f(u.uPix, pix);
-          gl.uniform1f(u.uCam, CAM); gl.uniform1f(u.uInc, INC); gl.uniform1f(u.uRin, D.rIn); gl.uniform1f(u.uRout, D.rOut);
+          gl.uniform1f(u.uCam, CAM); gl.uniform1f(u.uInc, INC); gl.uniform1f(u.uRin, D.rIn); gl.uniform1f(u.uRout, D.rOut); gl.uniform1f(u.uA, A);
           gl.drawArrays(gl.TRIANGLES, 0, 3); gl.disable(gl.SCISSOR_TEST);
           gl.bindFramebuffer(gl.FRAMEBUFFER, null);
           row += band;
