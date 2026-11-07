@@ -36,7 +36,7 @@ C = {
   "how": "Wie die Teile zusammenpassen",
   "checks": "Prüfungen",
   "notes": "Technische Notizen",
-  "inside": "Von innen, live",
+  "inside": "Die Idee, live gezeichnet",
   "nextp": "Nächster Planet",
   "illus": "Diagramm, live gezeichnet",
   "shot": "Bildschirmfotos",
@@ -216,14 +216,14 @@ C = {
   "brectus": {
    "sub": "Desktop-App für KI-Coding-Agenten",
    "world": "Sturmwelt",
-   "sum": "Ich schreibe eine Anfrage einmal, und die App erkennt, zu welchem Projekt sie gehört.",
+   "sum": "Eine Anfrage wird einmal geschrieben, und die App erkennt, zu welchem Projekt sie gehört.",
    "hl": [
     "Jedes Projekt hat seinen eigenen Agenten",
     "Verschlüsselung ruhender Daten über den Schlüsselspeicher des Betriebssystems",
     "Signierte Updates und CI unter Windows, macOS und Linux"
    ],
    "viz": "Anfragen werden an einen Agenten pro Projekt weitergeleitet.",
-   "lede": "Ich schreibe eine Anfrage einmal, und die App erkennt, zu welchem Projekt sie gehört.",
+   "lede": "Eine Anfrage wird einmal geschrieben, und die App erkennt, zu welchem Projekt sie gehört.",
    "platform": "Desktop",
    "arch": [
     [

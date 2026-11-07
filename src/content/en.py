@@ -44,7 +44,7 @@ C = {
   "how": "How it fits together",
   "checks": "Checks",
   "notes": "Engineering notes",
-  "inside": "Inside, live",
+  "inside": "The idea, drawn live",
   "nextp": "Next planet",
   "illus": "Diagram, drawn live",
   "shot": "Screenshot",
@@ -224,8 +224,8 @@ C = {
   "brectus": {
    "sub": "Desktop app for AI coding agents",
    "world": "Storm world",
-   "sum": "I write a request once, and the app works out which project it belongs to.",
-   "lede": "I write a request once, and the app works out which project it belongs to.",
+   "sum": "Write a request once, and the app works out which project it belongs to.",
+   "lede": "Write a request once, and the app works out which project it belongs to.",
    "hl": [
     "Each project keeps its own agent",
     "Encryption at rest through the operating system’s keystore",

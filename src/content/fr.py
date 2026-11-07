@@ -36,7 +36,7 @@ C = {
   "how": "Comment les pièces s’assemblent",
   "checks": "Vérifications",
   "notes": "Notes d’ingénierie",
-  "inside": "À l’intérieur, en direct",
+  "inside": "L’idée, dessinée en direct",
   "nextp": "Planète suivante",
   "illus": "Schéma, dessiné en direct",
   "shot": "Captures d’écran",
@@ -216,14 +216,14 @@ C = {
   "brectus": {
    "sub": "Application de bureau pour agents de code IA",
    "world": "Monde d’orages",
-   "sum": "J’écris la demande une fois, et l’app trouve à quel projet elle appartient.",
+   "sum": "On écrit la demande une fois, et l’app trouve à quel projet elle appartient.",
    "hl": [
     "Chaque projet garde son propre agent",
     "Chiffrement au repos via le trousseau du système d’exploitation",
     "Mises à jour signées et CI sous Windows, macOS et Linux"
    ],
    "viz": "Les demandes sont acheminées vers un agent par projet.",
-   "lede": "J’écris la demande une fois, et l’app trouve à quel projet elle appartient.",
+   "lede": "On écrit la demande une fois, et l’app trouve à quel projet elle appartient.",
    "platform": "Bureau",
    "arch": [
     [

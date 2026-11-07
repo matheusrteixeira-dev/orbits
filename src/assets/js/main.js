@@ -12,6 +12,19 @@
     if (!busy) for (const k of cards) if (k.on) k.v.draw(now, false);
     requestAnimationFrame(tick);
   })(performance.now());
+  // Sections ease in as they scroll into view; siblings follow one another by a few tenths of a second.
+  if ('IntersectionObserver' in window) {
+    const rv = [...document.querySelectorAll('.sec .sh, .ab-l, .ab-r, .pt, #roadmap .sh ~ *, .ed > *, .xr, .pub, .to > *, .ct')];
+    const seen = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); seen.unobserve(e.target); } }), { rootMargin: '0px 0px -8% 0px' });
+    rv.forEach(el => {
+      const k = [...el.parentNode.children].indexOf(el);
+      el.classList.add('rv'); el.style.setProperty('--d', Math.min(k, 5) * .07 + 's'); seen.observe(el);
+    });
+  }
+  // Tile screenshots load only as their tile nears the screen.
+  const lz = [...document.querySelectorAll('img[data-src]')], put = im => { im.srcset = im.dataset.srcset; im.src = im.dataset.src; im.removeAttribute('data-src'); };
+  if ('IntersectionObserver' in window) { const lo = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { put(e.target); lo.unobserve(e.target); } }), { rootMargin: '600px 0px' }); lz.forEach(im => lo.observe(im)); }
+  else lz.forEach(put);
   document.querySelectorAll('button.land').forEach(b => b.addEventListener('click', () => window.WORLD.open(+b.dataset.i)));
   // Deep link to a project (#isaac, ...): land once the sky has drawn a frame.
   const i = S.projects.findIndex(p => '#' + p.id === location.hash);

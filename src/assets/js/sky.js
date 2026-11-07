@@ -79,12 +79,14 @@
     // Desktop: fit the outermost planet's orbit (apoapsis APO) in the space beside the intro text,
     // so no planet ever passes under the headline. The belt may run behind the text.
     const APO = Math.max(...PL.map(p => p.a * (1 + p.e)), 51);   // the outermost orbit, or the belt's middle
+    const PAPO = Math.max(...PL.map(p => p.a * (1 + p.e))) + 3;   // the outermost planet with its label room
     let cx = w * .5, cy = h * .5, K;
     if (mob) { K = Math.min((w - 16) / (2 * (APO + 3)), h / (2 * 17)); cy = h * .42; } // every planet stays on a phone screen; the hole sits high enough to show on the first screen
     else {
       const free = S.rtl ? IR.l - 16 : w - IR.r - 16;
-      K = Math.max(5, Math.min(h * .86 / (2 * 19), free / (2 * APO + 4)));
-      cx = S.rtl ? IR.l - 8 - (APO + 2) * K : IR.r + 8 + (APO + 2) * K;
+      // The planets fit beside the text; the faint belt may pass behind it.
+      K = Math.max(5, Math.min(h * .86 / (2 * 19), free / (2 * PAPO + 4), (w - 16) / (2 * APO + 4)));
+      cx = S.rtl ? IR.l - 8 - (PAPO + 2) * K : IR.r + 8 + (PAPO + 2) * K;
     }
     K = Math.max(.5, K);   // a hidden or collapsed pane can report no width or height
     for (const c of [bg, fg, sc]) { c.width = Math.round(w * dpr); c.height = Math.round(h * dpr); }
@@ -453,9 +455,16 @@ void main(){ivec2 p=ivec2(gl_FragCoord.xy);vec4 c=texelFetch(uC,p,0),g=texelFetc
       lb.classList.toggle('hid', !!hid);
       // Put the label on the planet's left when it would run off the right edge.
       lb._w = lb._w || {}; const k_ = on ? 1 : 0; if (!lb._w[k_]) { lb.classList.toggle('on', on); lb._w[k_] = lb.offsetWidth; }
-      const lw = lb._w[k_] || 80, left = s_.x + s_.R + 8 + lw > L.w - 4;
-      const lxp = left ? s_.x - s_.R - 8 - lw : s_.x + s_.R + 8;
-      lb._x = Math.max(4, lxp); lb._y = s_.y; lb._lw = lw;
+      const lw = lb._w[k_] || 80;
+      let left = s_.x + s_.R + 8 + lw > L.w - 4;
+      // Keep labels off the hole's shadow and the bright inner disc: try the other side, then move
+      // the label just above or below.
+      const hx0 = cx - 9 * K, hx1 = cx + 9 * K, hy0 = cy - 6 * K, hy1 = cy + 4 * K;
+      const over = (lx0, y) => lx0 < hx1 && lx0 + lw > hx0 && y + 10 > hy0 && y - 10 < hy1;
+      const at = l => l ? s_.x - s_.R - 8 - lw : s_.x + s_.R + 8;
+      let ly = s_.y;
+      if (over(at(left), ly)) { if (!over(at(!left), ly) && at(!left) > 4 && at(!left) + lw < L.w - 4) left = !left; else ly = s_.y < cy - K ? Math.min(ly, hy0 - 12) : Math.max(ly, hy1 + 12); }
+      lb._x = Math.max(4, at(left)); lb._y = ly; lb._lw = lw;
       lb.style.visibility = i === hideI || s_.x < -s_.R || s_.x > L.w + s_.R || s_.y < 0 || s_.y > L.h ? 'hidden' : '';
       lb.classList.toggle('on', on);
     }
@@ -497,9 +506,10 @@ void main(){ivec2 p=ivec2(gl_FragCoord.xy);vec4 c=texelFetch(uC,p,0),g=texelFetc
   }
   // A still of the traced hole (tools/still.js) shows from the first frame; the live hole fades in
   // over it once its rays are traced, and the still goes. Without WebGL 2 the still stays.
-  BH.init();
+  // The WebGL context and the hole's programs are set up after the first paint, so the page shows first.
   layout();
   if (still) still.classList.add('on');
+  requestAnimationFrame(() => setTimeout(() => { if (BH.init()) BH.place(L, Math.min(devicePixelRatio || 1, 1.5)); }, 0));
   if (document.fonts) document.fonts.ready.then(() => { [...labs.children].forEach(b => b._w = null); });
   let rz; addEventListener('resize', () => { clearTimeout(rz); rz = setTimeout(() => { layout(); if (visible && active) draw(); }, 120); });
   requestAnimationFrame(loop);

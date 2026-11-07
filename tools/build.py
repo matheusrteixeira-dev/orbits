@@ -262,22 +262,23 @@ def render(lang, C, ver, all_c):
         f'<li><a href="{b}{page_path(l)}" hreflang="{l}" lang="{l}"{" aria-current=\"page\"" if l == lang else ""}>{e(all_c[l]["name"])}</a></li>' for l in LANGS)
     nav = C["nav"]
 
-    # Projects section.
+    # Projects section: one tile per planet; the whole tile flies you to it.
     cards = []
     for i, p in enumerate(PROJECTS):
         P = C["proj"][p["id"]]
-        links = "".join(ext_link("https://" + u, u) for u in p["urls"]) or f'<span class="off">{e(T["source"])}</span>'
         if p["id"] in SHOTS:
             f0 = SHOTS[p["id"]][0][0]
-            fig = (f'<figure class="fig shot"><div class="win"><div class="bar"><i></i><i></i><i></i><span class="url">{e(SHOTS[p["id"]][0][1])}</span></div>'
-                   f'<img src="{b}assets/img/{f0}-s.webp" srcset="{b}assets/img/{f0}-s.webp 720w, {b}assets/img/{f0}.webp 1440w" sizes="(max-width: 820px) 92vw, 46vw" width="1440" height="900" alt="{e(P["shots"][0])}" loading="lazy" decoding="async" fetchpriority="low"></div>'
-                   f'<figcaption>{e(P["shots"][0])}</figcaption></figure>')
+            # The image is set from data-src when the tile nears the screen (main.js), so it never competes
+            # with the first screen; <noscript> keeps it for visitors without JavaScript.
+            im = (f'src="{b}assets/img/{f0}-s.webp" srcset="{b}assets/img/{f0}-s.webp 720w, {b}assets/img/{f0}.webp 1440w" '
+                  f'sizes="(max-width: 700px) 92vw, (max-width: 1000px) 46vw, 560px" width="1440" height="900" alt="{e(P["shots"][0])}" decoding="async"')
+            fig = (f'<div class="pt-img"><img {"data-" + im.replace(" srcset=", " data-srcset=")}><noscript><img {im}></noscript></div>')
         else:
-            fig = (f'<figure class="fig"><canvas data-viz="{p["id"]}" width="800" height="600" role="img" aria-label="{e(P["viz"])}"></canvas><figcaption>{e(P["viz"])}</figcaption></figure>')
-        cards.append(f'''<article class="pr" id="p-{p["id"]}" style="--c:{p["col"]}">{fig}
-<div><span class="k">{e(T["planet"].format(n=i + 1))} · {e(P["world"])}</span><h3>{e(p["name"])}</h3><p class="s">{e(P["sub"])}</p><p>{e(P["sum"])}</p>
-<ul class="hl">{"".join(f"<li>{e(h)}</li>" for h in P["hl"])}</ul><ul class="tg">{"".join(f"<li>{e(t)}</li>" for t in p["tags"])}</ul>
-<div class="links"><button class="btn o land" type="button" data-i="{i}">{e(T["landBtn"])}</button>{links}</div></div></article>''')
+            fig = f'<div class="pt-img"><canvas data-viz="{p["id"]}" width="800" height="500" role="img" aria-label="{e(P["viz"])}"></canvas></div>'
+        cards.append(f'''<article class="pt" id="p-{p["id"]}" style="--c:{p["col"]}">{fig}
+<div class="pt-b"><span class="k">{e(T["planet"].format(n=i + 1))} · {e(P["world"])}</span><h3>{e(p["name"])}</h3><p class="s">{e(P["sub"])}</p><p>{e(P["sum"])}</p>
+<ul class="tg">{"".join(f"<li>{e(t)}</li>" for t in p["tags"])}</ul>
+<button class="land pt-go" type="button" data-i="{i}" aria-label="{e(T["landBtn"])}: {e(p["name"])}">{e(T["landBtn"])} <span aria-hidden="true">→</span></button></div></article>''')
 
     ed = []
     for i, it in enumerate(C["education"]["items"]):
@@ -368,7 +369,7 @@ def render(lang, C, ver, all_c):
 
 <section class="sec" id="tools" aria-labelledby="h-tools"><div class="sh"><h2 id="h-tools">{e(C["tools"]["h"])}</h2></div><div class="to">{tools}</div></section>
 
-<section class="sec" id="contact" aria-labelledby="h-contact"><div class="ct"><span class="k" id="h-contact">{e(C["contact"]["h"])}</span>
+<section class="sec" id="contact" aria-labelledby="h-contact"><div class="ct"><div class="ct-art" aria-hidden="true"><img src="{b}assets/bh/bh-still.webp?v={ver}" alt="" width="939" height="587" loading="lazy" decoding="async"><i></i></div><span class="k" id="h-contact">{e(C["contact"]["h"])}</span>
 <p>{e(C["contact"]["p"])}</p>
 <div class="em"><a href="mailto:{EMAIL}">{EMAIL}</a><button type="button" id="cp">{e(T["copy"])}</button><span class="sr" aria-live="polite" id="cpst"></span></div>
 <div class="ln"><a href="{LINKS["github"]}" target="_blank" rel="noopener">GitHub</a><a href="{LINKS["linkedin"]}" target="_blank" rel="noopener">LinkedIn</a><a href="{LINKS["orcid"]}" target="_blank" rel="noopener">ORCID</a><a href="/cv/Matheus-Teixeira-CV.pdf" download type="application/pdf">{e(T["cv"])}</a></div></div></section>

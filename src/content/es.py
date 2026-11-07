@@ -36,7 +36,7 @@ C = {
   "how": "Cómo encajan las piezas",
   "checks": "Comprobaciones",
   "notes": "Notas de ingeniería",
-  "inside": "Por dentro, en vivo",
+  "inside": "La idea, dibujada en vivo",
   "nextp": "Siguiente planeta",
   "illus": "Diagrama, dibujado en vivo",
   "shot": "Capturas de pantalla",
@@ -216,14 +216,14 @@ C = {
   "brectus": {
    "sub": "App de escritorio para agentes de IA de programación",
    "world": "Mundo de tormentas",
-   "sum": "Escribo la petición una vez y la app averigua a qué proyecto pertenece.",
+   "sum": "Escribe la petición una vez y la app averigua a qué proyecto pertenece.",
    "hl": [
     "Cada proyecto tiene su propio agente",
     "Cifrado en reposo mediante el almacén de claves del sistema operativo",
     "Actualizaciones firmadas y CI en Windows, macOS y Linux"
    ],
    "viz": "Las peticiones se dirigen a un agente por proyecto.",
-   "lede": "Escribo la petición una vez y la app averigua a qué proyecto pertenece.",
+   "lede": "Escribe la petición una vez y la app averigua a qué proyecto pertenece.",
    "platform": "Escritorio",
    "arch": [
     [
