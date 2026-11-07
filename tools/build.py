@@ -338,7 +338,7 @@ def render(lang, C, ver, all_c):
 
 <section class="sec" id="about" aria-labelledby="h-about"><div class="sh"><h2 id="h-about">{e(C["about"]["h"])}</h2></div>
 <div class="ab"><div class="ab-l"><div class="pf"><i></i><b></b><img src="{b}assets/img/portrait.webp" alt="{e(C["about"]["alt"])}" width="800" height="800" loading="lazy" decoding="async"></div>
-<dl>{facts}</dl><div class="ln"><a href="{LINKS["github"]}" target="_blank" rel="noopener">GitHub</a><a href="{LINKS["linkedin"]}" target="_blank" rel="noopener">LinkedIn</a><a href="{LINKS["orcid"]}" target="_blank" rel="noopener">ORCID</a></div></div>
+<dl>{facts}</dl><div class="ln"><a href="{LINKS["github"]}" target="_blank" rel="noopener">GitHub</a><a href="{LINKS["linkedin"]}" target="_blank" rel="noopener">LinkedIn</a><a href="{LINKS["orcid"]}" target="_blank" rel="noopener">ORCID</a><a href="/cv/Matheus-Teixeira-CV.pdf" download type="application/pdf">{e(T["cv"])}</a></div></div>
 <div class="ab-r">{"".join(f"<p>{e(x)}</p>" for x in C["about"]["p"])}{term}</div></div></section>
 
 <section class="sec" id="projects" aria-labelledby="h-projects"><div class="sh"><h2 id="h-projects">{e(C["projects"]["h"])}</h2><p>{e(C["projects"]["p"])}</p></div><div class="pj">{"".join(cards)}</div></section>
@@ -356,7 +356,7 @@ def render(lang, C, ver, all_c):
 <section class="sec" id="contact" aria-labelledby="h-contact"><div class="ct"><span class="k" id="h-contact">{e(C["contact"]["h"])}</span>
 <p>{e(C["contact"]["p"])}</p>
 <div class="em"><a href="mailto:{EMAIL}">{EMAIL}</a><button type="button" id="cp">{e(T["copy"])}</button><span class="sr" aria-live="polite" id="cpst"></span></div>
-<div class="ln"><a href="{LINKS["github"]}" target="_blank" rel="noopener">GitHub</a><a href="{LINKS["linkedin"]}" target="_blank" rel="noopener">LinkedIn</a><a href="{LINKS["orcid"]}" target="_blank" rel="noopener">ORCID</a></div></div></section>
+<div class="ln"><a href="{LINKS["github"]}" target="_blank" rel="noopener">GitHub</a><a href="{LINKS["linkedin"]}" target="_blank" rel="noopener">LinkedIn</a><a href="{LINKS["orcid"]}" target="_blank" rel="noopener">ORCID</a><a href="/cv/Matheus-Teixeira-CV.pdf" download type="application/pdf">{e(T["cv"])}</a></div></div></section>
 </main>
 <footer><div class="fr"><span>© 2026 Matheus Teixeira</span><nav class="fl" aria-label="{e(nav["lang"])}">{footlangs}</nav></div>
 <details class="skynote"><summary>{e(C["sky"]["h"])}</summary>{"".join(f"<p>{e(x)}</p>" for x in C["sky"]["p"])}</details></footer>
@@ -398,7 +398,8 @@ def main():
     OUT.mkdir(parents=True)
     shutil.copytree(SRC / "assets", OUT / "assets", ignore=shutil.ignore_patterns("*.json"))
     for f in (SRC / "static").iterdir():
-        shutil.copy(f, OUT / f.name)
+        if f.is_dir(): shutil.copytree(f, OUT / f.name, dirs_exist_ok=True)
+        else: shutil.copy(f, OUT / f.name)
     h = hashlib.sha1()
     for f in sorted((SRC / "assets").rglob("*")):
         if f.is_file():

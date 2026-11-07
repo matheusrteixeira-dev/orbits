@@ -39,7 +39,8 @@ C = {
   "inside": "À l’intérieur, en direct",
   "nextp": "Planète suivante",
   "illus": "Schéma, dessiné en direct",
-  "shot": "Captures d’écran"
+  "shot": "Captures d’écran",
+  "cv": "CV (PDF)"
  },
  "about": {
   "h": "À propos",

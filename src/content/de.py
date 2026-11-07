@@ -39,7 +39,8 @@ C = {
   "inside": "Von innen, live",
   "nextp": "Nächster Planet",
   "illus": "Diagramm, live gezeichnet",
-  "shot": "Bildschirmfotos"
+  "shot": "Bildschirmfotos",
+  "cv": "Lebenslauf (PDF)"
  },
  "about": {
   "h": "Über mich",

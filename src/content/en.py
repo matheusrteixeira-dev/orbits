@@ -47,7 +47,8 @@ C = {
   "inside": "Inside, live",
   "nextp": "Next planet",
   "illus": "Diagram, drawn live",
-  "shot": "Screenshot"
+  "shot": "Screenshot",
+  "cv": "CV (PDF)"
  },
  "about": {
   "h": "About",
