@@ -44,6 +44,7 @@
 
   function fill(i) {
     const p = S.projects[i], art = arts[i];
+    arts.forEach((a, k) => { if (k !== i) unlive(a, true); });
     arts.forEach((a, k) => { a.hidden = k !== i; });
     const o = window.SKY ? window.SKY.orbitInfo(i) : null, orb = art.querySelector('.orb');
     if (orb) orb.textContent = o ? T.orbit.replace('{r}', o.a).replace('{p}', Math.round(o.period)) : '';
@@ -58,12 +59,33 @@
     const tabs = [...art.querySelectorAll('.tabs button')], imgs = [...art.querySelectorAll('.vp img')], url = art.querySelector('.url');
     tabs.forEach(t => t.addEventListener('click', () => {
       tabs.forEach(x => x.setAttribute('aria-selected', String(x === t)));
-      imgs.forEach(im => { im.hidden = im.dataset.k !== t.dataset.k; });
+      imgs.forEach(im => { im.hidden = !!t.dataset.live || im.dataset.k !== t.dataset.k; });
       if (url && t.dataset.url) url.textContent = t.dataset.url;
+      if (t.dataset.live) live(art, t); else unlive(art, false);
     }));
     const nx = art.querySelector('.cs-next');
     if (nx) nx.addEventListener('click', () => switchTo(+nx.dataset.go));
   });
+  // The real site, live in the window: the frame is made only when its tab is pressed and removed when
+  // another tab is picked or the page is left, so nothing of it loads before or stays after.
+  let liveOn = false;
+  function live(art, t) {
+    const vp = art.querySelector('.vp');
+    if (vp.querySelector('iframe')) return;
+    const f = document.createElement('iframe');
+    f.src = t.dataset.live; f.title = t.dataset.title;
+    f.allow = 'fullscreen; microphone; autoplay; clipboard-write';
+    f.referrerPolicy = 'strict-origin-when-cross-origin';
+    vp.appendChild(f); liveOn = true;
+  }
+  function unlive(art, reset) {
+    const f = art.querySelector('.vp iframe');
+    if (f) { f.src = 'about:blank'; f.remove(); }
+    liveOn = arts.some(a => a.querySelector('.vp iframe'));
+    if (!reset) return;
+    const t = art.querySelector('.tabs button:not([data-live])');
+    if (t && art.querySelector('.tabs button[data-live][aria-selected="true"]')) t.click();
+  }
   // Camera at the start: the planet (radius 1, at the origin) appears where it was in the sky, at the same size.
   function startCam(from) {
     const W = innerWidth, H = innerHeight;
@@ -135,13 +157,14 @@
       if (k >= 1) { if (st.phase === 'in') landed(); else closed(); }
     } else if (st.phase === 'landed') {
       // The surface is hidden once the case study covers the screen; skip drawing it then.
-      if (PG && wp.scrollTop < innerHeight * .9) render(endCam(n, st.time), 1, 1, st.time);
+      if (PG && !liveOn && wp.scrollTop < innerHeight * .9) render(endCam(n, st.time), 1, 1, st.time);
       if (viz) viz.draw(now, false);
     }
   }
   function landed() { st.phase = 'landed'; el.classList.add('landed'); el.classList.remove('fly'); const h = arts[cur] && arts[cur].querySelector('h2'); if (h) h.focus({ preventScroll: true }); }
   function closed() {
     cancelAnimationFrame(raf); raf = 0; st = null; viz = null;
+    arts.forEach(a => unlive(a, true));
     el.classList.remove('on', 'landed', 'fly'); el.hidden = true;
     setInert(false); document.documentElement.style.overflow = '';
     if (window.SKY) window.SKY.setActive(true);
@@ -194,6 +217,7 @@
     // Fly back to where the planet is in the sky (after a switch the flight started elsewhere).
     const P = window.SKY ? window.SKY.planet(cur) : null;
     if (P && P.rot) { st.a = startCam(P); st.rot = P.rot; st.L = P.L; st.gain = P.gain; st.sw = false; }
+    arts.forEach(a => unlive(a, true));
     el.classList.remove('landed'); el.classList.add('fly');
     st.phase = 'out'; st.t0 = performance.now(); st.dur = 1800;
   }

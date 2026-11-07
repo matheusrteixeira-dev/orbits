@@ -48,7 +48,9 @@ C = {
   "nextp": "Next planet",
   "illus": "Diagram, drawn live",
   "shot": "Screenshot",
-  "cv": "CV (PDF)"
+  "cv": "CV (PDF)",
+  "live": "Use it here",
+  "liveT": "{n}, live"
  },
  "about": {
   "h": "About",

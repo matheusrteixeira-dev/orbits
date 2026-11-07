@@ -40,7 +40,9 @@ C = {
   "nextp": "Siguiente planeta",
   "illus": "Diagrama, dibujado en vivo",
   "shot": "Capturas de pantalla",
-  "cv": "CV (PDF)"
+  "cv": "CV (PDF)",
+  "live": "Usarlo aquí",
+  "liveT": "{n}, en vivo"
  },
  "about": {
   "h": "Sobre mí",

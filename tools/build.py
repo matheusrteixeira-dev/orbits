@@ -182,6 +182,11 @@ OG_LOCALE = {"en": "en_US", "pt": "pt_BR", "es": "es_ES", "fr": "fr_FR", "de": "
 
 
 # ---------- Case studies: one article per project, shown on its planet ----------
+# Projects that can be used live inside their page (an iframe made only when its tab is pressed).
+# A site goes in LIVE_ON once it allows sectus.dev in its CSP frame-ancestors.
+LIVE = {"isaac": "https://isaac3d.com/scene/chaos", "amadeo": "https://amadeosheets.com/", "websites": "https://liderplustelemedicina.com.br/"}
+LIVE_ON = set()
+
 SHOTS = {
     "isaac": [("isaac-scene", "isaac3d.com/scene/chaos"), ("isaac-home", "isaac3d.com"), ("isaac-library", "isaac3d.com/library")],
     "amadeo": [("amadeo-home", "amadeosheets.com"), ("amadeo-score", "amadeosheets.com/repertoire/fur-elise"), ("amadeo-keys", "amadeosheets.com/repertoire/fur-elise")],
@@ -205,6 +210,10 @@ def case_study(i, p, C, b):
         sh = SHOTS[pid]
         imgs = "".join(f'<img src="{b}assets/img/{f}.webp" srcset="{b}assets/img/{f}-s.webp 720w, {b}assets/img/{f}.webp 1440w" sizes="(max-width: 1000px) 92vw, 52vw" width="1440" height="900" alt="{e(P["shots"][k])}" loading="lazy" decoding="async" data-k="{k}"{"" if k == 0 else " hidden"}>' for k, (f, _) in enumerate(sh))
         tabs = "".join(f'<button type="button" role="tab" aria-selected="{"true" if k == 0 else "false"}" data-k="{k}" data-url="{e(u)}">{e(P["shots"][k])}</button>' for k, (_, u) in enumerate(sh))
+        if pid in LIVE_ON:
+            lu = LIVE[pid]
+            tabs = (f'<button type="button" role="tab" aria-selected="false" data-live="{e(lu)}" data-url="{e(lu.split("://", 1)[1].rstrip("/"))}"'
+                    f' data-title="{e(T["liveT"].format(n=p["name"]))}">{e(T["live"])}</button>') + tabs
         media = (f'<figure class="cs-media"><div class="win"><div class="bar"><i></i><i></i><i></i><span class="url">{e(sh[0][1])}</span></div><div class="vp">{imgs}</div></div>'
                  f'<div class="tabs" role="tablist" aria-label="{e(T["shot"])}">{tabs}</div></figure>')
         inside = (f'<section class="cs-in"><h3>{e(T["inside"])}</h3><figure class="cs-viz"><canvas data-wviz="{pid}" width="1040" height="780" role="img" aria-label="{e(P["viz"])}"></canvas>'
