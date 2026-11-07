@@ -90,11 +90,11 @@ C = {
   "isaac": {
    "sub": "Interactive physics simulations",
    "world": "Volcanic world",
-   "sum": "Interactive physics simulations for students, with live graphs and equations.",
-   "lede": "Interactive physics simulations for students, with live graphs and equations. Physics core in Rust compiled to WebAssembly; interface in React, TypeScript and Three.js; physics validated with cargo test, unit tests in Vitest and end-to-end tests in Playwright.",
+   "sum": "Made for students, from school to graduate level. Every scene runs in the browser.",
+   "lede": "Made for students, from school to graduate level. Every scene runs in the browser.",
    "hl": [
     "Rust physics core compiled to WebAssembly",
-    "Interface in React, TypeScript and Three.js",
+    "Live graphs, equations and a guided explanation in every scene",
     "Tested with cargo test, Vitest and Playwright end to end"
    ],
    "viz": "A double pendulum integrated with RK4 in 2 ms steps. The faint twin starts 0.001 rad away, and chaos pulls the two apart.",
@@ -155,7 +155,7 @@ C = {
    "sub": "Audio to sheet music",
    "world": "Ocean world",
    "sum": "Turns audio recordings into editable sheet music, all in the browser.",
-   "lede": "Turns audio recordings into editable sheet music, all in the browser: neural pitch detection on TensorFlow.js, key and chord estimation, export to PDF, MusicXML and MIDI. React and TypeScript, nine languages, cross-browser Playwright tests. The score can be edited, played on 35 sampled instruments and practised with falling notes.",
+   "lede": "Turns audio recordings into editable sheet music, all in the browser. The score can be edited, played on 35 sampled instruments and practised with falling notes.",
    "hl": [
     "Neural transcription in the browser, on TensorFlow.js",
     "Score editor, 35 sampled instruments and a practice mode",
@@ -222,10 +222,10 @@ C = {
   "brectus": {
    "sub": "Desktop app for AI coding agents",
    "world": "Storm world",
-   "sum": "Desktop app that sends requests to a separate AI coding agent for each project.",
-   "lede": "Desktop app that sends requests to a separate AI coding agent for each project. Data is encrypted at rest, updates are signed, and CI runs on Windows, macOS and Linux. Node.js and Electron.",
+   "sum": "I write a request once, and the app works out which project it belongs to.",
+   "lede": "I write a request once, and the app works out which project it belongs to.",
    "hl": [
-    "Node.js and Electron",
+    "Each project keeps its own agent",
     "Encryption at rest through the operating system’s keystore",
     "Signed updates and CI on Windows, macOS and Linux"
    ],
@@ -283,7 +283,7 @@ C = {
    "sub": "Orion Benefícios, LÍDER Plus Telemedicina and an esthetics studio",
    "world": "Ice world",
    "sum": "Company websites for Orion Benefícios and LÍDER Plus Telemedicina, a website for an esthetics studio, and an employee portal.",
-   "lede": "Company websites for Orion Benefícios and LÍDER Plus Telemedicina, a website for an esthetics studio in Santos, and an employee portal. The company websites score 95 on mobile and 100 on desktop in Lighthouse and meet WCAG 2.2 AA.",
+   "lede": "Company websites for Orion Benefícios and LÍDER Plus Telemedicina, a website for an esthetics studio, and an employee portal.",
    "hl": [
     "Astro and TypeScript, or a small Python generator, on Cloudflare Pages",
     "Employee portal on Workers and D1, with CSP headers",
@@ -330,7 +330,7 @@ C = {
    "notes": [
     [
      "Static pages",
-     "Static pages, built with Astro or with a small Python generator, served by Cloudflare Pages. The company websites score 95 on mobile and 100 on desktop in Lighthouse."
+     "Static pages, built with Astro or with a small Python generator, served by Cloudflare Pages."
     ],
     [
      "Tested for accessibility",
@@ -352,12 +352,12 @@ C = {
   "allwinner": {
    "sub": "Backtesting trading strategies",
    "world": "Gas giant",
-   "sum": "Backtests trading strategies on out-of-sample data, with fees and slippage.",
-   "lede": "Backtests trading strategies on out-of-sample data with walk-forward windows, fees and slippage, and uses block-bootstrap tests to check that results are not due to chance. Python, pandas, FastAPI and SQLite, with 221 pytest tests.",
+   "sum": "Checks whether a strategy holds up on data it never saw, or only looked good by chance.",
+   "lede": "Checks whether a strategy holds up on data it never saw, or only looked good by chance.",
    "hl": [
     "Walk-forward, out-of-sample backtests after fees and slippage",
     "Block-bootstrap tests against data snooping",
-    "Python, pandas, FastAPI and SQLite, with 221 pytest tests"
+    "Covered by automated tests (pytest)"
    ],
    "viz": "Walk-forward testing: fit on one window, trade the next, never look ahead.",
    "platform": "Python",
@@ -382,7 +382,7 @@ C = {
    "tests": [
     [
      "pytest",
-     "221 tests"
+     "automated tests"
     ]
    ],
    "notes": [
@@ -396,7 +396,7 @@ C = {
     ],
     [
      "Tested code",
-     "Written in Python with pandas, served through FastAPI and stored in SQLite, with 221 pytest tests."
+     "Written in Python with pandas, served through FastAPI and stored in SQLite, and covered by pytest tests."
     ]
    ],
    "shots": [

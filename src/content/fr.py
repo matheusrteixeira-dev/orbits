@@ -82,14 +82,14 @@ C = {
   "isaac": {
    "sub": "Simulations de physique interactives",
    "world": "Monde volcanique",
-   "sum": "Des simulations de physique interactives pour les étudiants, avec graphiques et équations en direct.",
+   "sum": "Pensé pour les élèves, du lycée au master. Chaque scène tourne dans le navigateur.",
    "hl": [
     "Cœur physique en Rust compilé en WebAssembly",
-    "Interface en React, TypeScript et Three.js",
+    "Graphiques en direct, équations et explication guidée dans chaque scène",
     "Testé avec cargo test, Vitest et Playwright de bout en bout"
    ],
    "viz": "Un double pendule intégré par RK4 par pas de 2 ms. Son jumeau pâle part à 0,001 rad d’écart, et le chaos les sépare.",
-   "lede": "Des simulations de physique interactives pour les étudiants, avec graphiques et équations en direct. Cœur physique en Rust compilé en WebAssembly ; interface en React, TypeScript et Three.js ; physique validée avec cargo test, tests unitaires avec Vitest et tests de bout en bout avec Playwright.",
+   "lede": "Pensé pour les élèves, du lycée au master. Chaque scène tourne dans le navigateur.",
    "platform": "Web",
    "shots": [
     "Un double pendule avec graphiques en direct",
@@ -153,7 +153,7 @@ C = {
     "En ligne en neuf langues, avec abonnements Pro"
    ],
    "viz": "Les traces de hauteur du spectrogramme deviennent des notes sur la portée.",
-   "lede": "Transforme des enregistrements audio en partitions modifiables, entièrement dans le navigateur : détection neuronale des hauteurs avec TensorFlow.js, estimation de la tonalité et des accords, export en PDF, MusicXML et MIDI. React et TypeScript, neuf langues, tests Playwright sur plusieurs navigateurs. La partition peut être modifiée, jouée sur 35 instruments échantillonnés et travaillée avec des notes qui tombent.",
+   "lede": "Transforme des enregistrements audio en partitions modifiables, entièrement dans le navigateur. La partition peut être modifiée, jouée sur 35 instruments échantillonnés et travaillée avec des notes qui tombent.",
    "platform": "Web",
    "arch": [
     [
@@ -214,14 +214,14 @@ C = {
   "brectus": {
    "sub": "Application de bureau pour agents de code IA",
    "world": "Monde d’orages",
-   "sum": "Application de bureau qui envoie les demandes à un agent de code IA distinct pour chaque projet.",
+   "sum": "J’écris la demande une fois, et l’app trouve à quel projet elle appartient.",
    "hl": [
-    "Node.js et Electron",
+    "Chaque projet garde son propre agent",
     "Chiffrement au repos via le trousseau du système d’exploitation",
     "Mises à jour signées et CI sous Windows, macOS et Linux"
    ],
    "viz": "Les demandes sont acheminées vers un agent par projet.",
-   "lede": "Application de bureau qui envoie les demandes à un agent de code IA distinct pour chaque projet. Les données sont chiffrées au repos, les mises à jour sont signées et la CI tourne sous Windows, macOS et Linux. Node.js et Electron.",
+   "lede": "J’écris la demande une fois, et l’app trouve à quel projet elle appartient.",
    "platform": "Bureau",
    "arch": [
     [
@@ -281,7 +281,7 @@ C = {
     "Tests WCAG 2.2 AA dans trois moteurs de navigateur"
    ],
    "viz": "Scores Lighthouse des sites des entreprises : 95 sur mobile, 100 sur ordinateur.",
-   "lede": "Les sites des entreprises Orion Benefícios et LÍDER Plus Telemedicina, un site pour un institut d’esthétique à Santos et un portail pour les salariés. Les sites des entreprises obtiennent 95 sur mobile et 100 sur ordinateur dans Lighthouse et respectent le WCAG 2.2 AA.",
+   "lede": "Les sites d’Orion Benefícios et de LÍDER Plus Telemedicina, un site pour un institut d’esthétique et un portail pour les salariés.",
    "platform": "Web",
    "arch": [
     [
@@ -322,7 +322,7 @@ C = {
    "notes": [
     [
      "Pages statiques",
-     "Des pages statiques, faites avec Astro ou avec un petit générateur Python, servies par Cloudflare Pages. Les sites des entreprises obtiennent 95 sur mobile et 100 sur ordinateur dans Lighthouse."
+     "Des pages statiques, faites avec Astro ou avec un petit générateur Python, servies par Cloudflare Pages."
     ],
     [
      "Accessibilité testée",
@@ -344,14 +344,14 @@ C = {
   "allwinner": {
    "sub": "Backtest de stratégies de trading",
    "world": "Géante gazeuse",
-   "sum": "Backteste des stratégies de trading sur des données hors échantillon, avec frais et slippage.",
+   "sum": "Vérifie si une stratégie tient sur des données qu’elle n’a jamais vues, ou si elle n’a semblé bonne que par hasard.",
    "hl": [
     "Backtests walk-forward hors échantillon, après frais et slippage",
     "Tests de block bootstrap contre le data snooping",
-    "Python, pandas, FastAPI et SQLite, avec 221 tests pytest"
+    "Couvert par des tests automatisés (pytest)"
    ],
    "viz": "Test walk-forward : ajuster sur une fenêtre, trader sur la suivante, sans jamais regarder en avant.",
-   "lede": "Backteste des stratégies de trading sur des données hors échantillon, avec des fenêtres walk-forward, des frais et du slippage, et utilise des tests de block bootstrap pour vérifier que les résultats ne sont pas dus au hasard. Python, pandas, FastAPI et SQLite, avec 221 tests pytest.",
+   "lede": "Vérifie si une stratégie tient sur des données qu’elle n’a jamais vues, ou si elle n’a semblé bonne que par hasard.",
    "platform": "Python",
    "arch": [
     [
@@ -374,7 +374,7 @@ C = {
    "tests": [
     [
      "pytest",
-     "221 tests"
+     "tests automatisés"
     ]
    ],
    "notes": [
@@ -388,7 +388,7 @@ C = {
     ],
     [
      "Du code testé",
-     "Écrit en Python avec pandas, servi par FastAPI et stocké dans SQLite, avec 221 tests pytest."
+     "Écrit en Python avec pandas, servi par FastAPI et stocké dans SQLite, et couvert par des tests pytest."
     ]
    ],
    "shots": [

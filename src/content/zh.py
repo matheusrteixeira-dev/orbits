@@ -82,14 +82,14 @@ C = {
   "isaac": {
    "sub": "交互式物理模拟",
    "world": "火山世界",
-   "sum": "面向学生的交互式物理模拟，带实时图表和方程。",
+   "sum": "为学生而做，从中学到研究生阶段。每个场景都在浏览器中运行。",
    "hl": [
     "Rust 物理内核，编译为 WebAssembly",
-    "界面采用 React、TypeScript 和 Three.js",
+    "每个场景都有实时图表、方程和引导式讲解",
     "使用 cargo test、Vitest 和 Playwright 端到端测试"
    ],
    "viz": "用 RK4 以 2 毫秒步长积分的双摆。淡色的孪生摆初始只差 0.001 弧度，混沌却让两者分道扬镳。",
-   "lede": "面向学生的交互式物理模拟，带实时图表和方程。物理内核用 Rust 编写并编译为 WebAssembly；界面用 React、TypeScript 和 Three.js；物理用 cargo test 验证，单元测试用 Vitest，端到端测试用 Playwright。",
+   "lede": "为学生而做，从中学到研究生阶段。每个场景都在浏览器中运行。",
    "platform": "网页",
    "shots": [
     "带实时图表的双摆",
@@ -153,7 +153,7 @@ C = {
     "九种语言上线，提供 Pro 订阅"
    ],
    "viz": "频谱图中的音高轨迹变成五线谱上的音符。",
-   "lede": "把音频录音变成可编辑的乐谱，全部在浏览器中完成：基于 TensorFlow.js 的神经网络音高检测、调性与和弦估计，导出为 PDF、MusicXML 和 MIDI。React 和 TypeScript，九种语言，跨浏览器 Playwright 测试。乐谱可以编辑，用 35 种采样乐器播放，并用下落音符练习。",
+   "lede": "把音频录音变成可编辑的乐谱，全部在浏览器中完成。乐谱可以编辑，用 35 种采样乐器播放，并用下落音符练习。",
    "platform": "网页",
    "arch": [
     [
@@ -214,14 +214,14 @@ C = {
   "brectus": {
    "sub": "面向 AI 编程智能体的桌面应用",
    "world": "风暴世界",
-   "sum": "一个桌面应用，把请求发给每个项目各自的 AI 编程智能体。",
+   "sum": "我只需写一次请求，应用会判断它属于哪个项目。",
    "hl": [
-    "Node.js 与 Electron",
+    "每个项目都有自己的智能体",
     "通过操作系统密钥库实现静态数据加密",
     "在 Windows、macOS 和 Linux 上签名更新并运行 CI"
    ],
    "viz": "请求被路由到每个项目各自的代理。",
-   "lede": "一个桌面应用，把请求发给每个项目各自的 AI 编程智能体。数据静态加密，更新经过签名，CI 在 Windows、macOS 和 Linux 上运行。Node.js 和 Electron。",
+   "lede": "我只需写一次请求，应用会判断它属于哪个项目。",
    "platform": "桌面",
    "arch": [
     [
@@ -281,7 +281,7 @@ C = {
     "在三种浏览器引擎中进行 WCAG 2.2 AA 测试"
    ],
    "viz": "公司网站的 Lighthouse 评分：移动端 95，桌面端 100。",
-   "lede": "Orion Benefícios 和 LÍDER Plus Telemedicina 的公司网站、桑托斯一家美容工作室的网站，以及一个员工门户。公司网站的 Lighthouse 评分为移动端 95、桌面端 100，并符合 WCAG 2.2 AA。",
+   "lede": "Orion Benefícios 和 LÍDER Plus Telemedicina 的公司网站、一家美容工作室的网站，以及一个员工门户。",
    "platform": "网页",
    "arch": [
     [
@@ -322,7 +322,7 @@ C = {
    "notes": [
     [
      "静态页面",
-     "静态页面，用 Astro 或一个小型 Python 生成器构建，由 Cloudflare Pages 提供。公司网站的 Lighthouse 评分为移动端 95、桌面端 100。"
+     "静态页面，用 Astro 或一个小型 Python 生成器构建，由 Cloudflare Pages 提供。"
     ],
     [
      "无障碍测试",
@@ -344,14 +344,14 @@ C = {
   "allwinner": {
    "sub": "交易策略回测",
    "world": "气态巨行星",
-   "sum": "在样本外数据上回测交易策略，计入手续费和滑点。",
+   "sum": "检验一个策略在从未见过的数据上是否站得住，还是只是碰巧看起来不错。",
    "hl": [
     "扣除手续费和滑点后的滚动样本外回测",
     "用块自助法检验数据窥探",
-    "Python、pandas、FastAPI 与 SQLite，共 221 个 pytest 测试"
+    "有自动化测试覆盖（pytest）"
    ],
    "viz": "滚动前推检验：在一个窗口上拟合，在下一个窗口上交易，绝不偷看未来。",
-   "lede": "在样本外数据上用滚动前推窗口回测交易策略，计入手续费和滑点，并用块自助法检验结果不是偶然。Python、pandas、FastAPI 和 SQLite，有 221 个 pytest 测试。",
+   "lede": "检验一个策略在从未见过的数据上是否站得住，还是只是碰巧看起来不错。",
    "platform": "Python",
    "arch": [
     [
@@ -374,7 +374,7 @@ C = {
    "tests": [
     [
      "pytest",
-     "221 个测试"
+     "自动化测试"
     ]
    ],
    "notes": [
@@ -388,7 +388,7 @@ C = {
     ],
     [
      "经过测试的代码",
-     "用 Python 和 pandas 编写，通过 FastAPI 提供服务，数据存于 SQLite，并有 221 个 pytest 测试。"
+     "用 Python 和 pandas 编写，通过 FastAPI 提供服务，数据存于 SQLite，并由 pytest 测试覆盖。"
     ]
    ],
    "shots": [

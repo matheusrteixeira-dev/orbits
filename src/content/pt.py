@@ -82,14 +82,14 @@ C = {
   "isaac": {
    "sub": "Simulações de física interativas",
    "world": "Mundo vulcânico",
-   "sum": "Simulações de física interativas para estudantes, com gráficos e equações ao vivo.",
+   "sum": "Feito para estudantes, do ensino médio à pós-graduação. Cada cena roda no navegador.",
    "hl": [
     "Núcleo de física em Rust compilado para WebAssembly",
-    "Interface em React, TypeScript e Three.js",
+    "Gráficos ao vivo, equações e explicação guiada em cada cena",
     "Testado com cargo test, Vitest e Playwright de ponta a ponta"
    ],
    "viz": "Um pêndulo duplo integrado com RK4 em passos de 2 ms. O gêmeo apagado começa 0,001 rad ao lado, e o caos separa os dois.",
-   "lede": "Simulações de física interativas para estudantes, com gráficos e equações ao vivo. Núcleo de física em Rust compilado para WebAssembly; interface em React, TypeScript e Three.js; física validada com cargo test, testes unitários em Vitest e testes de ponta a ponta em Playwright.",
+   "lede": "Feito para estudantes, do ensino médio à pós-graduação. Cada cena roda no navegador.",
    "platform": "Web",
    "shots": [
     "Um pêndulo duplo com gráficos ao vivo",
@@ -153,7 +153,7 @@ C = {
     "No ar em nove idiomas, com assinaturas Pro"
    ],
    "viz": "As linhas de altura no espectrograma viram notas na pauta.",
-   "lede": "Transforma gravações de áudio em partituras editáveis, tudo no navegador: detecção neural de altura com TensorFlow.js, estimativa de tonalidade e acordes, exportação em PDF, MusicXML e MIDI. React e TypeScript, nove idiomas, testes Playwright em vários navegadores. A partitura pode ser editada, tocada em 35 instrumentos sampleados e praticada com notas caindo.",
+   "lede": "Transforma gravações de áudio em partituras editáveis, tudo no navegador. A partitura pode ser editada, tocada em 35 instrumentos sampleados e praticada com notas caindo.",
    "platform": "Web",
    "arch": [
     [
@@ -214,14 +214,14 @@ C = {
   "brectus": {
    "sub": "App desktop para agentes de IA de programação",
    "world": "Mundo de tempestades",
-   "sum": "App desktop que envia pedidos para um agente de IA de programação separado para cada projeto.",
+   "sum": "Escrevo o pedido uma vez, e o app descobre a qual projeto ele pertence.",
    "hl": [
-    "Node.js e Electron",
+    "Cada projeto tem o seu próprio agente",
     "Criptografia em repouso pelo cofre de chaves do sistema operacional",
     "Atualizações assinadas e CI no Windows, macOS e Linux"
    ],
    "viz": "Os pedidos são encaminhados a um agente por projeto.",
-   "lede": "App desktop que envia pedidos para um agente de IA de programação separado para cada projeto. Os dados são criptografados em repouso, as atualizações são assinadas e a CI roda no Windows, no macOS e no Linux. Node.js e Electron.",
+   "lede": "Escrevo o pedido uma vez, e o app descobre a qual projeto ele pertence.",
    "platform": "Desktop",
    "arch": [
     [
@@ -281,7 +281,7 @@ C = {
     "Testes WCAG 2.2 AA em três motores de navegador"
    ],
    "viz": "Lighthouse dos sites das empresas: 95 no celular, 100 no computador.",
-   "lede": "Sites das empresas Orion Benefícios e LÍDER Plus Telemedicina, um site para um estúdio de estética em Santos e um portal do colaborador. Os sites das empresas têm Lighthouse 95 no celular e 100 no computador e atendem à WCAG 2.2 AA.",
+   "lede": "Sites da Orion Benefícios e da LÍDER Plus Telemedicina, um site para um estúdio de estética e um portal do colaborador.",
    "platform": "Web",
    "arch": [
     [
@@ -322,7 +322,7 @@ C = {
    "notes": [
     [
      "Páginas estáticas",
-     "Páginas estáticas, feitas com Astro ou com um pequeno gerador em Python, servidas pelo Cloudflare Pages. Os sites das empresas têm Lighthouse 95 no celular e 100 no computador."
+     "Páginas estáticas, feitas com Astro ou com um pequeno gerador em Python, servidas pelo Cloudflare Pages."
     ],
     [
      "Acessibilidade testada",
@@ -344,14 +344,14 @@ C = {
   "allwinner": {
    "sub": "Backtest de estratégias de trading",
    "world": "Gigante gasoso",
-   "sum": "Faz backtest de estratégias de trading em dados fora da amostra, com taxas e slippage.",
+   "sum": "Verifica se uma estratégia se sustenta em dados que nunca viu, ou se só pareceu boa por acaso.",
    "hl": [
     "Backtests walk-forward fora da amostra, depois de taxas e slippage",
     "Testes de block bootstrap contra data snooping",
-    "Python, pandas, FastAPI e SQLite, com 221 testes pytest"
+    "Coberto por testes automatizados (pytest)"
    ],
    "viz": "Teste walk-forward: ajusta numa janela, opera na seguinte e nunca olha adiante.",
-   "lede": "Faz backtest de estratégias de trading em dados fora da amostra, com janelas walk-forward, taxas e slippage, e usa testes de block bootstrap para verificar que os resultados não são obra do acaso. Python, pandas, FastAPI e SQLite, com 221 testes em pytest.",
+   "lede": "Verifica se uma estratégia se sustenta em dados que nunca viu, ou se só pareceu boa por acaso.",
    "platform": "Python",
    "arch": [
     [
@@ -374,7 +374,7 @@ C = {
    "tests": [
     [
      "pytest",
-     "221 testes"
+     "testes automatizados"
     ]
    ],
    "notes": [
@@ -388,7 +388,7 @@ C = {
     ],
     [
      "Código testado",
-     "Escrito em Python com pandas, servido por FastAPI e guardado em SQLite, com 221 testes em pytest."
+     "Escrito em Python com pandas, servido por FastAPI e guardado em SQLite, e coberto por testes em pytest."
     ]
    ],
    "shots": [

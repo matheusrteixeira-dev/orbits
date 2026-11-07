@@ -103,7 +103,7 @@ html.wait,html.wait *{cursor:progress}
 .pf b{position:absolute;inset:0;animation:orb 14s linear infinite}
 .pf b:before{content:"";position:absolute;left:50%;top:-5px;width:10px;height:10px;border-radius:50%;background:var(--gold);box-shadow:0 0 14px var(--gold)}
 @keyframes orb{to{transform:rotate(360deg)}}
-.ab dl{display:grid;gap:12px;margin:0}
+.ab dl{display:grid;gap:12px;margin:0;min-width:0}.ab dd{overflow-wrap:break-word;hyphens:auto}
 .ab dl div{border-top:1px solid var(--rule);padding-top:10px}
 .ab dt{font:500 11px var(--fm);letter-spacing:.12em;text-transform:uppercase;color:var(--dim)}.ab dd{margin:4px 0 0;font-size:15.5px}
 .ab .ln{margin:0}
