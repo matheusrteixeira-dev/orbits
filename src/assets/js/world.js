@@ -8,7 +8,13 @@
   const el = document.getElementById('world'), wc = document.getElementById('wc'), wp = document.getElementById('wp');
   const arts = [...wp.querySelectorAll('article.cs')];
   const bBack = document.getElementById('w-back'), bPrev = document.getElementById('w-prev'), bNext = document.getElementById('w-next');
-  const PG = window.PlanetGL ? window.PlanetGL.create(wc) : null;
+  // The planet shader is compiled in the background once the page is up (see the end of this file);
+  // pg() finishes it, waiting for it only if a landing starts before it is ready.
+  let PG = null, PGH = null, pgDone = false;
+  function pg() {
+    if (!pgDone) { if (!PGH && window.PlanetGL) PGH = window.PlanetGL.begin(wc); PG = PGH ? PGH.finish() : null; pgDone = true; }
+    return PG;
+  }
   const KIND = { rock: 0, ocean: 1, gas: 2, storm: 3, ice: 4 };
   const hex = h => [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16) / 255);
   const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
@@ -142,6 +148,7 @@
     if (!from || !from.rot) { // no sky position (no WebGL or not drawn yet): open without the flight
       from = Object.assign({ x: innerWidth * .62, y: innerHeight * .5, R: innerHeight * .1 }, P || {});
     }
+    pg();
     if (cur < 0) opener = document.activeElement;
     const switching = cur >= 0;
     cur = i; size(); fill(i);
@@ -191,10 +198,17 @@
   });
   addEventListener('resize', () => { if (st) size(); });
   wp.addEventListener('scroll', () => el.classList.toggle('sc', wp.scrollTop > 40), { passive: true });
-  // Compile the planet shader before the first landing, so the flight does not start with a stall.
-  if (PG) setTimeout(() => { if (st) return; size(); PG.clear(); PG.draw({ vp: [0, 0, wc.width, wc.height], ortho: 0, cam: [0, 0, 3], camM: [1, 0, 0, 0, 1, 0, 0, 0, 1], tanF: TANF, rot: [1, 0, 0, 0, 1, 0, 0, 0, 1], L: [0, 0, 1], col: [1, 1, 1], kind: 0, site: [0, 0, 1], time: 0, glow: 0, seed: 1, bg: 1 }); }, 1200);
+  // Compile the planet shader in the background after the page has painted, then draw one frame so
+  // the first landing does not start with a stall.
+  const idle = window.requestIdleCallback || (f => setTimeout(f, 300));
+  function warm() {
+    if (st || pgDone) return;
+    if (!PGH.ready()) { setTimeout(warm, 200); return; }
+    if (!pg()) return;
+    size(); PG.clear(); PG.draw({ vp: [0, 0, wc.width, wc.height], ortho: 0, cam: [0, 0, 3], camM: [1, 0, 0, 0, 1, 0, 0, 0, 1], tanF: TANF, rot: [1, 0, 0, 0, 1, 0, 0, 0, 1], L: [0, 0, 1], col: [1, 1, 1], kind: 0, site: [0, 0, 1], time: 0, glow: 0, seed: 1, bg: 1 });
+  }
+  setTimeout(() => idle(() => { if (pgDone || !window.PlanetGL) return; PGH = window.PlanetGL.begin(wc); if (PGH) warm(); else pgDone = true; }), 1500);
   // Decode the first screenshot of each project while the page is idle, so showing a project does not stall.
-  const idle = window.requestIdleCallback || (f => setTimeout(f, 1500));
   idle(() => arts.forEach(a => { const im = a.querySelector('.vp img:not([hidden])'); if (im && im.decode) { im.loading = 'eager'; im.decode().catch(() => {}); } }));
   window.WORLD = { open, close: () => close(false), get open_() { return cur; } };
 })();

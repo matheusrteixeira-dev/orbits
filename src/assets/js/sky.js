@@ -138,7 +138,7 @@
   // Clumps are sheared by the differential rotation and fade after a short life, as turbulence does.
   const BH = (function () {
     const D = { HW: 26, HH: 16.25, rIn: ISCO, rOut: 15 };
-    let gl = null, prog = null, cprog = null, u = {}, cu = {}, ok = false, rect = null, row = 0, rows = 0, ready = false;
+    let gl = null, par = null, prog = null, cprog = null, u = {}, cu = {}, ok = false, rect = null, row = 0, rows = 0, ready = false;
     let fb = null, tC = null, tG = null, hd = 1, lite = 0;
     const VS = '#version 300 es\nin vec2 p;void main(){gl_Position=vec4(p,0.,1.);}';
     const FS = `#version 300 es
@@ -227,17 +227,29 @@ void main(){ivec2 p=ivec2(gl_FragCoord.xy);vec4 c=texelFetch(uC,p,0),g=texelFetc
       try {
         gl = bhc.getContext('webgl2', { premultipliedAlpha: true, antialias: false, alpha: true });
         if (!gl) return false;
-        const sh = (t, s) => { const x = gl.createShader(t); gl.shaderSource(x, s); gl.compileShader(x); if (!gl.getShaderParameter(x, gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(x)); return x; };
-        const mk = fs => { const p = gl.createProgram(); gl.attachShader(p, sh(gl.VERTEX_SHADER, VS)); gl.attachShader(p, sh(gl.FRAGMENT_SHADER, fs)); gl.bindAttribLocation(p, 0, 'p'); gl.linkProgram(p); if (!gl.getProgramParameter(p, gl.LINK_STATUS)) throw new Error(gl.getProgramInfoLog(p)); return p; };
+        // Both programs are handed to the driver here and checked in link(), once the driver reports
+        // them compiled (KHR_parallel_shader_compile), so compiling never holds up the page.
+        par = gl.getExtension('KHR_parallel_shader_compile');
+        const sh = (t, s) => { const x = gl.createShader(t); gl.shaderSource(x, s); gl.compileShader(x); return x; };
+        const mk = fs => { const p = gl.createProgram(); gl.attachShader(p, sh(gl.VERTEX_SHADER, VS)); gl.attachShader(p, sh(gl.FRAGMENT_SHADER, fs)); gl.bindAttribLocation(p, 0, 'p'); gl.linkProgram(p); return p; };
         prog = mk(FS); cprog = mk(CS);
-        ['uOrig', 'uPix', 'uCam', 'uInc', 'uRin', 'uRout', 'uA'].forEach(n => u[n] = gl.getUniformLocation(prog, n));
-        ['uC', 'uG', 'uTau', 'uLite'].forEach(n => cu[n] = gl.getUniformLocation(cprog, n));
         fb = gl.createFramebuffer();
       } catch (e) { console.warn(e); gl = null; return false; }
       const b = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, b);
       gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
       gl.enableVertexAttribArray(0); gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);
-      ok = true; return true;
+      return true;
+    }
+    function link() {
+      if (!gl || ok) return;
+      if (par && !(gl.getProgramParameter(prog, par.COMPLETION_STATUS_KHR) && gl.getProgramParameter(cprog, par.COMPLETION_STATUS_KHR))) return;
+      for (const p of [prog, cprog]) if (!gl.getProgramParameter(p, gl.LINK_STATUS)) {
+        console.warn(gl.getProgramInfoLog(p) || gl.getShaderInfoLog(gl.getAttachedShaders(p)[1]));
+        gl = null; if (still) still.classList.add('on'); return;
+      }
+      ['uOrig', 'uPix', 'uCam', 'uInc', 'uRin', 'uRout', 'uA'].forEach(n => u[n] = gl.getUniformLocation(prog, n));
+      ['uC', 'uG', 'uTau', 'uLite'].forEach(n => cu[n] = gl.getUniformLocation(cprog, n));
+      ok = true;
     }
     function tex(w, h) {
       const t = gl.createTexture(); gl.bindTexture(gl.TEXTURE_2D, t);
@@ -274,6 +286,7 @@ void main(){ivec2 p=ivec2(gl_FragCoord.xy);vec4 c=texelFetch(uC,p,0),g=texelFetc
       },
       // Trace the next band of rows (until done), then shade the disc for clock time tau.
       draw(tau) {
+        link();
         if (!ok || !rect) return false;
         const W = bhc.width, H = bhc.height;
         if (!ready) {
@@ -301,7 +314,11 @@ void main(){ivec2 p=ivec2(gl_FragCoord.xy);vec4 c=texelFetch(uC,p,0),g=texelFetc
 
   // ---------- Planets: rendered on the GPU into an atlas, then drawn in 2D ----------
   const atlas = document.createElement('canvas');
-  const PG = window.PlanetGL && window.PlanetGL.create(atlas, { preserveDrawingBuffer: true });
+  // The planet shader is compiled in the background once the first frame is on screen; until it is
+  // ready the planets are drawn as shaded discs.
+  let PG = null, PGH = null;
+  requestAnimationFrame(() => setTimeout(() => { if (window.PlanetGL) PGH = window.PlanetGL.begin(atlas, { preserveDrawingBuffer: true }); }, 0));
+  function pollPG() { if (PGH && PGH.ready()) { PG = PGH.finish(); PGH = null; } }
   let tile = 128;
   function frameOf(p3) {
     const r = Math.hypot(...p3), ex = p3.map(v => -v / r), ez = NR;
@@ -462,6 +479,7 @@ void main(){ivec2 p=ivec2(gl_FragCoord.xy);vec4 c=texelFetch(uC,p,0),g=texelFetc
       if (ms < 250) { ema += (ms - ema) * .08; slow = ema > 30 ? slow + ms : 0; }
       if (slow > 2000 && q < QUAL.length - 1) { q++; slow = 0; ema = 16; layout(); }
     }
+    pollPG();
     draw();   // after any resize in layout(), so a cleared canvas is never shown
   }
   // The still picture of the hole stands in only where WebGL 2 is missing; otherwise the sky shows

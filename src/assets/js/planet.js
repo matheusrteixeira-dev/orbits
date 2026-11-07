@@ -126,14 +126,28 @@ void main(){
  }
  o=vec4(col.rgb*uGain,col.a); // uGain: Doppler factor g^4 of the orbiting planet (1 at rest)
 }`;
-  function create(canvas, opts) {
+  // begin() hands the shader to the driver and returns at once; with KHR_parallel_shader_compile
+  // the driver compiles it on another thread (about 2 s on Windows), so the page is never frozen.
+  // finish() checks the result and sets the program up; called before ready() it waits for it.
+  function begin(canvas, opts) {
     const gl = canvas.getContext('webgl2', Object.assign({ premultipliedAlpha: true, antialias: false }, opts || {}));
     if (!gl) return null;
-    const sh = (t, s) => { const x = gl.createShader(t); gl.shaderSource(x, s); gl.compileShader(x); if (!gl.getShaderParameter(x, gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(x)); return x; };
-    const pr = gl.createProgram();
-    try { gl.attachShader(pr, sh(gl.VERTEX_SHADER, VS)); gl.attachShader(pr, sh(gl.FRAGMENT_SHADER, FS)); } catch (e) { console.warn(e); return null; }
+    const par = gl.getExtension('KHR_parallel_shader_compile');
+    const sh = (t, src) => { const x = gl.createShader(t); gl.shaderSource(x, src); gl.compileShader(x); return x; };
+    const vs = sh(gl.VERTEX_SHADER, VS), fs = sh(gl.FRAGMENT_SHADER, FS), pr = gl.createProgram();
+    gl.attachShader(pr, vs); gl.attachShader(pr, fs);
     gl.bindAttribLocation(pr, 0, 'p'); gl.linkProgram(pr);
-    if (!gl.getProgramParameter(pr, gl.LINK_STATUS)) { console.warn(gl.getProgramInfoLog(pr)); return null; }
+    let out;
+    return {
+      ready: () => !par || gl.getProgramParameter(pr, par.COMPLETION_STATUS_KHR),
+      finish() { if (out === undefined) out = setup(gl, canvas, pr, vs, fs); return out; },
+    };
+  }
+  function create(canvas, opts) { const h = begin(canvas, opts); return h && h.finish(); }
+  function setup(gl, canvas, pr, vs, fs) {
+    if (!gl.getProgramParameter(pr, gl.LINK_STATUS)) {
+      console.warn(gl.getShaderInfoLog(vs) || gl.getShaderInfoLog(fs) || gl.getProgramInfoLog(pr)); return null;
+    }
     const buf = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, buf);
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
     gl.enableVertexAttribArray(0); gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);
@@ -156,5 +170,5 @@ void main(){
       },
     };
   }
-  window.PlanetGL = { create };
+  window.PlanetGL = { begin, create };
 })();

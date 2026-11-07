@@ -313,6 +313,8 @@ def render(lang, C, ver, all_c):
 <link rel="icon" href="{b}favicon.svg" type="image/svg+xml"><link rel="icon" href="{b}favicon.png" sizes="64x64" type="image/png"><link rel="apple-touch-icon" href="{b}apple-touch-icon.png">
 <link rel="preload" href="{b}assets/fonts/unbounded-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="{b}assets/fonts/space-grotesk-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="{b}assets/fonts/jetbrains-mono-latin-600-normal.woff2" as="font" type="font/woff2" crossorigin>
+<style>html{{background:#03040a;color:#e8f0ff}}</style>
 {gf}
 <link rel="stylesheet" href="{b}assets/css/site.css?v={ver}">
 <script type="application/ld+json">{json.dumps(ld, ensure_ascii=False)}</script>
