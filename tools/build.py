@@ -325,7 +325,7 @@ def render(lang, C, ver, all_c):
 <details class="lang"><summary aria-label="{e(nav["lang"])}">{lang.upper()}</summary><ul>{langmenu}</ul></details></header>
 <main id="main">
 <section class="hero" id="top">
-<div class="sky" id="sky"><canvas id="bg" aria-hidden="true"></canvas><img class="still" id="bhstill" src="{b}assets/bh/bh-still.webp" alt="" aria-hidden="true"><canvas id="bh" aria-hidden="true"></canvas><canvas id="fg" aria-hidden="true"></canvas><div class="shade"></div>
+<div class="sky" id="sky"><canvas id="bg" aria-hidden="true"></canvas><img class="still" id="bhstill" src="{b}assets/bh/bh-still.webp" alt="" aria-hidden="true"><canvas id="bh" aria-hidden="true"></canvas><canvas id="fg" aria-hidden="true"></canvas><noscript><picture class="nojs"><source media="(max-width:820px)" srcset="{b}assets/bh/sky-phone.webp" width="780" height="776"><img src="{b}assets/bh/sky-{"rtl" if rtl else "ltr"}.webp" alt="" width="1600" height="900"></picture></noscript><div class="shade"></div>
 <div id="labs" role="group" aria-label="{e(T["planets"])}"></div></div>
 <div class="intro"><span class="k">{e(C["role"])}</span>
 <h1{" class=\"long\"" if len(H["h"]) > 48 else ""}>{hero_title(H["h"])}</h1>

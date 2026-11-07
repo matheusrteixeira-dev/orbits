@@ -42,7 +42,8 @@ reaching the disc draw the thin ring round it. The rays do not change with time,
 a band of rows per frame with four samples per pixel, into two textures: the light of the smooth disc and
 where each ray met it. Every frame a cheap second pass lays clumps of gas over the disc that orbit at
 Ω = 1/(r^1.5 + a), sheared by the differential rotation, so the inner edge laps in about 0.7 s and the
-outer edge in about 9 s. `src/assets/bh/bh-still.webp` is shown only where WebGL 2 is not available.
+outer edge in about 9 s. `src/assets/bh/bh-still.webp` is shown only where WebGL 2 is not available,
+and with JavaScript off the hero shows a still of the whole sky (`src/assets/bh/sky-*.webp`).
 
 The planets and the belt orbit in the plane of the disc on one clock (40 M of time per second) and one
 distance scale. Planet orbits precess at Ω − κ, with Ω = 1/(r^1.5 + a) and κ = Ω √(1 − 6/r + 8a/r^1.5 − 3a²/r²) the

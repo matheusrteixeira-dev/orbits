@@ -80,7 +80,7 @@
     // so no planet ever passes under the headline. The belt may run behind the text.
     const APO = Math.max(...PL.map(p => p.a * (1 + p.e)));
     let cx = w * .5, cy = h * .5, K;
-    if (mob) K = Math.min((w - 16) / (2 * (APO + 3)), h / (2 * 17)); // every planet stays on a phone screen
+    if (mob) { K = Math.min((w - 16) / (2 * (APO + 3)), h / (2 * 17)); cy = h * .42; } // every planet stays on a phone screen; the hole sits high enough to show on the first screen
     else {
       const free = S.rtl ? IR.l - 16 : w - IR.r - 16;
       K = Math.max(5, Math.min(h * .86 / (2 * 19), free / (2 * APO + 4)));
