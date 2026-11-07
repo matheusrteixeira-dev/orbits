@@ -39,11 +39,12 @@ runs from the prograde ISCO (about 2.32 M) to 15 M with the thin-disc flux profi
 seen as g⁴F with a black-body colour shifted by g (gravitational redshift, time dilation, frame dragging and Doppler shift).
 The shadow is flattened on the side where the disc comes towards us, and rays that circle the hole before
 reaching the disc draw the thin ring round it. The rays do not change with time, so they are traced once,
-a band of rows per frame with four samples per pixel, into two textures: the light of the smooth disc and
+a band of rows per frame with four samples per pixel (bands double while frames stay quick), into two textures: the light of the smooth disc and
 where each ray met it. Every frame a cheap second pass lays clumps of gas over the disc that orbit at
 Ω = 1/(r^1.5 + a), sheared by the differential rotation, so the inner edge laps in about 0.7 s and the
-outer edge in about 9 s. `src/assets/bh/bh-still.webp` is shown only where WebGL 2 is not available,
-and with JavaScript off the hero shows a still of the whole sky (`src/assets/bh/sky-*.webp`).
+outer edge in about 9 s. A still of the traced hole (`src/assets/bh/bh-still.webp`, rendered by
+`tools/still.js`) shows from the first frame until the live hole is ready, and stays where WebGL 2 is
+not available. With JavaScript off the hero shows a still of the whole sky (`src/assets/bh/sky-*.webp`).
 
 The planets and the belt orbit in the plane of the disc on one clock (40 M of time per second) and one
 distance scale. Planet orbits precess at Ω − κ, with Ω = 1/(r^1.5 + a) and κ = Ω √(1 − 6/r + 8a/r^1.5 − 3a²/r²) the
@@ -86,6 +87,7 @@ tools/build.py          writes dist/: one index.html per language, 404.html, rob
 tools/smoke.js          Playwright smoke test against a local server on port 8111
 tools/readme_art.py     draws the images in docs/readme/ (this README)
 tools/og.js             renders the link-preview image (src/static/og.png) from the built homepage
+tools/still.js          renders the still of the black hole shown while the live one is traced
 .github/workflows/      deploy.yml: build and deploy to Cloudflare Pages on every push to main
 ```
 
@@ -107,6 +109,11 @@ python3 -m http.server -d dist  # preview on http://localhost:8000
   404 pages.
 - `src/static/_headers` sets a Content-Security-Policy with no inline script (the page data is JSON in
   `#site-data`), HSTS, `nosniff`, a strict referrer policy and long caching for CSS, JavaScript and fonts.
+- Fonts are subset to the Latin characters the site uses (Unbounded instanced at weights 700 and 800),
+  so the first screen needs about 40 KB of fonts. Case-study screenshots load only when a planet is landed on.
+- Live projects: on wide screens a project page can show the real site in its browser window, loaded
+  after landing and removed on leaving. `LIVE_ON` in `tools/build.py` lists the sites that already allow
+  `https://sectus.dev` in their `frame-ancestors`; `frame-src` in `_headers` lists the same origins.
 
 ## Deployment
 

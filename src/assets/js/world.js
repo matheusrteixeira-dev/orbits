@@ -16,7 +16,14 @@
     if (!pgDone && PGH && PGH.ready()) { PG = PGH.finish(); pgDone = true; }
     return PG;
   }
-  requestAnimationFrame(() => setTimeout(() => { PGH = window.PlanetGL ? window.PlanetGL.begin(wc, { preserveDrawingBuffer: true }) : null; if (!PGH) pgDone = true; }, 0));
+  // The planet program starts compiling once the hole is traced (or after 1.2 s), so its setup does not
+  // share the first frames with the hole's; a planet clicked before then waits for it (see open).
+  function startPG() { if (PGH || pgDone) return; PGH = window.PlanetGL ? window.PlanetGL.begin(wc, { preserveDrawingBuffer: true }) : null; if (!PGH) pgDone = true; }
+  (function waitBH(t0) {
+    const bh = document.getElementById('bh');
+    if (!bh || bh.classList.contains('on') || performance.now() - t0 > 1200) setTimeout(startPG, 0);
+    else requestAnimationFrame(() => waitBH(t0));
+  })(performance.now());
   const KIND = { rock: 0, ocean: 1, gas: 2, storm: 3, ice: 4 };
   const hex = h => [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16) / 255);
   const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
@@ -44,7 +51,10 @@
 
   function fill(i) {
     const p = S.projects[i], art = arts[i];
-    arts.forEach((a, k) => { if (k !== i) unlive(a, true); });
+    // Fetch and decode the first screenshot during the flight, so it is ready when the page shows.
+    const im = art.querySelector('.vp img:not([hidden])');
+    if (im) { im.loading = 'eager'; if (im.decode) im.decode().catch(() => {}); }
+    arts.forEach((a, k) => { if (k !== i) { unlive(a); rearm(a); } });
     arts.forEach((a, k) => { a.hidden = k !== i; });
     const o = window.SKY ? window.SKY.orbitInfo(i) : null, orb = art.querySelector('.orb');
     if (orb) orb.textContent = o ? T.orbit.replace('{r}', o.a).replace('{p}', Math.round(o.period)) : '';
@@ -59,9 +69,9 @@
     const tabs = [...art.querySelectorAll('.tabs button')], imgs = [...art.querySelectorAll('.vp img')], url = art.querySelector('.url');
     tabs.forEach(t => t.addEventListener('click', () => {
       tabs.forEach(x => x.setAttribute('aria-selected', String(x === t)));
-      imgs.forEach(im => { im.hidden = !!t.dataset.live || im.dataset.k !== t.dataset.k; });
+      imgs.forEach(im => { im.hidden = im.dataset.k !== (t.dataset.live ? '0' : t.dataset.k); });   // the first screenshot stands in while the live site loads
       if (url && t.dataset.url) url.textContent = t.dataset.url;
-      if (t.dataset.live) live(art, t); else unlive(art, false);
+      if (t.dataset.live) live(art, t); else unlive(art);
     }));
     const nx = art.querySelector('.cs-next');
     if (nx) nx.addEventListener('click', () => switchTo(+nx.dataset.go));
@@ -76,15 +86,30 @@
     f.src = t.dataset.live; f.title = t.dataset.title;
     f.allow = 'fullscreen; microphone; autoplay; clipboard-write';
     f.referrerPolicy = 'strict-origin-when-cross-origin';
+    f.addEventListener('load', () => { if (f.isConnected) vp.classList.add('live'); }, { once: true });
     vp.appendChild(f); liveOn = true;
   }
-  function unlive(art, reset) {
+  // On landing, the window becomes the live site (if the project has one and the screen is wide
+  // enough); the screenshot stays in its place until the site has loaded.
+  const narrow = matchMedia('(max-width: 820px)');
+  function goLive(art) {
+    const t = art.querySelector('.tabs button[data-live]');
+    if (t && !narrow.matches && t.getAttribute('aria-selected') === 'true') live(art, t);
+  }
+  function unlive(art) {
     const f = art.querySelector('.vp iframe');
-    if (f) { f.src = 'about:blank'; f.remove(); }
+    if (f) { f.src = 'about:blank'; f.remove(); art.querySelector('.vp').classList.remove('live'); }
     liveOn = arts.some(a => a.querySelector('.vp iframe'));
-    if (!reset) return;
-    const t = art.querySelector('.tabs button:not([data-live])');
-    if (t && art.querySelector('.tabs button[data-live][aria-selected="true"]')) t.click();
+  }
+  // Leaving a project selects the live tab again, so the next landing goes live; on phones the
+  // first screenshot is selected instead.
+  function rearm(art) {
+    const lt = art.querySelector('.tabs button[data-live]');
+    if (!lt) return;
+    const t = narrow.matches ? art.querySelector('.tabs button:not([data-live])') : lt;
+    art.querySelectorAll('.tabs button').forEach(x => x.setAttribute('aria-selected', String(x === t)));
+    art.querySelectorAll('.vp img').forEach(im => { im.hidden = im.dataset.k !== '0'; });
+    const url = art.querySelector('.url'); if (url && t.dataset.url) url.textContent = t.dataset.url;
   }
   // Camera at the start: the planet (radius 1, at the origin) appears where it was in the sky, at the same size.
   function startCam(from) {
@@ -161,10 +186,10 @@
       if (viz) viz.draw(now, false);
     }
   }
-  function landed() { st.phase = 'landed'; el.classList.add('landed'); el.classList.remove('fly'); const h = arts[cur] && arts[cur].querySelector('h2'); if (h) h.focus({ preventScroll: true }); }
+  function landed() { st.phase = 'landed'; if (arts[cur]) { rearm(arts[cur]); goLive(arts[cur]); } el.classList.add('landed'); el.classList.remove('fly'); const h = arts[cur] && arts[cur].querySelector('h2'); if (h) h.focus({ preventScroll: true }); }
   function closed() {
     cancelAnimationFrame(raf); raf = 0; st = null; viz = null;
-    arts.forEach(a => unlive(a, true));
+    arts.forEach(a => { unlive(a); rearm(a); });
     el.classList.remove('on', 'landed', 'fly'); el.hidden = true;
     setInert(false); document.documentElement.style.overflow = '';
     if (window.SKY) window.SKY.setActive(true);
@@ -180,6 +205,7 @@
     // A planet clicked while its shader is still compiling: keep the sky running and start the flight
     // as soon as the shader is ready, instead of freezing the page while it compiles.
     if (!pg() && !pgDone) {
+      startPG();
       clearTimeout(waitT); document.documentElement.classList.add('wait');
       if (window.SKY) window.SKY.pending(i);
       waitT = setTimeout(() => open(i, null, opts), 50); return;
@@ -217,7 +243,7 @@
     // Fly back to where the planet is in the sky (after a switch the flight started elsewhere).
     const P = window.SKY ? window.SKY.planet(cur) : null;
     if (P && P.rot) { st.a = startCam(P); st.rot = P.rot; st.L = P.L; st.gain = P.gain; st.sw = false; }
-    arts.forEach(a => unlive(a, true));
+    arts.forEach(a => unlive(a));
     el.classList.remove('landed'); el.classList.add('fly');
     st.phase = 'out'; st.t0 = performance.now(); st.dur = 1800;
   }
@@ -241,8 +267,5 @@
   });
   addEventListener('resize', () => { if (st) size(); });
   wp.addEventListener('scroll', () => el.classList.toggle('sc', wp.scrollTop > 40), { passive: true });
-  const idle = window.requestIdleCallback || (f => setTimeout(f, 300));
-  // Decode the first screenshot of each project while the page is idle, so showing a project does not stall.
-  idle(() => arts.forEach(a => { const im = a.querySelector('.vp img:not([hidden])'); if (im && im.decode) { im.loading = 'eager'; im.decode().catch(() => {}); } }));
   window.WORLD = { open, close: () => close(false), get open_() { return cur; }, planetGL: () => (cur < 0 ? pg() : null) };
 })();

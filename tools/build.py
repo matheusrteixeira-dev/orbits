@@ -212,7 +212,8 @@ def case_study(i, p, C, b):
         tabs = "".join(f'<button type="button" role="tab" aria-selected="{"true" if k == 0 else "false"}" data-k="{k}" data-url="{e(u)}">{e(P["shots"][k])}</button>' for k, (_, u) in enumerate(sh))
         if pid in LIVE_ON:
             lu = LIVE[pid]
-            tabs = (f'<button type="button" role="tab" aria-selected="false" data-live="{e(lu)}" data-url="{e(lu.split("://", 1)[1].rstrip("/"))}"'
+            tabs = tabs.replace('aria-selected="true"', 'aria-selected="false"', 1)
+            tabs = (f'<button type="button" role="tab" aria-selected="true" data-live="{e(lu)}" data-url="{e(lu.split("://", 1)[1].rstrip("/"))}"'
                     f' data-title="{e(T["liveT"].format(n=p["name"]))}">{e(T["live"])}</button>') + tabs
         media = (f'<figure class="cs-media"><div class="win"><div class="bar"><i></i><i></i><i></i><span class="url">{e(sh[0][1])}</span></div><div class="vp">{imgs}</div></div>'
                  f'<div class="tabs" role="tablist" aria-label="{e(T["shot"])}">{tabs}</div></figure>')
@@ -269,7 +270,7 @@ def render(lang, C, ver, all_c):
         if p["id"] in SHOTS:
             f0 = SHOTS[p["id"]][0][0]
             fig = (f'<figure class="fig shot"><div class="win"><div class="bar"><i></i><i></i><i></i><span class="url">{e(SHOTS[p["id"]][0][1])}</span></div>'
-                   f'<img src="{b}assets/img/{f0}-s.webp" srcset="{b}assets/img/{f0}-s.webp 720w, {b}assets/img/{f0}.webp 1440w" sizes="(max-width: 820px) 92vw, 46vw" width="1440" height="900" alt="{e(P["shots"][0])}" loading="lazy" decoding="async"></div>'
+                   f'<img src="{b}assets/img/{f0}-s.webp" srcset="{b}assets/img/{f0}-s.webp 720w, {b}assets/img/{f0}.webp 1440w" sizes="(max-width: 820px) 92vw, 46vw" width="1440" height="900" alt="{e(P["shots"][0])}" loading="lazy" decoding="async" fetchpriority="low"></div>'
                    f'<figcaption>{e(P["shots"][0])}</figcaption></figure>')
         else:
             fig = (f'<figure class="fig"><canvas data-viz="{p["id"]}" width="800" height="600" role="img" aria-label="{e(P["viz"])}"></canvas><figcaption>{e(P["viz"])}</figcaption></figure>')
@@ -322,13 +323,16 @@ def render(lang, C, ver, all_c):
 <meta property="og:type" content="website"><meta property="og:site_name" content="Matheus Teixeira"><meta property="og:title" content="{e(title)}"><meta property="og:description" content="{e(C["meta"]["desc"])}"><meta property="og:url" content="{SITE_URL}{page_path(lang)}"><meta property="og:image" content="{SITE_URL}og.png?v={OG_V}"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:locale" content="{OG_LOCALE[lang]}">{og_alt}
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="{b}favicon.svg" type="image/svg+xml"><link rel="icon" href="{b}favicon.png" sizes="64x64" type="image/png"><link rel="apple-touch-icon" href="{b}apple-touch-icon.png">
-<link rel="preload" href="{b}assets/fonts/unbounded-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin fetchpriority="high">
-<link rel="preload" href="{b}assets/fonts/space-grotesk-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin fetchpriority="high">
-<link rel="preload" href="{b}assets/fonts/jetbrains-mono-latin-600-normal.woff2" as="font" type="font/woff2" crossorigin fetchpriority="high">
+<link rel="preload" href="{b}assets/fonts/unbounded-800.woff2" as="font" type="font/woff2" crossorigin fetchpriority="high">
+<link rel="preload" href="{b}assets/fonts/space-grotesk-400.woff2" as="font" type="font/woff2" crossorigin fetchpriority="high">
+<link rel="preload" href="{b}assets/fonts/jetbrains-mono-600.woff2" as="font" type="font/woff2" crossorigin fetchpriority="high">
+<link rel="preload" href="{b}assets/fonts/jetbrains-mono-400.woff2" as="font" type="font/woff2" crossorigin>
 <style>html{{background:#03040a;color:#e8f0ff}}</style>
 <noscript><style>.intro,.top>*{{opacity:1;animation:none}}</style></noscript>
 {gf}
 <link rel="stylesheet" href="{b}assets/css/site.css?v={ver}">
+<script src="{b}assets/js/fonts.js?v={ver}" async></script>
+<link rel="preload" href="{b}assets/js/sky.js?v={ver}" as="script">
 <script type="application/ld+json">{json.dumps(ld, ensure_ascii=False)}</script>
 </head>
 <body>
@@ -339,7 +343,7 @@ def render(lang, C, ver, all_c):
 <details class="lang"><summary aria-label="{e(nav["lang"])}">{lang.upper()}</summary><ul>{langmenu}</ul></details></header>
 <main id="main">
 <section class="hero" id="top">
-<div class="sky" id="sky"><canvas id="bg" aria-hidden="true"></canvas><img class="still" id="bhstill" src="{b}assets/bh/bh-still.webp" alt="" aria-hidden="true"><canvas id="bh" aria-hidden="true"></canvas><canvas id="fg" aria-hidden="true"></canvas><noscript><picture class="nojs"><source media="(max-width:820px)" srcset="{b}assets/bh/sky-phone.webp" width="780" height="776"><img src="{b}assets/bh/sky-{"rtl" if rtl else "ltr"}.webp" alt="" width="1600" height="900"></picture></noscript><div class="shade"></div>
+<div class="sky" id="sky"><canvas id="bg" aria-hidden="true"></canvas><img class="still" id="bhstill" src="{b}assets/bh/bh-still.webp?v={ver}" fetchpriority="high" alt="" aria-hidden="true"><canvas id="bh" aria-hidden="true"></canvas><canvas id="fg" aria-hidden="true"></canvas><noscript><picture class="nojs"><source media="(max-width:820px)" srcset="{b}assets/bh/sky-phone.webp" width="780" height="776"><img src="{b}assets/bh/sky-{"rtl" if rtl else "ltr"}.webp" alt="" width="1600" height="900"></picture></noscript><div class="shade"></div>
 <div id="labs" role="group" aria-label="{e(T["planets"])}"></div></div>
 <div class="intro"><span class="k">{e(C["role"])}</span>
 <h1{" class=\"long\"" if len(H["h"]) > 48 else ""}>{hero_title(H["h"])}</h1>
@@ -348,7 +352,7 @@ def render(lang, C, ver, all_c):
 </section>
 
 <section class="sec" id="about" aria-labelledby="h-about"><div class="sh"><h2 id="h-about">{e(C["about"]["h"])}</h2></div>
-<div class="ab"><div class="ab-l"><div class="pf"><i></i><b></b><img src="{b}assets/img/portrait.webp" alt="{e(C["about"]["alt"])}" width="800" height="800" loading="lazy" decoding="async"></div>
+<div class="ab"><div class="ab-l"><div class="pf"><i></i><b></b><img src="{b}assets/img/portrait-s.webp" srcset="{b}assets/img/portrait-s.webp 400w, {b}assets/img/portrait.webp 800w" sizes="222px" alt="{e(C["about"]["alt"])}" width="800" height="800" loading="lazy" decoding="async" fetchpriority="low"></div>
 <dl>{facts}</dl><div class="ln"><a href="{LINKS["github"]}" target="_blank" rel="noopener">GitHub</a><a href="{LINKS["linkedin"]}" target="_blank" rel="noopener">LinkedIn</a><a href="{LINKS["orcid"]}" target="_blank" rel="noopener">ORCID</a><a href="/cv/Matheus-Teixeira-CV.pdf" download type="application/pdf">{e(T["cv"])}</a></div></div>
 <div class="ab-r">{"".join(f"<p>{e(x)}</p>" for x in C["about"]["p"])}{term}</div></div></section>
 
@@ -378,10 +382,10 @@ def render(lang, C, ver, all_c):
 <div class="wp" id="wp">{studies}</div>
 </div>
 <script type="application/json" id="site-data">{site_json}</script>
+<script src="{b}assets/js/sky.js?v={ver}" defer></script>
 <script src="{b}assets/js/planet.js?v={ver}" defer></script>
 <script src="{b}assets/js/viz.js?v={ver}" defer></script>
 <script src="{b}assets/js/world.js?v={ver}" defer></script>
-<script src="{b}assets/js/sky.js?v={ver}" defer></script>
 <script src="{b}assets/js/main.js?v={ver}" defer></script>
 </body>
 </html>

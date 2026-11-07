@@ -49,7 +49,7 @@ C = {
   "illus": "Diagram, drawn live",
   "shot": "Screenshot",
   "cv": "CV (PDF)",
-  "live": "Use it here",
+  "live": "Live site",
   "liveT": "{n}, live"
  },
  "about": {

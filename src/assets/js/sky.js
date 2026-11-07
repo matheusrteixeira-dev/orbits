@@ -6,7 +6,7 @@
 // and the planets far larger than they would be.
 (function () {
   'use strict';
-  const S = window.SITE;
+  const S = window.SITE = window.SITE || JSON.parse(document.getElementById('site-data').textContent);
   const A = 0.9, INC = 72 * Math.PI / 180, CI = Math.cos(INC), SI = Math.sin(INC);
   const RATE = 40;                      // M of time per second on screen
   const CAM = 600;                      // camera distance (M)
@@ -139,7 +139,7 @@
   const BH = (function () {
     const D = { HW: 26, HH: 16.25, rIn: ISCO, rOut: 15 };
     let gl = null, par = null, prog = null, cprog = null, u = {}, cu = {}, ok = false, rect = null, row = 0, rows = 0, ready = false;
-    let fb = null, tC = null, tG = null, hd = 1, lite = 0;
+    let fb = null, tC = null, tG = null, hd = 1, lite = 0, nb = 8, tB = 0;
     const VS = '#version 300 es\nin vec2 p;void main(){gl_Position=vec4(p,0.,1.);}';
     const FS = `#version 300 es
 precision highp float;
@@ -269,7 +269,7 @@ void main(){ivec2 p=ivec2(gl_FragCoord.xy);vec4 c=texelFetch(uC,p,0),g=texelFetc
         rect = { x: L.cx - w / 2, y: L.cy - h / 2, w, h };
         for (const el of [bhc, still]) { if (!el) continue; Object.assign(el.style, { left: rect.x + 'px', top: rect.y + 'px', width: w + 'px', height: h + 'px' }); }
         const W = Math.max(1, Math.round(w * hd)), H = Math.max(1, Math.round(h * hd));
-        row = 0; rows = H; ready = false;
+        row = 0; rows = H; ready = false; nb = Math.round(H / 24); tB = 0;
         if (!gl) return;
         if (bhc.width !== W || bhc.height !== H || !tC) {
           bhc.width = W; bhc.height = H;
@@ -290,7 +290,11 @@ void main(){ivec2 p=ivec2(gl_FragCoord.xy);vec4 c=texelFetch(uC,p,0),g=texelFetc
         if (!ok || !rect) return false;
         const W = bhc.width, H = bhc.height;
         if (!ready) {
-          const band = Math.max(8, Math.round(H / 24));
+          // Bands start at 1/24 of the rows and double while frames stay quick, so a fast GPU is done
+          // in a few frames and a slow one never gets a long frame.
+          const now = performance.now(), dt = tB ? now - tB : 99; tB = now;
+          if (dt < 20 && row > 0) nb = Math.min(rows, nb * 2);
+          const band = Math.max(8, nb);
           gl.bindFramebuffer(gl.FRAMEBUFFER, fb); gl.useProgram(prog); gl.viewport(0, 0, W, H);
           gl.enable(gl.SCISSOR_TEST); gl.scissor(0, row, W, Math.min(band, rows - row));
           const pix = 2 * D.HW / W;   // M per device pixel
@@ -306,7 +310,7 @@ void main(){ivec2 p=ivec2(gl_FragCoord.xy);vec4 c=texelFetch(uC,p,0),g=texelFetc
         gl.activeTexture(gl.TEXTURE1); gl.bindTexture(gl.TEXTURE_2D, tG);
         gl.uniform1i(cu.uC, 0); gl.uniform1i(cu.uG, 1); gl.uniform1f(cu.uTau, tau % 1e6); gl.uniform1f(cu.uLite, lite);
         gl.drawArrays(gl.TRIANGLES, 0, 3);
-        if (ready && !bhc.classList.contains('on')) { bhc.classList.add('on'); }
+        if (ready && !bhc.classList.contains('on')) { bhc.classList.add('on'); if (still) setTimeout(() => still.classList.remove('on'), 400); }
         return !ready;
       },
     };
@@ -491,10 +495,11 @@ void main(){ivec2 p=ivec2(gl_FragCoord.xy);vec4 c=texelFetch(uC,p,0),g=texelFetc
     pollPG();
     draw();   // after any resize in layout(), so a cleared canvas is never shown
   }
-  // The still picture of the hole stands in only where WebGL 2 is missing; otherwise the sky shows
-  // stars and planets at once and the traced hole fades in when it is ready (a fraction of a second).
-  if (!BH.init() && still) still.classList.add('on');
+  // A still of the traced hole (tools/still.js) shows from the first frame; the live hole fades in
+  // over it once its rays are traced, and the still goes. Without WebGL 2 the still stays.
+  BH.init();
   layout();
+  if (still) still.classList.add('on');
   if (document.fonts) document.fonts.ready.then(() => { [...labs.children].forEach(b => b._w = null); });
   let rz; addEventListener('resize', () => { clearTimeout(rz); rz = setTimeout(() => { layout(); if (visible && active) draw(); }, 120); });
   requestAnimationFrame(loop);

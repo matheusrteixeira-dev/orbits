@@ -41,7 +41,7 @@ C = {
   "illus": "Diagrama, dibujado en vivo",
   "shot": "Capturas de pantalla",
   "cv": "CV (PDF)",
-  "live": "Usarlo aquí",
+  "live": "Sitio en vivo",
   "liveT": "{n}, en vivo"
  },
  "about": {

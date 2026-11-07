@@ -41,7 +41,7 @@ C = {
   "illus": "Schéma, dessiné en direct",
   "shot": "Captures d’écran",
   "cv": "CV (PDF)",
-  "live": "L’utiliser ici",
+  "live": "Site en direct",
   "liveT": "{n}, en direct"
  },
  "about": {

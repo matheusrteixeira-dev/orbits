@@ -41,7 +41,7 @@ C = {
   "illus": "Diagramm, live gezeichnet",
   "shot": "Bildschirmfotos",
   "cv": "Lebenslauf (PDF)",
-  "live": "Hier benutzen",
+  "live": "Live-Seite",
   "liveT": "{n}, live"
  },
  "about": {
