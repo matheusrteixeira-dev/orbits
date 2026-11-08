@@ -22,7 +22,7 @@
     });
   }
   // Tile screenshots load only as their tile nears the screen.
-  const lz = [...document.querySelectorAll('img[data-src]')], put = im => { im.srcset = im.dataset.srcset; im.src = im.dataset.src; im.removeAttribute('data-src'); };
+  const lz = [...document.querySelectorAll('.pt-img img[data-src]')], put = im => { if (im.dataset.srcset) im.srcset = im.dataset.srcset; im.src = im.dataset.src; im.removeAttribute('data-src'); };
   if ('IntersectionObserver' in window) { const lo = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { put(e.target); lo.unobserve(e.target); } }), { rootMargin: '600px 0px' }); lz.forEach(im => lo.observe(im)); }
   else lz.forEach(put);
   document.querySelectorAll('button.land').forEach(b => b.addEventListener('click', () => window.WORLD.open(+b.dataset.i)));

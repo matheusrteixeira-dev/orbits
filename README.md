@@ -29,7 +29,9 @@ languages, with no framework, and the build needs only Python 3.
 
 <p align="center"><img src="docs/readme/light.svg" alt="Light rays passing a black hole (shown without spin for clarity), computed from d2u/dphi2 = 3u^2 - u: some fall in, some circle the photon sphere at 3 M, the rest are bent and escape" width="100%"/></p>
 
-`src/assets/js/sky.js` traces the hole in a WebGL 2 fragment shader. The hole spins, with a = 0.9 M (90% of
+`src/assets/js/bh.js` traces the hole in a WebGL 2 fragment shader. Where the browser can hand a canvas to a
+worker (OffscreenCanvas), it runs in a Web Worker, so tracing never holds up scrolling or clicks; elsewhere
+it runs on the page. The hole spins, with a = 0.9 M (90% of
 the maximum). Every pixel follows its light ray backwards from the camera (600 M away, 18° above the disc)
 through the Kerr metric in Boyer-Lindquist coordinates. Each ray keeps its energy, angular momentum L and
 Carter constant Q, set by where it leaves the camera; r and θ are integrated as second-order equations in
@@ -88,6 +90,7 @@ tools/smoke.js          Playwright smoke test against a local server on port 811
 tools/readme_art.py     draws the images in docs/readme/ (this README)
 tools/og.js             renders the link-preview image (src/static/og.png) from the built homepage
 tools/still.js          renders the still of the black hole shown while the live one is traced
+tools/page_shots.py     cuts a full-page capture into the slices of a scroll-through page view
 .github/workflows/      deploy.yml: build and deploy to Cloudflare Pages on every push to main
 ```
 
@@ -113,9 +116,15 @@ python3 -m http.server -d dist  # preview on http://localhost:8000
   so the first screen needs about 40 KB of fonts. Until Unbounded arrives the headline uses Arial Bold scaled to its
   width, so it keeps its line breaks. Sections below the hero skip layout until they near the screen
   (`content-visibility`), project tiles load their screenshot only then, and case-study screenshots load only when a planet is landed on.
-- Live projects: on wide screens a project page can show the real site in its browser window, loaded
-  after landing and removed on leaving. `LIVE_ON` in `tools/build.py` lists the sites that already allow
-  `https://sectus.dev` in their `frame-ancestors`; `frame-src` in `_headers` lists the same origins.
+- Live projects: on wide screens the window on the Isaac and Amadeo pages becomes the real site after
+  landing, and is removed on leaving. Isaac is framed through its embed page (`/embed/chaos`, the full
+  workspace of one scene); Amadeo opens in the page's language. `LIVE` in `tools/build.py` holds the
+  addresses and `LIVE_ON` the sites that allow `https://sectus.dev` in their `frame-ancestors`;
+  `frame-src` in `_headers` lists the same origins, and `Permissions-Policy` passes the microphone to
+  Amadeo, which listens to an instrument. The connection to a live site opens during the flight.
+- A site that cannot be framed can be shown as a whole page that scrolls inside the window: a full-page
+  capture cut by `tools/page_shots.py` into 1600 px slices, a wide one and a phone one, listed in `PAGES`
+  in `tools/build.py`. Only the slices of the layout on screen load, as they near the window.
 
 ## Deployment
 

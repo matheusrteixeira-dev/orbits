@@ -10,6 +10,8 @@ const OUT = process.argv[2] || 'still.png';
   const p = await b.newPage({ viewport: { width: 1920, height: 1080 }, deviceScaleFactor: 2 });
   // A software renderer is slow, and the sky would lower its quality; keep it at full quality here.
   await p.route('**/assets/js/sky.js*', async r => { const res = await r.fetch(); r.fulfill({ response: res, body: (await res.text()).replace('slow > 2000', 'slow > 2e9') }); });
+  // Draw the hole on the page (not in a worker), so its canvas can be read back.
+  await p.addInitScript(() => { window.BH_MAIN = true; });
   await p.goto(process.argv[3] || 'http://localhost:8111/');
   await p.waitForFunction(() => document.getElementById('bh').classList.contains('on'), { timeout: 600000 });
   await p.waitForTimeout(1500);

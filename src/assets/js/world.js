@@ -52,8 +52,9 @@
   function fill(i) {
     const p = S.projects[i], art = arts[i];
     // Fetch and decode the first screenshot during the flight, so it is ready when the page shows.
-    const im = art.querySelector('.vp img:not([hidden])');
-    if (im) { im.loading = 'eager'; if (im.decode) im.decode().catch(() => {}); }
+    const v0 = art.querySelector('.vp > [data-k]:not([hidden])');
+    if (v0 && v0.tagName === 'IMG') { v0.loading = 'eager'; if (v0.decode) v0.decode().catch(() => {}); }
+    else if (v0) page(v0);
     arts.forEach((a, k) => { if (k !== i) { unlive(a); rearm(a); } });
     arts.forEach((a, k) => { a.hidden = k !== i; });
     const o = window.SKY ? window.SKY.orbitInfo(i) : null, orb = art.querySelector('.orb');
@@ -66,12 +67,13 @@
   }
   // Screenshot tabs and the next-planet buttons inside the case studies.
   arts.forEach(art => {
-    const tabs = [...art.querySelectorAll('.tabs button')], imgs = [...art.querySelectorAll('.vp img')], url = art.querySelector('.url');
+    const tabs = [...art.querySelectorAll('.tabs button')], imgs = [...art.querySelectorAll('.vp > [data-k]')], url = art.querySelector('.url');
     tabs.forEach(t => t.addEventListener('click', () => {
       tabs.forEach(x => x.setAttribute('aria-selected', String(x === t)));
       imgs.forEach(im => { im.hidden = im.dataset.k !== (t.dataset.live ? '0' : t.dataset.k); });   // the first screenshot stands in while the live site loads
       if (url && t.dataset.url) url.textContent = t.dataset.url;
       if (t.dataset.live) live(art, t); else unlive(art);
+      const pv = imgs.find(x => !x.hidden && x.classList.contains('pg')); if (pv) page(pv);
     }));
     const nx = art.querySelector('.cs-next');
     if (nx) nx.addEventListener('click', () => switchTo(+nx.dataset.go));
@@ -84,7 +86,7 @@
     if (vp.querySelector('iframe')) return;
     const f = document.createElement('iframe');
     f.src = t.dataset.live; f.title = t.dataset.title;
-    f.allow = 'fullscreen; microphone; autoplay; clipboard-write';
+    f.allow = 'fullscreen; microphone; display-capture; autoplay; clipboard-write; web-share';
     f.referrerPolicy = 'strict-origin-when-cross-origin';
     f.addEventListener('load', () => { if (f.isConnected) vp.classList.add('live'); }, { once: true });
     vp.appendChild(f); liveOn = true;
@@ -101,14 +103,33 @@
     if (f) { f.src = 'about:blank'; f.remove(); art.querySelector('.vp').classList.remove('live'); }
     liveOn = arts.some(a => a.querySelector('.vp iframe'));
   }
+  // A whole page scrolled in the window (a site that cannot be framed): its slices load as they near
+  // the window's view, and only those of the layout shown (wide or phone).
+  function page(pg) {
+    if (pg._io) return;
+    const put = im => { if (im.dataset.src) { im.src = im.dataset.src; im.removeAttribute('data-src'); } };
+    pg._io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { put(e.target); pg._io.unobserve(e.target); } }), { root: pg, rootMargin: '1200px 0px' });
+    pg.querySelectorAll('img[data-src]').forEach(im => pg._io.observe(im));
+  }
+  // Connect to a live site's server while the camera is still flying to its planet.
+  const warmed = new Set();
+  function warm(i) {
+    const t = arts[i] && arts[i].querySelector('.tabs button[data-live]');
+    if (!t || narrow.matches) return;
+    const o = new URL(t.dataset.live).origin;
+    if (warmed.has(o)) return;
+    warmed.add(o);
+    const l = document.createElement('link'); l.rel = 'preconnect'; l.href = o; document.head.appendChild(l);
+  }
   // Leaving a project selects the live tab again, so the next landing goes live; on phones the
   // first screenshot is selected instead.
   function rearm(art) {
+    art.querySelectorAll('.pg').forEach(g => { g.scrollTop = 0; });
     const lt = art.querySelector('.tabs button[data-live]');
     if (!lt) return;
     const t = narrow.matches ? art.querySelector('.tabs button:not([data-live])') : lt;
     art.querySelectorAll('.tabs button').forEach(x => x.setAttribute('aria-selected', String(x === t)));
-    art.querySelectorAll('.vp img').forEach(im => { im.hidden = im.dataset.k !== '0'; });
+    art.querySelectorAll('.vp > [data-k]').forEach(im => { im.hidden = im.dataset.k !== '0'; });
     const url = art.querySelector('.url'); if (url && t.dataset.url) url.textContent = t.dataset.url;
   }
   // Camera at the start: the planet (radius 1, at the origin) appears where it was in the sky, at the same size.
@@ -212,6 +233,7 @@
     }
     document.documentElement.classList.remove('wait');
     if (window.SKY) window.SKY.pending(-1);
+    warm(i);
     const P = window.SKY ? window.SKY.planet(i) : null;
     from = from || P;
     if (!from || !from.rot) { // no sky position (no WebGL or not drawn yet): open without the flight

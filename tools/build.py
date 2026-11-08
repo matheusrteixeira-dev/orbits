@@ -182,10 +182,28 @@ OG_LOCALE = {"en": "en_US", "pt": "pt_BR", "es": "es_ES", "fr": "fr_FR", "de": "
 
 
 # ---------- Case studies: one article per project, shown on its planet ----------
-# Projects that can be used live inside their page (an iframe made only when its tab is pressed).
-# A site goes in LIVE_ON once it allows sectus.dev in its CSP frame-ancestors.
-LIVE = {"isaac": "https://isaac3d.com/scene/chaos", "amadeo": "https://amadeosheets.com/", "websites": "https://liderplustelemedicina.com.br/"}
-LIVE_ON = set()
+# Projects used live inside their page: the real site in an iframe, made after landing on wide screens and
+# removed on leaving. A site goes in LIVE_ON once it lets https://sectus.dev frame it (CSP frame-ancestors,
+# no X-Frame-Options). Isaac's embed pages (/embed/<scene>) are made to be framed by any site: the full
+# workspace of the scene, with a link that opens it in Isaac. frame-src in src/static/_headers lists the same origins.
+# The address takes the page's language where the site has it ({p}: "" for English, "/pt" and so on).
+LIVE = {
+    "isaac": ("https://isaac3d.com{p}/embed/chaos", set()),
+    "amadeo": ("https://amadeosheets.com{p}", {"pt", "es", "fr", "de", "zh", "hi", "ar"}),
+    "websites": ("https://liderplustelemedicina.com.br/", set()),
+}
+LIVE_ON = {"isaac", "amadeo"}
+
+
+def live_url(pid, lang):
+    t, langs = LIVE[pid]
+    return t.format(p=f"/{lang}" if lang in langs else "")
+
+# Whole pages scrolled inside the window, for sites that cannot be framed: a full-page capture cut into
+# slices (src/assets/img/page/<name>-d-<n>.webp at 1280 px wide for wide screens, <name>-m-<n>.webp at
+# 780 px, a 390 px phone at 2x, for narrow ones) that load as they near the window. tools/page_shots.py
+# cuts a capture and prints the slice heights listed here.
+PAGES = {}
 
 SHOTS = {
     "isaac": [("isaac-scene", "isaac3d.com/scene/chaos"), ("isaac-home", "isaac3d.com"), ("isaac-library", "isaac3d.com/library")],
@@ -199,7 +217,7 @@ SHOTS = {
 }
 
 
-def case_study(i, p, C, b):
+def case_study(i, p, C, b, lang):
     T, P = C["ui"], C["proj"][p["id"]]
     pid = p["id"]
     links = "".join(f'<a class="btn" href="https://{e(u)}" target="_blank" rel="noopener">{e(T["visit"].format(u=u))} <span aria-hidden="true">↗</span></a>' for u in p["urls"]) \
@@ -208,10 +226,17 @@ def case_study(i, p, C, b):
             f'<div><dt>{e(T["stack"])}</dt><dd>{e(" · ".join(p["tags"]))}</dd></div>')
     if pid in SHOTS:
         sh = SHOTS[pid]
-        imgs = "".join(f'<img src="{b}assets/img/{f}.webp" srcset="{b}assets/img/{f}-s.webp 720w, {b}assets/img/{f}.webp 1440w" sizes="(max-width: 1000px) 92vw, 52vw" width="1440" height="900" alt="{e(P["shots"][k])}" loading="lazy" decoding="async" data-k="{k}"{"" if k == 0 else " hidden"}>' for k, (f, _) in enumerate(sh))
+        def view(k, f):
+            hid = "" if k == 0 else " hidden"
+            if f in PAGES:
+                sl = lambda kind, w: "".join(f'<img data-src="{b}assets/img/page/{f}-{kind}-{n}.webp" width="{w}" height="{h}" alt="" decoding="async">' for n, h in enumerate(PAGES[f][kind]))
+                return (f'<div class="pg" data-k="{k}" tabindex="0" role="region" aria-label="{e(P["shots"][k])}"{hid}>'
+                        f'<div class="pg-d">{sl("d", 1280)}</div><div class="pg-m">{sl("m", 780)}</div></div>')
+            return (f'<img src="{b}assets/img/{f}.webp" srcset="{b}assets/img/{f}-s.webp 720w, {b}assets/img/{f}.webp 1440w" sizes="(max-width: 1000px) 92vw, 52vw" width="1440" height="900" alt="{e(P["shots"][k])}" loading="lazy" decoding="async" data-k="{k}"{hid}>')
+        imgs = "".join(view(k, f) for k, (f, _) in enumerate(sh))
         tabs = "".join(f'<button type="button" role="tab" aria-selected="{"true" if k == 0 else "false"}" data-k="{k}" data-url="{e(u)}">{e(P["shots"][k])}</button>' for k, (_, u) in enumerate(sh))
         if pid in LIVE_ON:
-            lu = LIVE[pid]
+            lu = live_url(pid, lang)
             tabs = tabs.replace('aria-selected="true"', 'aria-selected="false"', 1)
             tabs = (f'<button type="button" role="tab" aria-selected="true" data-live="{e(lu)}" data-url="{e(lu.split("://", 1)[1].rstrip("/"))}"'
                     f' data-title="{e(T["liveT"].format(n=p["name"]))}">{e(T["live"])}</button>') + tabs
@@ -299,7 +324,7 @@ def render(lang, C, ver, all_c):
             f'{pr}<b>ls ~/shipped</b>\n<span class="ls">isaac3d.com/  amadeosheets.com/  liderplustelemedicina.com.br/  brectus/  allwinner/  quantum-ml-healthcare/</span>\n'
             f'{pr}<b>echo $LANG</b>\n{e(tm["lang"])}\n{pr}<span class="cur"></span></pre></div>')
     wl_svg, wl_list = worldline(C, rtl)
-    studies = "".join(case_study(i, p, C, b) for i, p in enumerate(PROJECTS))
+    studies = "".join(case_study(i, p, C, b, lang) for i, p in enumerate(PROJECTS))
 
     site = {"lang": lang, "base": b, "rtl": rtl, "email": EMAIL,
             "t": {k: T[k] for k in T},
