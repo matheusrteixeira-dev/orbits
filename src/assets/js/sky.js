@@ -81,7 +81,7 @@
     const APO = Math.max(...PL.map(p => p.a * (1 + p.e)), 51);   // the outermost orbit, or the belt's middle
     const PAPO = Math.max(...PL.map(p => p.a * (1 + p.e))) + 3;   // the outermost planet with its label room
     let cx = w * .5, cy = h * .5, K;
-    if (mob) { K = Math.min((w - 16) / (2 * (APO + 3)), h / (2 * 17)); cy = h * .42; } // every planet stays on a phone screen; the hole sits high enough to show on the first screen
+    if (mob) { K = Math.min((w - 16) / (2 * (PAPO + 2)), h / (2 * 17)); cy = h * .42; } // every planet stays on a phone screen (the belt may run off the edges); the hole sits high enough to show on the first screen
     else {
       const free = S.rtl ? IR.l - 16 : w - IR.r - 16;
       // The planets fit beside the text; the faint belt may pass behind it.
@@ -90,7 +90,7 @@
     }
     K = Math.max(.5, K);   // a hidden or collapsed pane can report no width or height
     for (const c of [bg, fg, sc]) { c.width = Math.round(w * dpr); c.height = Math.round(h * dpr); }
-    L = { w, h, cx, cy, K, mob };
+    L = { w, h, cx, cy, K, mob, ps: mob ? 1.7 : 1 };   // planets are drawn larger on phones, so they can be seen and tapped
     BH.place(L, Math.min(devicePixelRatio || 1, 1.5));
     BH.lite = q === 2 ? 1 : 0;
     starT = -1;
@@ -106,12 +106,16 @@
   function makeStars(L) {
     let s = 3; const r = () => (s = (s * 16807) % 2147483647) / 2147483647;
     const hx = L.w / 2 / L.K + 60, hy = L.h / 2 / L.K + 60, n = Math.round(Math.min(2600, L.w * L.h / 520) * QUAL[q].stars);
-    return [...Array(n)].map(() => { const m = Math.pow(r(), 3.2); return { x: (r() * 2 - 1) * hx, y: (r() * 2 - 1) * hy, hx, hy, m, c: bbTint(3200 + r() * 9000) }; });
+    // Six colour steps from 3200 K to 12200 K: the fill colour changes six times a draw, not once a star.
+    return [...Array(n)].map(() => { const m = Math.pow(r(), 3.2); return { x: (r() * 2 - 1) * hx, y: (r() * 2 - 1) * hy, hx, hy, m, c: Math.min(5, r() * 6 | 0) }; }).sort((a, b) => a.c - b.c);
   }
+  const TINT = [0, 1, 2, 3, 4, 5].map(k => `rgb(${bbTint(3200 + (k + .5) * 1500).join(',')})`);
   function drawStars(t) {
     const { cx, cy, K } = L, drift = t * SKYV, bx = sx;
     bx.clearRect(0, 0, sc.width, sc.height);
+    let tc = -1;
     for (const s of stars) {
+      if (s.c !== tc) { tc = s.c; bx.fillStyle = TINT[tc]; }
       let x = s.x + drift; x = ((x + s.hx) % (2 * s.hx) + 2 * s.hx) % (2 * s.hx) - s.hx;
       const offX = (cx - L.w / 2) / K, X = x - offX, Y = s.y;   // source position relative to the hole
       const im = lens(X, Y, STAR_R2);
@@ -119,10 +123,11 @@
         const [ix, iy, , , mu] = im[k], a = Math.min(1, (.18 + s.m * .9) * Math.min(mu, 4));
         if (a < .03 || Math.hypot(ix, iy) < 5.4) continue;
         const sz = (s.m > .55 ? 2 : 1) * dpr * (mu > 2 ? 1.5 : 1);
-        bx.fillStyle = `rgba(${s.c[0]},${s.c[1]},${s.c[2]},${a})`;
+        bx.globalAlpha = a;
         bx.fillRect((cx + ix * K) * dpr - sz / 2, (cy - iy * K) * dpr - sz / 2, sz, sz);
       }
     }
+    bx.globalAlpha = 1;
   }
 
   // ---------- Black hole: every pixel traced on the GPU, with a tracer grown from the one in Isaac ----------
@@ -225,22 +230,24 @@ void main(){ivec2 p=ivec2(gl_FragCoord.xy);vec4 c=texelFetch(uC,p,0),g=texelFetc
   s+=w*gas(r,a,lt,cy*2.+float(k));w2+=w*w;}
  float m=max(.25,1.+.42*s/sqrt(max(w2,1e-3)));
  o=vec4(min(2.*c.rgb*m,vec3(c.a)),c.a);}`;
-    function init() {
-      try {
-        gl = bhc.getContext('webgl2', { premultipliedAlpha: true, antialias: false, alpha: true });
-        if (!gl) return false;
-        // Both programs are handed to the driver here and checked in link(), once the driver reports
-        // them compiled (KHR_parallel_shader_compile), so compiling never holds up the page.
-        par = gl.getExtension('KHR_parallel_shader_compile');
-        const sh = (t, s) => { const x = gl.createShader(t); gl.shaderSource(x, s); gl.compileShader(x); return x; };
-        const mk = fs => { const p = gl.createProgram(); gl.attachShader(p, sh(gl.VERTEX_SHADER, VS)); gl.attachShader(p, sh(gl.FRAGMENT_SHADER, fs)); gl.bindAttribLocation(p, 0, 'p'); gl.linkProgram(p); return p; };
-        prog = mk(FS); cprog = mk(CS);
-        fb = gl.createFramebuffer();
-      } catch (e) { console.warn(e); gl = null; return false; }
-      const b = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, b);
-      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
-      gl.enableVertexAttribArray(0); gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);
-      return true;
+    // Set up in three short steps, each in its own task, so none of them holds up the page:
+    // the WebGL context, the hole's tracing program, then the disc program and the buffers.
+    // Both programs are handed to the driver and checked in link(), once the driver reports them
+    // compiled (KHR_parallel_shader_compile). done(true) once all is in place, done(false) without WebGL 2.
+    function init(done) {
+      let g = null, p1 = null;
+      const sh = (t, s) => { const x = g.createShader(t); g.shaderSource(x, s); g.compileShader(x); return x; };
+      const mk = fs => { const p = g.createProgram(); g.attachShader(p, sh(g.VERTEX_SHADER, VS)); g.attachShader(p, sh(g.FRAGMENT_SHADER, fs)); g.bindAttribLocation(p, 0, 'p'); g.linkProgram(p); return p; };
+      const fail = e => { if (e) console.warn(e); gl = null; done(false); };
+      const step3 = () => { try {
+        cprog = mk(CS); prog = p1; fb = g.createFramebuffer();
+        const b = g.createBuffer(); g.bindBuffer(g.ARRAY_BUFFER, b);
+        g.bufferData(g.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), g.STATIC_DRAW);
+        g.enableVertexAttribArray(0); g.vertexAttribPointer(0, 2, g.FLOAT, false, 0, 0);
+        gl = g; done(true);
+      } catch (e) { fail(e); } };
+      const step2 = () => { try { par = g.getExtension('KHR_parallel_shader_compile'); p1 = mk(FS); setTimeout(step3, 0); } catch (e) { fail(e); } };
+      setTimeout(() => { try { g = bhc.getContext('webgl2', { premultipliedAlpha: true, antialias: false, alpha: true }); if (!g) return fail(); setTimeout(step2, 0); } catch (e) { fail(e); } }, 0);
     }
     function link() {
       if (!gl || ok) return;
@@ -271,6 +278,7 @@ void main(){ivec2 p=ivec2(gl_FragCoord.xy);vec4 c=texelFetch(uC,p,0),g=texelFetc
         rect = { x: L.cx - w / 2, y: L.cy - h / 2, w, h };
         for (const el of [bhc, still]) { if (!el) continue; Object.assign(el.style, { left: rect.x + 'px', top: rect.y + 'px', width: w + 'px', height: h + 'px' }); }
         const W = Math.max(1, Math.round(w * hd)), H = Math.max(1, Math.round(h * hd));
+        const done = row;   // rows already traced at this size
         row = 0; rows = H; ready = false; nb = Math.round(H / 24); tB = 0;
         if (!gl) return;
         if (bhc.width !== W || bhc.height !== H || !tC) {
@@ -283,7 +291,7 @@ void main(){ivec2 p=ivec2(gl_FragCoord.xy);vec4 c=texelFetch(uC,p,0),g=texelFetc
           gl.drawBuffers([gl.COLOR_ATTACHMENT0, gl.COLOR_ATTACHMENT1]);
           gl.viewport(0, 0, W, H); gl.disable(gl.SCISSOR_TEST); gl.clearColor(0, 0, 0, 0); gl.clear(gl.COLOR_BUFFER_BIT);
           gl.bindFramebuffer(gl.FRAMEBUFFER, null);
-        } else row = rows;   // same size: the rays have not changed, keep them
+        } else row = done;   // same size: the rays traced so far still hold; carry on from there
         if (row >= rows) ready = true;
       },
       // Trace the next band of rows (until done), then shade the disc for clock time tau.
@@ -340,7 +348,7 @@ void main(){ivec2 p=ivec2(gl_FragCoord.xy);vec4 c=texelFetch(uC,p,0),g=texelFetc
   const ext = p => p.kind === 'gas' ? 2.45 : 1.18;
   function renderAtlas(st, t) {
     if (!PG || window.WORLD.open_ >= 0) return;   // a project is open: its view owns the canvas
-    const need = Math.min(QUAL[q].tile, Math.max(...PL.map(p => Math.ceil(2 * ext(p) * p.R * L.K * dpr))));
+    const need = Math.min(QUAL[q].tile, Math.max(...PL.map(p => Math.ceil(2 * ext(p) * p.R * L.ps * L.K * dpr))));
     const gc = PG.gl.canvas;
     if (gc.width !== need * PL.length || gc.height !== need) { gc.width = need * PL.length; gc.height = need; }
     if (atlas.width !== gc.width || atlas.height !== gc.height) { atlas.width = gc.width; atlas.height = gc.height; }
@@ -355,10 +363,10 @@ void main(){ivec2 p=ivec2(gl_FragCoord.xy);vec4 c=texelFetch(uC,p,0),g=texelFetc
   function drawPlanet(ctx, i, p, X, Y, M) {
     // Image of the planet through the matrix M (screen axes, Y up). The Doppler brightening
     // is applied when the planet is rendered into the atlas.
-    const { cx, cy, K } = L, half = ext(p) * p.R * K * dpr, px = (cx + X * K) * dpr, py = (cy - Y * K) * dpr;
+    const { cx, cy, K } = L, half = ext(p) * p.R * L.ps * K * dpr, px = (cx + X * K) * dpr, py = (cy - Y * K) * dpr;
     ctx.save(); ctx.setTransform(M[0], -M[2], -M[1], M[3], px, py);
     if (PG && pgFade >= 1) ctx.drawImage(atlas, i * tile, 0, tile, tile, -half, -half, 2 * half, 2 * half);
-    else { const R = p.R * K * dpr, g = ctx.createRadialGradient(-R * .35, -R * .35, R * .1, 0, 0, R); g.addColorStop(0, p.col); g.addColorStop(1, '#05060c'); ctx.fillStyle = g; ctx.beginPath(); ctx.arc(0, 0, R, 0, 7); ctx.fill();
+    else { const R = p.R * L.ps * K * dpr, g = ctx.createRadialGradient(-R * .35, -R * .35, R * .1, 0, 0, R); g.addColorStop(0, p.col); g.addColorStop(1, '#05060c'); ctx.fillStyle = g; ctx.beginPath(); ctx.arc(0, 0, R, 0, 7); ctx.fill();
       if (PG) { ctx.globalAlpha = pgFade; ctx.drawImage(atlas, i * tile, 0, tile, tile, -half, -half, 2 * half, 2 * half); ctx.globalAlpha = 1; } }   // the detailed planet fades in over the plain disc
     ctx.restore();
   }
@@ -409,6 +417,8 @@ void main(){ivec2 p=ivec2(gl_FragCoord.xy);vec4 c=texelFetch(uC,p,0),g=texelFetc
     const p3 = orbit(p, tau), [r, ph] = polar(p3), f = flatP(r, ph);
     return { X: f[0], Y: f[1], X0: f[0], M: [1, 0, 0, 1], k: 1, p3, r, ph };
   }
+  // The part of the sky the hole and its lensed disc cover, in M from the centre (measured from the traced image).
+  const HOLE = { x: 17, up: 11, down: 8 };
   function draw() {
     const { w, h, cx, cy, K } = L, W = w * dpr, H = h * dpr;
     bx.setTransform(1, 0, 0, 1, 0, 0); fx.setTransform(1, 0, 0, 1, 0, 0);
@@ -442,7 +452,7 @@ void main(){ivec2 p=ivec2(gl_FragCoord.xy);vec4 c=texelFetch(uC,p,0),g=texelFetc
     scr = [];
     const order = PL.map((p, i) => i).sort((a, b) => st[a].v[2] - st[b].v[2]);
     for (const i of order) {
-      const p = PL[i], S_ = st[i], R = p.R * K, on = i === hover || i === focusI;
+      const p = PL[i], S_ = st[i], R = p.R * L.ps * K, on = i === hover || i === focusI;
       {
         const im = S_.im, per = CAM / (CAM - im.r * Math.cos(im.ph) * SI), M = im.M.map(v => v * per);
         const ctx = front(im.ph) ? fx : bx, Re = R * per * im.k;
@@ -456,15 +466,25 @@ void main(){ivec2 p=ivec2(gl_FragCoord.xy);vec4 c=texelFetch(uC,p,0),g=texelFetc
       // Put the label on the planet's left when it would run off the right edge.
       lb._w = lb._w || {}; const k_ = on ? 1 : 0; if (!lb._w[k_]) { lb.classList.toggle('on', on); lb._w[k_] = lb.offsetWidth; }
       const lw = lb._w[k_] || 80;
-      let left = s_.x + s_.R + 8 + lw > L.w - 4;
+      // A planet in front of or behind the hole takes its label on the outer side, away from the hole.
+      let left = s_.x + s_.R + 8 + lw > L.w - 4 || (s_.x < cx && s_.x > cx - HOLE.x * K - lw && s_.x - s_.R - 8 - lw > 4);
       // Keep labels off the hole's shadow and the bright inner disc: try the other side, then move
       // the label just above or below.
-      const hx0 = cx - 9 * K, hx1 = cx + 9 * K, hy0 = cy - 6 * K, hy1 = cy + 4 * K;
+      const hx0 = cx - HOLE.x * K, hx1 = cx + HOLE.x * K, hy0 = cy - HOLE.up * K, hy1 = cy + HOLE.down * K;
       const over = (lx0, y) => lx0 < hx1 && lx0 + lw > hx0 && y + 10 > hy0 && y - 10 < hy1;
       const at = l => l ? s_.x - s_.R - 8 - lw : s_.x + s_.R + 8;
       let ly = s_.y;
-      if (over(at(left), ly)) { if (!over(at(!left), ly) && at(!left) > 4 && at(!left) + lw < L.w - 4) left = !left; else ly = s_.y < cy - K ? Math.min(ly, hy0 - 12) : Math.max(ly, hy1 + 12); }
-      lb._x = Math.max(4, at(left)); lb._y = ly; lb._lw = lw;
+      let lx_ = null;
+      if (over(at(left), ly)) {
+        if (!over(at(!left), ly) && at(!left) > 4 && at(!left) + lw < L.w - 4) left = !left;
+        else {
+          // Neither side is clear: centre the label just above or below the planet, on the side away
+          // from the hole; only if that still covers the hole, move it to the hole's edge.
+          const up = s_.y < cy - K, cxl = Math.min(L.w - 4 - lw, Math.max(4, s_.x - lw / 2)), yl = up ? s_.y - s_.R - 14 : s_.y + s_.R + 14;
+          lx_ = cxl; ly = over(cxl, yl) ? (up ? Math.min(yl, hy0 - 12) : Math.max(yl, hy1 + 12)) : yl;
+        }
+      }
+      lb._x = lx_ !== null ? lx_ : Math.max(4, at(left)); lb._y = ly; lb._lw = lw;
       lb.style.visibility = i === hideI || s_.x < -s_.R || s_.x > L.w + s_.R || s_.y < 0 || s_.y > L.h ? 'hidden' : '';
       lb.classList.toggle('on', on);
     }
@@ -509,7 +529,7 @@ void main(){ivec2 p=ivec2(gl_FragCoord.xy);vec4 c=texelFetch(uC,p,0),g=texelFetc
   // The WebGL context and the hole's programs are set up after the first paint, so the page shows first.
   layout();
   if (still) still.classList.add('on');
-  requestAnimationFrame(() => setTimeout(() => { if (BH.init()) BH.place(L, Math.min(devicePixelRatio || 1, 1.5)); }, 0));
+  requestAnimationFrame(() => BH.init(ok => { if (ok) BH.place(L, Math.min(devicePixelRatio || 1, 1.5)); }));
   if (document.fonts) document.fonts.ready.then(() => { [...labs.children].forEach(b => b._w = null); });
   let rz; addEventListener('resize', () => { clearTimeout(rz); rz = setTimeout(() => { layout(); if (visible && active) draw(); }, 120); });
   requestAnimationFrame(loop);

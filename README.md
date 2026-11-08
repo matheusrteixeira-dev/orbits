@@ -110,7 +110,9 @@ python3 -m http.server -d dist  # preview on http://localhost:8000
 - `src/static/_headers` sets a Content-Security-Policy with no inline script (the page data is JSON in
   `#site-data`), HSTS, `nosniff`, a strict referrer policy and long caching for CSS, JavaScript and fonts.
 - Fonts are subset to the Latin characters the site uses (Unbounded instanced at weights 700 and 800),
-  so the first screen needs about 40 KB of fonts. Case-study screenshots load only when a planet is landed on.
+  so the first screen needs about 40 KB of fonts. Until Unbounded arrives the headline uses Arial Bold scaled to its
+  width, so it keeps its line breaks. Sections below the hero skip layout until they near the screen
+  (`content-visibility`), project tiles load their screenshot only then, and case-study screenshots load only when a planet is landed on.
 - Live projects: on wide screens a project page can show the real site in its browser window, loaded
   after landing and removed on leaving. `LIVE_ON` in `tools/build.py` lists the sites that already allow
   `https://sectus.dev` in their `frame-ancestors`; `frame-src` in `_headers` lists the same origins.

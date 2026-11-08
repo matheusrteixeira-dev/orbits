@@ -5,10 +5,12 @@
 @font-face{font-family:"Space Grotesk";src:url(../fonts/space-grotesk-700.woff2) format("woff2");font-weight:700;font-display:swap}
 @font-face{font-family:"JetBrains Mono";src:url(../fonts/jetbrains-mono-400.woff2) format("woff2");font-weight:400 500;font-display:swap}
 @font-face{font-family:"JetBrains Mono";src:url(../fonts/jetbrains-mono-600.woff2) format("woff2");font-weight:600 700;font-display:swap}
+/* Stand-in while Unbounded loads: Arial Bold (or Roboto Bold) scaled to Unbounded's width, so the headline wraps the same */
+@font-face{font-family:"Unbounded fb";src:local("Arial Bold"),local("Arial-BoldMT"),local("Liberation Sans Bold"),local("LiberationSans-Bold"),local("Roboto Bold"),local("Roboto-Bold");font-weight:200 900;size-adjust:135%;ascent-override:74%;descent-override:18.5%;line-gap-override:0%}
 
 :root{
  --bg:#03040a;--ink:#e8f0ff;--soft:#c3cee4;--dim:#8d9bb8;--ac:#3ff0ff;--gold:#ffc23d;--rule:#ffffff17;--card:#070b18;
- --fh:"Unbounded","Space Grotesk",system-ui,sans-serif;--fb:"Space Grotesk",system-ui,-apple-system,"Segoe UI",sans-serif;--fm:"JetBrains Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+ --fh:"Unbounded","Unbounded fb","Space Grotesk",system-ui,sans-serif;--fb:"Space Grotesk",system-ui,-apple-system,"Segoe UI",sans-serif;--fm:"JetBrains Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
  --gut:max(16px,env(safe-area-inset-left,0px));--gutr:max(16px,env(safe-area-inset-right,0px));
  color-scheme:dark;
 }
@@ -349,3 +351,4 @@ body:before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;opa
 @media(max-width:1000px){.ct .ct-art{display:none}}
 @media(max-width:820px){.lab:before{content:"";position:absolute;inset:-12px -8px}}
 .pt-img img:not([src]){visibility:hidden}
+.sec,footer{content-visibility:auto;contain-intrinsic-size:auto 900px}
