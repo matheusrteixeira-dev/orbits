@@ -43,7 +43,7 @@ a{color:inherit}
 .top nav a{text-decoration:none}.top nav a:hover{color:var(--ac)}
 :lang(zh) .top,:lang(hi) .top,:lang(ar) .top{letter-spacing:.02em}
 .top{transition:background-color .25s,box-shadow .25s}
-.top.sc{background:#03040af0;box-shadow:0 1px 0 var(--rule);padding-bottom:16px}
+.top.sc{background:#03040a;box-shadow:0 1px 0 var(--rule);padding-bottom:16px}
 .mnav{display:none;position:relative}
 .mnav summary{list-style:none;cursor:pointer;display:grid;align-content:center;gap:4px;width:38px;height:31px;padding:0 10px;border:1px solid var(--rule)}
 .mnav summary::-webkit-details-marker{display:none}
