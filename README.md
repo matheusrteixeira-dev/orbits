@@ -116,8 +116,9 @@ python3 -m http.server -d dist  # preview on http://localhost:8000
   so the first screen needs about 40 KB of fonts. Until Unbounded arrives the headline uses Arial Bold scaled to its
   width, so it keeps its line breaks. Sections below the hero skip layout until they near the screen
   (`content-visibility`), project tiles load their screenshot only then, and case-study screenshots load only when a planet is landed on.
-- Live projects: on wide screens the window on the Isaac and Amadeo pages becomes the real site after
-  landing, and is removed on leaving. Isaac is framed through its embed page (`/embed/chaos`, the full
+- Live projects: the window on the Isaac and Amadeo pages becomes the real site after landing (on
+  phones in a window shaped like a phone screen), and is removed on leaving. Any project window can
+  be enlarged to fill the screen. Isaac is framed through its embed page (`/embed/chaos`, the full
   workspace of one scene); Amadeo opens in the page's language. `LIVE` in `tools/build.py` holds the
   addresses and `LIVE_ON` the sites that allow `https://sectus.dev` in their `frame-ancestors`;
   `frame-src` in `_headers` lists the same origins, and `Permissions-Policy` passes the microphone to

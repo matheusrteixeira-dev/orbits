@@ -42,7 +42,9 @@ C = {
   "shot": "Bildschirmfotos",
   "cv": "Lebenslauf (PDF)",
   "live": "Live-Seite",
-  "liveT": "{n}, live"
+  "liveT": "{n}, live",
+  "enl": "Fenster vergrößern",
+  "res": "Fenster verkleinern"
  },
  "about": {
   "h": "Über mich",

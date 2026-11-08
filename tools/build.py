@@ -243,7 +243,10 @@ def case_study(i, p, C, b, lang):
             tabs = tabs.replace('aria-selected="true"', 'aria-selected="false"', 1)
             tabs = (f'<button type="button" role="tab" aria-selected="true" data-live="{e(lu)}" data-url="{e(lu.split("://", 1)[1].rstrip("/"))}"'
                     f' data-title="{e(T["liveT"].format(n=p["name"]))}">{e(T["live"])}</button>') + tabs
-        media = (f'<figure class="cs-media"><div class="win"><div class="bar"><i></i><i></i><i></i><span class="url">{e(sh[0][1])}</span></div><div class="vp">{imgs}</div></div>'
+        # The window can fill the screen (world.js), so a live site gets the room it is made for.
+        mx = (f'<button type="button" class="wmax" aria-label="{e(T["enl"])}" title="{e(T["enl"])}"><svg viewBox="0 0 12 12" aria-hidden="true">'
+              '<path class="i-on" d="M1 4.5V1h3.5M7.5 1H11v3.5M11 7.5V11H7.5M4.5 11H1V7.5"/><path class="i-off" d="M4.5 1v3.5H1M7.5 1v3.5H11M11 7.5H7.5V11M1 7.5h3.5V11"/></svg></button>')
+        media = (f'<figure class="cs-media"><div class="win"><div class="bar"><i></i><i></i><i></i><span class="url">{e(sh[0][1])}</span>{mx}</div><div class="vp">{imgs}</div></div>'
                  f'<div class="tabs" role="tablist" aria-label="{e(T["shot"])}">{tabs}</div></figure>')
         inside = (f'<section class="cs-in"><h3>{e(T["inside"])}</h3><figure class="cs-viz"><canvas data-wviz="{pid}" width="1040" height="780" role="img" aria-label="{e(P["viz"])}"></canvas>'
                   f'<figcaption>{e(P["viz"])}</figcaption></figure></section>')

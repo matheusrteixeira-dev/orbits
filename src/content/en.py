@@ -50,7 +50,9 @@ C = {
   "shot": "Screenshot",
   "cv": "CV (PDF)",
   "live": "Live site",
-  "liveT": "{n}, live"
+  "liveT": "{n}, live",
+  "enl": "Enlarge window",
+  "res": "Restore window"
  },
  "about": {
   "h": "About",

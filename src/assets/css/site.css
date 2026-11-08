@@ -335,7 +335,7 @@ footer .fl{display:flex;flex-wrap:wrap;gap:8px 16px}footer .fl a{text-decoration
  .cs-top{padding:76px var(--gutr) 28px var(--gut)}.cs-sheet{padding:44px var(--gutr) 60px var(--gut);gap:48px}
  .cs-hd h2{font-size:clamp(36px,11vw,52px)}.cs-hd .lede{font-size:16.5px}.cs-hd .meta{grid-template-columns:auto minmax(0,1fr)}.cs-hd .meta div:last-child{grid-column:1/-1}
 }
-.cs-media .vp iframe{position:absolute;inset:0;width:100%;height:100%;border:0;display:block;background:#fff;opacity:0;transition:opacity .3s}.cs-media .vp.live iframe{opacity:1}@media(max-width:820px){.cs-media .tabs button[data-live]{display:none}}
+.cs-media .vp iframe{position:absolute;inset:0;width:100%;height:100%;border:0;display:block;background:#fff;opacity:0;transition:opacity .3s}.cs-media .vp.live iframe{opacity:1}
 /* Stars behind the whole page, below the hero's live sky. */
 body:before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.55;background-image:radial-gradient(1px 1px at 23px 41px,#fff,transparent),radial-gradient(1px 1px at 151px 97px,#cfe3ff,transparent),radial-gradient(1.4px 1.4px at 263px 211px,#fff,transparent),radial-gradient(1px 1px at 71px 263px,#ffe6c7,transparent),radial-gradient(1px 1px at 199px 11px,#fff,transparent);background-size:281px 283px,347px 331px,419px 409px,307px 353px,383px 271px}
 /* Sections ease in as they scroll into view (main.js adds .rv only when scripts run). */
@@ -356,3 +356,15 @@ body:before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;opa
 .cs-media .vp .pg:focus-visible{outline:2px solid var(--c);outline-offset:-2px}
 .pg-m{display:none}
 @media(max-width:820px){.pg-d{display:none}.pg-m{display:block}.cs-media .vp:has(>.pg:not([hidden])){aspect-ratio:3/4}}
+/* The project window's enlarge button, and the window filling the screen. */
+.win .bar .wmax{flex:none;display:grid;place-items:center;width:28px;height:24px;margin-inline-start:8px;padding:0;border:1px solid #ffffff1f;border-radius:6px;background:transparent;color:var(--soft);cursor:pointer}
+.win .bar .wmax:hover,.win .bar .wmax:focus-visible{color:#fff;border-color:var(--c,var(--ac))}
+.win .bar .wmax svg{width:12px;height:12px;fill:none;stroke:currentColor;stroke-width:1.5}
+.win .bar .wmax{position:relative}@media(pointer:coarse){.win .bar .wmax:before{content:"";position:absolute;inset:-9px -8px}}
+.wmax .i-off,.win.max .wmax .i-on{display:none}.win.max .wmax .i-off{display:inline}
+.world.max .wp{will-change:auto;transform:none;transition:none;overflow:hidden;z-index:4}
+.cs-media .win.max{position:fixed;z-index:10;top:max(10px,env(safe-area-inset-top,0px));right:max(10px,env(safe-area-inset-right,0px));bottom:max(10px,env(safe-area-inset-bottom,0px));left:max(10px,env(safe-area-inset-left,0px));display:flex;flex-direction:column;box-shadow:0 0 0 100vmax #03040ae8}
+.cs-media .win.max .vp{flex:1;min-height:0;aspect-ratio:auto!important}
+.cs-media .win.max .vp>img{object-fit:contain}
+.cs-media .win.max .pg-d{max-width:1280px;margin-inline:auto}
+@media(max-width:820px){.cs-media .vp.tall{aspect-ratio:3/4}.cs-media .vp.tall>img{object-fit:contain}}

@@ -42,7 +42,9 @@ C = {
   "shot": "Capturas de pantalla",
   "cv": "CV (PDF)",
   "live": "Sitio en vivo",
-  "liveT": "{n}, en vivo"
+  "liveT": "{n}, en vivo",
+  "enl": "Ampliar ventana",
+  "res": "Restaurar ventana"
  },
  "about": {
   "h": "Sobre mí",

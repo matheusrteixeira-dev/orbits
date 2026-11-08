@@ -52,6 +52,7 @@
   function fill(i) {
     const p = S.projects[i], art = arts[i];
     // Fetch and decode the first screenshot during the flight, so it is ready when the page shows.
+    shape(art);
     const v0 = art.querySelector('.vp > [data-k]:not([hidden])');
     if (v0 && v0.tagName === 'IMG') { v0.loading = 'eager'; if (v0.decode) v0.decode().catch(() => {}); }
     else if (v0) page(v0);
@@ -72,9 +73,12 @@
       tabs.forEach(x => x.setAttribute('aria-selected', String(x === t)));
       imgs.forEach(im => { im.hidden = im.dataset.k !== (t.dataset.live ? '0' : t.dataset.k); });   // the first screenshot stands in while the live site loads
       if (url && t.dataset.url) url.textContent = t.dataset.url;
+      shape(art);
       if (t.dataset.live) live(art, t); else unlive(art);
       const pv = imgs.find(x => !x.hidden && x.classList.contains('pg')); if (pv) page(pv);
     }));
+    const mx = art.querySelector('.wmax');
+    if (mx) mx.addEventListener('click', () => setMax(art, !art.querySelector('.win').classList.contains('max')));
     const nx = art.querySelector('.cs-next');
     if (nx) nx.addEventListener('click', () => switchTo(+nx.dataset.go));
   });
@@ -91,12 +95,23 @@
     f.addEventListener('load', () => { if (f.isConnected) vp.classList.add('live'); }, { once: true });
     vp.appendChild(f); liveOn = true;
   }
-  // On landing, the window becomes the live site (if the project has one and the screen is wide
-  // enough); the screenshot stays in its place until the site has loaded.
-  const narrow = matchMedia('(max-width: 820px)');
+  // On landing, the window becomes the live site (if the project has one); the screenshot stays in
+  // its place until the site has loaded. On narrow screens the window takes a phone's shape for it.
   function goLive(art) {
     const t = art.querySelector('.tabs button[data-live]');
-    if (t && !narrow.matches && t.getAttribute('aria-selected') === 'true') live(art, t);
+    if (t && t.getAttribute('aria-selected') === 'true') live(art, t);
+  }
+  function shape(art) {
+    const vp = art.querySelector('.vp'), t = art.querySelector('.tabs button[aria-selected="true"]');
+    if (vp) vp.classList.toggle('tall', !!(t && t.dataset.live));
+  }
+  // The window can fill the screen, so a live site gets the room it is made for; the button or
+  // Escape puts it back.
+  function setMax(art, on) {
+    const w = art.querySelector('.cs-media .win'), b = w && w.querySelector('.wmax');
+    if (!w || w.classList.contains('max') === on) return;
+    w.classList.toggle('max', on); el.classList.toggle('max', on);
+    if (b) { b.setAttribute('aria-label', on ? T.res : T.enl); b.title = on ? T.res : T.enl; b.focus({ preventScroll: true }); }
   }
   function unlive(art) {
     const f = art.querySelector('.vp iframe');
@@ -115,22 +130,23 @@
   const warmed = new Set();
   function warm(i) {
     const t = arts[i] && arts[i].querySelector('.tabs button[data-live]');
-    if (!t || narrow.matches) return;
+    if (!t) return;
     const o = new URL(t.dataset.live).origin;
     if (warmed.has(o)) return;
     warmed.add(o);
     const l = document.createElement('link'); l.rel = 'preconnect'; l.href = o; document.head.appendChild(l);
   }
-  // Leaving a project selects the live tab again, so the next landing goes live; on phones the
-  // first screenshot is selected instead.
+  // Leaving a project puts its window back and selects the live tab again, so the next landing goes live.
   function rearm(art) {
+    setMax(art, false);
     art.querySelectorAll('.pg').forEach(g => { g.scrollTop = 0; });
     const lt = art.querySelector('.tabs button[data-live]');
-    if (!lt) return;
-    const t = narrow.matches ? art.querySelector('.tabs button:not([data-live])') : lt;
-    art.querySelectorAll('.tabs button').forEach(x => x.setAttribute('aria-selected', String(x === t)));
-    art.querySelectorAll('.vp > [data-k]').forEach(im => { im.hidden = im.dataset.k !== '0'; });
-    const url = art.querySelector('.url'); if (url && t.dataset.url) url.textContent = t.dataset.url;
+    if (lt) {
+      art.querySelectorAll('.tabs button').forEach(x => x.setAttribute('aria-selected', String(x === lt)));
+      art.querySelectorAll('.vp > [data-k]').forEach(im => { im.hidden = im.dataset.k !== '0'; });
+      const url = art.querySelector('.url'); if (url && lt.dataset.url) url.textContent = lt.dataset.url;
+    }
+    shape(art);
   }
   // Camera at the start: the planet (radius 1, at the origin) appears where it was in the sky, at the same size.
   function startCam(from) {
@@ -265,7 +281,7 @@
     // Fly back to where the planet is in the sky (after a switch the flight started elsewhere).
     const P = window.SKY ? window.SKY.planet(cur) : null;
     if (P && P.rot) { st.a = startCam(P); st.rot = P.rot; st.L = P.L; st.gain = P.gain; st.sw = false; }
-    arts.forEach(a => unlive(a));
+    arts.forEach(a => { setMax(a, false); unlive(a); });
     el.classList.remove('landed'); el.classList.add('fly');
     st.phase = 'out'; st.t0 = performance.now(); st.dur = 1800;
   }
@@ -279,9 +295,10 @@
     else if (st) close(true);
   });
   el.addEventListener('keydown', e => {
-    if (e.key === 'Escape') { e.preventDefault(); close(false); return; }
+    const mw = el.querySelector('.win.max');
+    if (e.key === 'Escape') { e.preventDefault(); if (mw) setMax(mw.closest('article'), false); else close(false); return; }
     if (e.key !== 'Tab') return;
-    const f = [...el.querySelectorAll('button,a[href],[tabindex="-1"]')].filter(n => n.offsetParent !== null && n.tabIndex >= 0);
+    const f = [...(mw || el).querySelectorAll('button,a[href],iframe,.pg:not([hidden]),[tabindex="-1"]')].filter(n => n.offsetParent !== null && n.tabIndex >= 0);
     if (!f.length) return;
     const a = f[0], z = f[f.length - 1];
     if (e.shiftKey && document.activeElement === a) { e.preventDefault(); z.focus(); }

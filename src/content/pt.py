@@ -42,7 +42,9 @@ C = {
   "shot": "Capturas de tela",
   "cv": "Currículo (PDF)",
   "live": "Site ao vivo",
-  "liveT": "{n}, ao vivo"
+  "liveT": "{n}, ao vivo",
+  "enl": "Ampliar janela",
+  "res": "Restaurar janela"
  },
  "about": {
   "h": "Sobre",
