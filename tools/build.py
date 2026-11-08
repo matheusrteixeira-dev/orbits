@@ -377,7 +377,7 @@ def render(lang, C, ver, all_c):
 <header class="top"><a class="brand" href="#top">Matheus Teixeira</a>
 <nav aria-label="{e(nav["sections"])}"><a href="#about">{e(nav["about"])}</a><a href="#projects">{e(nav["projects"])}</a><a href="#roadmap">{e(nav["roadmap"])}</a><a href="#education">{e(nav["education"])}</a><a href="#experience">{e(nav["experience"])}</a><a href="#contact">{e(nav["contact"])}</a></nav>
 <details class="mnav"><summary aria-label="{e(nav["sections"])}"><i></i><i></i><i></i></summary><ul><li><a href="#about">{e(nav["about"])}</a></li><li><a href="#projects">{e(nav["projects"])}</a></li><li><a href="#roadmap">{e(nav["roadmap"])}</a></li><li><a href="#education">{e(nav["education"])}</a></li><li><a href="#experience">{e(nav["experience"])}</a></li><li><a href="#contact">{e(nav["contact"])}</a></li></ul></details>
-<details class="lang"><summary aria-label="{e(nav["lang"])}">{lang.upper()}</summary><ul>{langmenu}</ul></details></header>
+<details class="lang"><summary aria-label="{e(nav["lang"])}: {lang.upper()}">{lang.upper()}</summary><ul>{langmenu}</ul></details></header>
 <main id="main">
 <section class="hero" id="top">
 <div class="sky" id="sky"><canvas id="bg" aria-hidden="true"></canvas><img class="still" id="bhstill" src="{b}assets/bh/bh-still.webp?v={ver}" fetchpriority="high" alt="" aria-hidden="true"><canvas id="bh" aria-hidden="true"></canvas><canvas id="fg" aria-hidden="true"></canvas><noscript><picture class="nojs"><source media="(max-width:820px)" srcset="{b}assets/bh/sky-phone.webp" width="780" height="776"><img src="{b}assets/bh/sky-{"rtl" if rtl else "ltr"}.webp" alt="" width="1600" height="900"></picture></noscript><div class="shade"></div>
