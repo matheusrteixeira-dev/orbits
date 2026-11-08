@@ -349,6 +349,6 @@ body:before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;opa
 @keyframes orb{to{offset-distance:100%}}
 :root[dir=rtl] .ct .ct-art{inset-inline-end:auto;inset-inline-start:-40px}
 @media(max-width:1000px){.ct .ct-art{display:none}}
-@media(max-width:820px){.lab:before{content:"";position:absolute;inset:-12px -8px}}
+@media(max-width:820px){.lab:before{content:"";position:absolute;inset:-14px -10px}}
 .pt-img img:not([src]){visibility:hidden}
 .sec,footer{content-visibility:auto;contain-intrinsic-size:auto 900px}
