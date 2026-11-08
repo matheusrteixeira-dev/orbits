@@ -1,5 +1,5 @@
 // Renders the still of the traced black hole (src/assets/bh/bh-still.webp), shown from the first frame
-// until the live hole is traced. Run after a build, with the site served locally:
+// and kept beneath the live hole. Run after a build, with the site served locally:
 //   python3 tools/build.py && (cd dist && python3 -m http.server 8111) & node tools/still.js /tmp/still.png
 // then convert: python3 -c "from PIL import Image; Image.open('/tmp/still.png').save('src/assets/bh/bh-still.webp', quality=88, method=6, alpha_quality=90)"
 const { chromium } = require('playwright');

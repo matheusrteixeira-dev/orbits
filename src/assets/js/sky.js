@@ -132,13 +132,14 @@
   // ---------- Black hole: traced on the GPU by bh.js ----------
   // Where the browser can, the hole's canvas is handed to bh.js running as a worker (OffscreenCanvas),
   // so setting up WebGL, compiling the shaders and tracing never hold up the page; elsewhere bh.js runs
-  // on the page, started after the first paint. The canvas is placed here. The still (bh-still.webp)
-  // shows until the hole is traced, and stays without WebGL 2.
+  // on the page, started after the first paint. The canvas is placed here, over the still (bh-still.webp).
   const BHSRC = ((document.currentScript || document.querySelector('script[src*="sky.js"]') || {}).src || '').replace('sky.js', 'bh.js');
   const BH = (function () {
     const D = { HW: 26, HH: 16.25 }, K4 = [A, CAM, INC, ISCO];
     let eng = null, wk = null, ok = false, ready = false, lite = 0, size = null, paged = false;
-    const shown = () => { if (!bhc.classList.contains('on')) { bhc.classList.add('on'); if (still) setTimeout(() => still.classList.remove('on'), 400); } };
+    // The still stays beneath the live hole: it fills in while the hole is traced again after a resize,
+    // and stands in wherever a browser fails to show the canvas.
+    const shown = () => bhc.classList.add('on');
     // bh.js as a plain script, drawing on the page.
     function onPage() {
       if (paged) return; paged = true;
@@ -399,7 +400,7 @@
     draw();   // after any resize in layout(), so a cleared canvas is never shown
   }
   // A still of the traced hole (tools/still.js) shows from the first frame; the live hole fades in
-  // over it once its rays are traced, and the still goes. Without WebGL 2 the still stays.
+  // over it once its rays are traced. Without WebGL 2 the still is all there is.
   // The hole starts at once in its worker; on the page it starts after the first paint, so the page shows first.
   layout();
   if (still) still.classList.add('on');

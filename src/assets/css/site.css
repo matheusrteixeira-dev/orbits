@@ -231,7 +231,7 @@ footer .fl{display:flex;flex-wrap:wrap;gap:8px 16px}footer .fl a{text-decoration
 
 /* Landing view and case studies */
 .world{position:fixed;inset:0;z-index:50;background:transparent;opacity:0;transition:opacity .3s}
-.world.nogl{background:#03040a}
+.world.nogl,.world.landed{background:#03040a}
 .world.on{opacity:1}.world.fly{transition:none}
 .world canvas#wc{position:absolute;inset:0;width:100%;height:100%}
 .world .wv{position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity .6s;background:linear-gradient(90deg,#03040af0 0%,#03040ac8 30%,#03040a30 55%,transparent 75%)}

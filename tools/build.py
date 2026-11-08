@@ -187,8 +187,12 @@ OG_LOCALE = {"en": "en_US", "pt": "pt_BR", "es": "es_ES", "fr": "fr_FR", "de": "
 # no X-Frame-Options). Isaac's embed pages (/embed/<scene>) are made to be framed by any site: the full
 # workspace of the scene, with a link that opens it in Isaac. frame-src in src/static/_headers lists the same origins.
 # The address takes the page's language where the site has it ({p}: "" for English, "/pt" and so on).
+# Isaac opens on a shared state (#s=, deflated JSON, see Isaac's src/engine/share.ts): the double pendulum
+# 14 s in with its trail on, {"v":1,"scene":"chaos","level":"undergraduate","time":14,"toggles":{"trail":true,"path":false}},
+# so the window shows the tangle that makes the point instead of an empty stage.
+ISAAC_START = "DYoxDoAgEAT_sjWNiRW_ueAKJIiGO2iMf_e6mcm8WIhbgCZ2IiIVuRUBjYvNffaDIw85phi9W71823anO-dGRXxhQ6rPNiYDHrGCeEpTft8P"
 LIVE = {
-    "isaac": ("https://isaac3d.com{p}/embed/chaos", set()),
+    "isaac": ("https://isaac3d.com{p}/embed/chaos#s=" + ISAAC_START, set()),
     "amadeo": ("https://amadeosheets.com{p}", {"pt", "es", "fr", "de", "zh", "hi", "ar"}),
     "websites": ("https://liderplustelemedicina.com.br/", set()),
 }
@@ -241,7 +245,7 @@ def case_study(i, p, C, b, lang):
         if pid in LIVE_ON:
             lu = live_url(pid, lang)
             tabs = tabs.replace('aria-selected="true"', 'aria-selected="false"', 1)
-            tabs = (f'<button type="button" role="tab" aria-selected="true" data-live="{e(lu)}" data-url="{e(lu.split("://", 1)[1].rstrip("/"))}"'
+            tabs = (f'<button type="button" role="tab" aria-selected="true" data-live="{e(lu)}" data-url="{e(lu.split("://", 1)[1].split("#", 1)[0].rstrip("/"))}"'
                     f' data-title="{e(T["liveT"].format(n=p["name"]))}">{e(T["live"])}</button>') + tabs
         # The window can fill the screen (world.js), so a live site gets the room it is made for.
         mx = (f'<button type="button" class="wmax" aria-label="{e(T["enl"])}" title="{e(T["enl"])}"><svg viewBox="0 0 12 12" aria-hidden="true">'

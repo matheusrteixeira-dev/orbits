@@ -45,8 +45,9 @@ a band of rows per frame with four samples per pixel (bands double while frames 
 where each ray met it. Every frame a cheap second pass lays clumps of gas over the disc that orbit at
 Ω = 1/(r^1.5 + a), sheared by the differential rotation, so the inner edge laps in about 0.7 s and the
 outer edge in about 9 s. A still of the traced hole (`src/assets/bh/bh-still.webp`, rendered by
-`tools/still.js`) shows from the first frame until the live hole is ready, and stays where WebGL 2 is
-not available. With JavaScript off the hero shows a still of the whole sky (`src/assets/bh/sky-*.webp`).
+`tools/still.js`) shows from the first frame and stays beneath the live hole, where it fills in while
+the hole is traced again after a resize; without WebGL 2 it is all there is. With JavaScript off the
+hero shows a still of the whole sky (`src/assets/bh/sky-*.webp`).
 
 The planets and the belt orbit in the plane of the disc on one clock (40 M of time per second) and one
 distance scale. Planet orbits precess at Ω − κ, with Ω = 1/(r^1.5 + a) and κ = Ω √(1 − 6/r + 8a/r^1.5 − 3a²/r²) the
@@ -89,7 +90,7 @@ tools/build.py          writes dist/: one index.html per language, 404.html, rob
 tools/smoke.js          Playwright smoke test against a local server on port 8111
 tools/readme_art.py     draws the images in docs/readme/ (this README)
 tools/og.js             renders the link-preview image (src/static/og.png) from the built homepage
-tools/still.js          renders the still of the black hole shown while the live one is traced
+tools/still.js          renders the still of the black hole shown beneath the live one
 tools/page_shots.py     cuts a full-page capture into the slices of a scroll-through page view
 .github/workflows/      deploy.yml: build and deploy to Cloudflare Pages on every push to main
 ```
@@ -118,8 +119,10 @@ python3 -m http.server -d dist  # preview on http://localhost:8000
   (`content-visibility`), project tiles load their screenshot only then, and case-study screenshots load only when a planet is landed on.
 - Live projects: the window on the Isaac and Amadeo pages becomes the real site after landing (on
   phones in a window shaped like a phone screen), and is removed on leaving. Any project window can
-  be enlarged to fill the screen. Isaac is framed through its embed page (`/embed/chaos`, the full
-  workspace of one scene); Amadeo opens in the page's language. `LIVE` in `tools/build.py` holds the
+  be enlarged to fill the screen; Escape restores it, then leaves the planet. After a click inside a
+  live site its keys belong to it until the mouse is back on the page. Isaac is framed through its embed
+  page (`/embed/chaos`, the full workspace of one scene), opened on a shared state: the double pendulum
+  14 s in with its trail drawn. Amadeo opens in the page's language. `LIVE` in `tools/build.py` holds the
   addresses and `LIVE_ON` the sites that allow `https://sectus.dev` in their `frame-ancestors`;
   `frame-src` in `_headers` lists the same origins, and `Permissions-Policy` passes the microphone to
   Amadeo, which listens to an instrument. The connection to a live site opens during the flight.

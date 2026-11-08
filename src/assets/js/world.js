@@ -304,6 +304,12 @@
     if (e.shiftKey && document.activeElement === a) { e.preventDefault(); z.focus(); }
     else if (!e.shiftKey && document.activeElement === z) { e.preventDefault(); a.focus(); }
   });
+  // After a click inside a live site, keys go to that site. Once the mouse is back on this page, outside
+  // the window, the page takes them again, so Escape works; typing in the site is left alone meanwhile.
+  el.addEventListener('pointermove', e => {
+    const f = document.activeElement;
+    if (e.pointerType === 'mouse' && f && f.tagName === 'IFRAME' && !f.closest('.win').contains(e.target)) el.focus({ preventScroll: true });
+  }, { passive: true });
   addEventListener('resize', () => { if (st) size(); });
   wp.addEventListener('scroll', () => el.classList.toggle('sc', wp.scrollTop > 40), { passive: true });
   window.WORLD = { open, close: () => close(false), get open_() { return cur; }, planetGL: () => (cur < 0 ? pg() : null) };
