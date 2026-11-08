@@ -288,7 +288,7 @@
   function closed() {
     cancelAnimationFrame(raf); raf = 0; st = null; viz = null;
     arts.forEach(a => { unlive(a); rearm(a); });
-    el.classList.remove('on', 'landed', 'fly'); el.hidden = true;
+    el.classList.remove('on', 'landed', 'fly', 'back'); el.hidden = true;
     setInert(false); document.documentElement.style.overflow = '';
     if (window.SKY) window.SKY.setActive(true);
     if (opener && document.contains(opener)) opener.focus({ preventScroll: true });
@@ -322,7 +322,7 @@
     const p = S.projects[i], la = p.site[0] * Math.PI / 180, lo = p.site[1] * Math.PI / 180;
     const rot = from.rot || [1, 0, 0, 0, 1, 0, 0, 0, 1];
     st = { phase: 'in', hold: !switching, t0: performance.now(), dur: !PG ? 1 : switching ? 1700 : 2200, sw: switching, gain: switching ? 1 : from.gain, a: startCam(switching ? { x: innerWidth * .5, y: innerHeight * .45, R: innerHeight * .16 } : from), rot, L: from.L || [-.6, .3, .74], site: [Math.cos(la) * Math.cos(lo), Math.cos(la) * Math.sin(lo), Math.sin(la)], time: 0 };
-    el.classList.remove('landed'); el.classList.add('fly');
+    el.classList.remove('landed', 'back'); el.classList.add('fly');
     if (el.hidden) { el.hidden = false; void el.offsetWidth; }
     el.classList.add('on');
     wp.scrollTo({ top: 0, behavior: 'instant' }); el.classList.remove('sc');
@@ -343,7 +343,7 @@
     const P = window.SKY ? window.SKY.planet(cur) : null;
     if (P && P.rot) { st.a = startCam(P); st.rot = P.rot; st.L = P.L; st.gain = P.gain; st.sw = false; }
     arts.forEach(a => { setMax(a, false); unlive(a); });
-    el.classList.remove('landed'); el.classList.add('fly');
+    el.classList.remove('landed'); el.classList.add('fly', 'back');   // back: the page is hidden at once (see site.css)
     st.phase = 'out'; st.t0 = performance.now(); st.dur = 1800;
   }
   bBack.addEventListener('click', () => close(false));

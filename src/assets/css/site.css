@@ -251,6 +251,8 @@ footer .fl{display:flex;flex-wrap:wrap;gap:8px 16px}footer .fl a{text-decoration
 .world.landed .wp{opacity:1;transform:none;pointer-events:auto}
 /* While flying, keep the case study faintly drawn on its own layer, so its first paint is done before it is revealed. */
 .world .wp{will-change:opacity,transform}.world.fly .wp{opacity:.001}
+/* On the way back the page is hidden at once: fading it out over the moving planet cost Firefox 40 to 100 ms a frame. */
+.world.back .wp{visibility:hidden;transition:none}
 .cs-top{display:grid;grid-template-columns:minmax(0,460px) minmax(0,1fr);gap:56px;align-items:center;min-height:calc(100vh - 70px);min-height:calc(100svh - 70px);padding:92px max(36px,env(safe-area-inset-right,0px)) 40px max(36px,env(safe-area-inset-left,0px))}
 .cs-hd .k{color:var(--c)}
 .cs-hd h2:focus{outline:none}
