@@ -43,8 +43,7 @@ a{color:inherit}
 .top nav a{text-decoration:none}.top nav a:hover{color:var(--ac)}
 :lang(zh) .top,:lang(hi) .top,:lang(ar) .top{letter-spacing:.02em}
 .top{transition:background-color .25s,box-shadow .25s}
-.top.sc{background:#03040ae6;box-shadow:0 1px 0 var(--rule);padding-bottom:16px}
-@supports (backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px)){.top.sc{background:#03040abf;-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}}
+.top.sc{background:#03040af0;box-shadow:0 1px 0 var(--rule);padding-bottom:16px}
 .mnav{display:none;position:relative}
 .mnav summary{list-style:none;cursor:pointer;display:grid;align-content:center;gap:4px;width:38px;height:31px;padding:0 10px;border:1px solid var(--rule)}
 .mnav summary::-webkit-details-marker{display:none}
@@ -242,7 +241,9 @@ footer .fl{display:flex;flex-wrap:wrap;gap:8px 16px}footer .fl a{text-decoration
 @media(min-width:821px){.wbar{padding-inline:32px}}
 .world.landed .wbar{opacity:1}
 .world.sc .wbar{background:linear-gradient(180deg,#03040af2 55%,#03040a00)}.world:focus{outline:none}
-.wbar button{font:600 12px var(--fm);letter-spacing:.08em;text-transform:uppercase;color:#fff;background:#03040ac8;border:1px solid #ffffff2a;padding:9px 13px;cursor:pointer;backdrop-filter:blur(6px)}
+/* No backdrop blur on bars and buttons: over an animated canvas Firefox redoes the blur of the whole screen
+   every frame (about 37 ms a frame at 1440x900 over a landed planet); a nearly opaque background reads the same. */
+.wbar button{font:600 12px var(--fm);letter-spacing:.08em;text-transform:uppercase;color:#fff;background:#03040ad8;border:1px solid #ffffff2a;padding:9px 13px;cursor:pointer}
 .wbar button:hover{border-color:var(--c,var(--ac))}
 .wbar .sp{flex:1}
 [dir=rtl] .wbar [aria-hidden]{display:inline-block;transform:scaleX(-1)}
@@ -272,7 +273,7 @@ footer .fl{display:flex;flex-wrap:wrap;gap:8px 16px}footer .fl a{text-decoration
 .cs-media .vp img,.cs-media .vp canvas{position:absolute;inset:0;width:100%;height:100%;display:block;object-fit:cover}
 .cs-media .vp img{animation:shot .35s ease-out}@keyframes shot{from{opacity:0}to{opacity:1}}
 .cs-media .tabs{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
-.cs-media .tabs button{font:500 13px var(--fb);color:var(--soft);background:#03040ab8;border:1px solid #ffffff22;border-radius:999px;padding:7px 14px;cursor:pointer;backdrop-filter:blur(6px)}
+.cs-media .tabs button{font:500 13px var(--fb);color:var(--soft);background:#03040acc;border:1px solid #ffffff22;border-radius:999px;padding:7px 14px;cursor:pointer}
 .cs-media .tabs button[aria-selected=true]{color:#04060c;background:var(--c);border-color:var(--c)}
 .cs-media figcaption{margin-top:12px;font-size:14px;color:#dfe6f4;line-height:1.5;text-shadow:0 0 6px #03040a,0 0 14px #03040a}
 .cs-sheet{position:relative;padding:64px max(36px,env(safe-area-inset-right,0px)) 80px max(36px,env(safe-area-inset-left,0px));background:linear-gradient(180deg,#05070fee,#05070f 160px);border-top:1px solid color-mix(in srgb,var(--c) 40%,transparent);display:grid;gap:64px}

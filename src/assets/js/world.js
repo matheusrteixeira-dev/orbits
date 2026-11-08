@@ -47,6 +47,9 @@
 
   const TANF = Math.tan(25 * Math.PI / 180);
   let cur = -1, st = null, viz = null, raf = 0, last = 0, pushed = false, opener = null, q = 1;
+  // The drawing under "Inside" is drawn only while it is on screen.
+  let vizOn = false;
+  const vio = new IntersectionObserver(es => es.forEach(e => { vizOn = e.isIntersecting; }), { root: wp });
   function size() { q = Math.min(devicePixelRatio || 1, 1.5) * (innerWidth * innerHeight > 2.2e6 ? .8 : 1); const w = Math.round(innerWidth * q), h = Math.round(innerHeight * q); if (wc.width !== w || wc.height !== h) { wc.width = w; wc.height = h; } }
 
   function fill(i) {
@@ -64,6 +67,7 @@
     el.setAttribute('aria-label', p.name);
     const cv = art.querySelector('canvas[data-wviz]');
     viz = cv && window.VIZ ? window.VIZ.attach(cv, p.id) : null;
+    vio.disconnect(); vizOn = false; if (viz) vio.observe(cv);
     bPrev.setAttribute('aria-label', `${T.prev}: ${S.projects[(i + 4) % 5].name}`); bNext.setAttribute('aria-label', `${T.next}: ${S.projects[(i + 1) % 5].name}`);
   }
   // Screenshot tabs and the next-planet buttons inside the case studies.
@@ -234,7 +238,7 @@
     } else if (st.phase === 'landed') {
       // The surface is hidden once the case study covers the screen; skip drawing it then.
       if (PG && !liveOn && wp.scrollTop < innerHeight * .9) render(endCam(n, st.time), 1, 1, st.time);
-      if (viz) viz.draw(now, false);
+      if (viz && vizOn) viz.draw(now, false);
     }
   }
   function landed() { st.phase = 'landed'; if (arts[cur]) { rearm(arts[cur]); goLive(arts[cur]); } el.classList.add('landed'); el.classList.remove('fly'); const h = arts[cur] && arts[cur].querySelector('h2'); if (h) h.focus({ preventScroll: true }); }

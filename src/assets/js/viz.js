@@ -206,7 +206,8 @@
         const d = Math.min(devicePixelRatio || 1, 2), w = Math.round(canvas.clientWidth * d), h = Math.round(w * .75);
         if (!w) return;
         if (canvas.width !== w || canvas.height !== h) { canvas.width = w; canvas.height = h; }
-        const dt = still ? 0 : last ? (now - last) / 1000 : 0; last = now;
+        // A step of at most 0.1 s, so a drawing that comes back on screen picks up where it left off.
+        const dt = still ? 0 : last ? Math.min(.1, (now - last) / 1000) : 0; last = now;
         draw(canvas.getContext('2d'), w, h, still && !this.once ? 6 : dt, w / 640); this.once = true;
       },
     };
