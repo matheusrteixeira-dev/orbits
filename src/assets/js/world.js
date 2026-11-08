@@ -18,7 +18,46 @@
   }
   // The planet program starts compiling once the hole is traced (or after 1.2 s), so its setup does not
   // share the first frames with the hole's; a planet clicked before then waits for it (see open).
-  function startPG() { if (PGH || pgDone) return; PGH = window.PlanetGL ? window.PlanetGL.begin(wc, { preserveDrawingBuffer: true }) : null; if (!PGH) pgDone = true; }
+  function startPG() { if (PGH || pgDone) return; PGH = workerPG() || (window.PlanetGL ? window.PlanetGL.begin(wc, { preserveDrawingBuffer: true }) : null); if (!PGH) pgDone = true; }
+  // Where the driver cannot compile in the background (no KHR_parallel_shader_compile: Firefox), the
+  // compile would stop the page for 2 to 3 s; there planet.js runs as a worker and draws there. The
+  // program here only collects the draws of a picture; frame() sends them and returns the worker's last
+  // finished picture of that kind (a frame late), or null.
+  const PSRC = (document.querySelector('script[src*="planet.js"]') || {}).src || '';
+  function workerPG() {
+    if (!PSRC || !window.Worker || !window.OffscreenCanvas || window.PG_MAIN) return null;
+    try {
+      const g = document.createElement('canvas').getContext('webgl2');
+      if (!g) return null;
+      const par = g.getExtension('KHR_parallel_shader_compile'), lose = g.getExtension('WEBGL_lose_context');
+      if (lose) lose.loseContext();
+      if (par && !window.PG_WORKER) return null;   // PG_WORKER: use the worker anyway (tests)
+    } catch (e) { return null; }
+    let wk;
+    try { wk = new Worker(PSRC); } catch (e) { return null; }
+    let ok = false, failed = false, cmds = [];
+    const busy = {}, last = {};
+    const P = {
+      gl: { canvas: { width: 1, height: 1 } },
+      clear() { cmds = []; },
+      draw(p) { cmds.push(p); },
+      frame(tag, w, h) {
+        if (!busy[tag]) { busy[tag] = true; wk.postMessage({ tag, w, h, cmds }); }
+        cmds = [];
+        const b = last[tag]; last[tag] = null; return b;
+      },
+    };
+    wk.onmessage = e => {
+      const m = e.data;
+      if (m.ok) ok = true;
+      else if (m.fail) failed = true;
+      else if (m.bmp) { busy[m.tag] = false; if (last[m.tag]) last[m.tag].close(); last[m.tag] = m.bmp; }
+    };
+    wk.onerror = () => { failed = true; };
+    wk.postMessage({ start: true });
+    return { ready: () => ok || failed, finish: () => (ok ? P : null) };
+  }
+  let wbr = null;   // the landing canvas shows the worker's pictures
   (function waitBH(t0) {
     const bh = document.getElementById('bh');
     if (!bh || bh.classList.contains('on') || performance.now() - t0 > 1200) setTimeout(startPG, 0);
@@ -190,6 +229,10 @@
     const p = S.projects[cur], s = st;
     PG.clear();
     PG.draw({ vp: [0, 0, wc.width, wc.height], ortho: 0, cam: cam.pos, camM: q2m(cam.q), tanF: TANF, rot: s.rot, L: s.L, col: hex(p.col), kind: KIND[p.kind], site: s.site, time, glow, seed: cur * 3.7 + 1, bg, gain: gain == null ? 1 : gain });
+    if (PG.frame) {
+      const b = PG.frame('land', wc.width, wc.height);
+      if (b) { wbr = wbr || wc.getContext('bitmaprenderer'); if (b.width === wc.width && b.height === wc.height) wbr.transferFromImageBitmap(b); else b.close(); }
+    }
   }
   // Camera orientation from pos that keeps the planet's centre in the camera direction c (camera
   // axes), with no roll: at the start of the flight this is the starting orientation itself.

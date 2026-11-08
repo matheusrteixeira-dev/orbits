@@ -405,7 +405,7 @@ def render(lang, C, ver, all_c):
 
 <section class="sec" id="tools" aria-labelledby="h-tools"><div class="sh"><h2 id="h-tools">{e(C["tools"]["h"])}</h2></div><div class="to">{tools}</div></section>
 
-<section class="sec" id="contact" aria-labelledby="h-contact"><div class="ct"><div class="ct-art" aria-hidden="true"><img src="{b}assets/bh/bh-still.webp?v={ver}" alt="" width="939" height="587" loading="lazy" decoding="async"><i></i></div><span class="k" id="h-contact">{e(C["contact"]["h"])}</span>
+<section class="sec" id="contact" aria-labelledby="h-contact"><div class="ct"><span class="k" id="h-contact">{e(C["contact"]["h"])}</span>
 <p>{e(C["contact"]["p"])}</p>
 <div class="em"><a href="mailto:{EMAIL}">{EMAIL}</a><button type="button" id="cp">{e(T["copy"])}</button><span class="sr" aria-live="polite" id="cpst"></span></div>
 <div class="ln"><a href="{LINKS["github"]}" target="_blank" rel="noopener">GitHub</a><a href="{LINKS["linkedin"]}" target="_blank" rel="noopener">LinkedIn</a><a href="{LINKS["orcid"]}" target="_blank" rel="noopener">ORCID</a><a href="/cv/Matheus-Teixeira-CV.pdf" download type="application/pdf">{e(T["cv"])}</a></div></div></section>

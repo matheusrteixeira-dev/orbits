@@ -170,5 +170,29 @@ void main(){
       },
     };
   }
-  window.PlanetGL = { begin, create };
+  self.PlanetGL = { begin, create };
+  if (typeof document === 'undefined') {
+    // Worker, for browsers whose driver cannot compile in the background (no KHR_parallel_shader_compile,
+    // Firefox): the 2 to 3 s compile then stops only this thread, never the page (see world.js). Each job
+    // is a list of draws for one picture ('atlas' or 'land') of w x h pixels; the picture goes back as an ImageBitmap.
+    let h = null, P = null, cv = null;
+    const jobs = {};
+    const run = () => {
+      if (!P) return;
+      for (const tag of Object.keys(jobs)) {
+        const m = jobs[tag]; delete jobs[tag];
+        if (cv.width !== m.w) cv.width = m.w;
+        if (cv.height !== m.h) cv.height = m.h;
+        P.clear(); m.cmds.forEach(d => P.draw(d));
+        const b = cv.transferToImageBitmap(); postMessage({ tag, bmp: b }, [b]);
+      }
+    };
+    onmessage = e => {
+      const m = e.data;
+      if (!m.start) { jobs[m.tag] = m; run(); return; }
+      cv = new OffscreenCanvas(1, 1); h = begin(cv);
+      if (!h) { postMessage({ fail: true }); return; }
+      (function poll() { if (!h.ready()) { setTimeout(poll, 50); return; } P = h.finish(); postMessage(P ? { ok: true } : { fail: true }); run(); })();
+    };
+  }
 })();

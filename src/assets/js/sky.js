@@ -109,9 +109,12 @@
     return [...Array(n)].map(() => { const m = Math.pow(r(), 3.2); return { x: (r() * 2 - 1) * hx, y: (r() * 2 - 1) * hy, hx, hy, m, c: Math.min(5, r() * 6 | 0) }; }).sort((a, b) => a.c - b.c);
   }
   const TINT = [0, 1, 2, 3, 4, 5].map(k => `rgb(${bbTint(3200 + (k + .5) * 1500).join(',')})`);
+  // The layer also carries the sky's ground and the hole's faint glow, so a frame copies one full-screen
+  // image instead of filling the screen three times (each full-screen fill costs Firefox up to 20 ms).
   function drawStars(t) {
     const { cx, cy, K } = L, drift = t * SKYV, bx = sx;
-    bx.clearRect(0, 0, sc.width, sc.height);
+    bx.globalAlpha = 1; bx.fillStyle = '#03040a'; bx.fillRect(0, 0, sc.width, sc.height);
+    const g = bx.createRadialGradient(cx * dpr, cy * dpr, 0, cx * dpr, cy * dpr, K * 60 * dpr); g.addColorStop(0, 'rgba(255,150,70,.045)'); g.addColorStop(1, 'rgba(0,0,0,0)'); bx.fillStyle = g; bx.fillRect(0, 0, sc.width, sc.height);
     let tc = -1;
     for (const s of stars) {
       if (s.c !== tc) { tc = s.c; bx.fillStyle = TINT[tc]; }
@@ -229,7 +232,9 @@
       const f = st[i].frame;
       PG.draw({ vp: [i * tile, 0, tile, tile], ortho: 1, ext: ext(p), rot: f.rot, L: f.L, col: p.rgb.map(v => v / 255), kind: KIND[p.kind], site: p.siteN, time: t, glow: 0, seed: i * 3.7 + 1, gain: st[i].gain });
     });
-    ax.clearRect(0, 0, atlas.width, atlas.height); ax.drawImage(gc, 0, 0);
+    const img = PG.frame ? PG.frame('atlas', gc.width, gc.height) : gc;   // from the planet worker: its last finished atlas
+    if (img && img.width === atlas.width && img.height === atlas.height) { ax.clearRect(0, 0, atlas.width, atlas.height); ax.drawImage(img, 0, 0); }
+    if (img && img !== gc) img.close();
   }
   const KIND = { rock: 0, ocean: 1, gas: 2, storm: 3, ice: 4 };
   function drawPlanet(ctx, i, p, X, Y, M) {
@@ -297,10 +302,9 @@
   function draw() {
     const { w, h, cx, cy, K } = L, W = w * dpr, H = h * dpr;
     bx.setTransform(1, 0, 0, 1, 0, 0); fx.setTransform(1, 0, 0, 1, 0, 0);
-    bx.fillStyle = '#03040a'; bx.fillRect(0, 0, W, H); fx.clearRect(0, 0, W, H);
-    let g = bx.createRadialGradient(cx * dpr, cy * dpr, 0, cx * dpr, cy * dpr, K * 60 * dpr); g.addColorStop(0, 'rgba(255,150,70,.045)'); g.addColorStop(1, 'rgba(0,0,0,0)'); bx.fillStyle = g; bx.fillRect(0, 0, W, H);
+    fx.clearRect(0, 0, W, H);
     if (starT < 0 || t - starT > .25 || t < starT) { drawStars(t); starT = t; }
-    bx.drawImage(sc, 0, 0);
+    bx.drawImage(sc, 0, 0);   // opaque: covers the last frame
     // Planet states, lit and Doppler-shifted.
     st = PL.map(p => {
       const d = planetImage(p), p3 = d.p3;

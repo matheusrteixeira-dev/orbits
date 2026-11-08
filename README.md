@@ -119,6 +119,10 @@ python3 -m http.server -d dist  # preview on http://localhost:8000
   (`content-visibility`), project tiles load their screenshot only then, and case-study screenshots load only when a planet is landed on.
   The drawing under Inside is drawn only while it is on screen, and nothing blurs what is behind it
   (`backdrop-filter`): over an animated canvas Firefox redoes such a blur for the whole screen every frame.
+  The planet shader takes 2 to 3 s to compile. Where the browser compiles it in the background
+  (`KHR_parallel_shader_compile`) it is compiled on the page; elsewhere (Firefox) `planet.js` runs as a worker
+  and sends its pictures back as `ImageBitmap`s, so the compile never stops the page. The sky's ground, glow
+  and stars are one layer, copied once a frame.
 - Live projects: the window on the Isaac and Amadeo pages becomes the real site after landing (on phones
   in a window shaped like a phone screen), and is removed on leaving. On wider screens the site is laid
   out as on a 1366 px laptop screen and scaled down into the window (`fit` in `world.js`), so it shows
