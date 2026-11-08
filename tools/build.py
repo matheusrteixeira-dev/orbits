@@ -203,7 +203,10 @@ def live_url(pid, lang):
 # slices (src/assets/img/page/<name>-d-<n>.webp at 1280 px wide for wide screens, <name>-m-<n>.webp at
 # 780 px, a 390 px phone at 2x, for narrow ones) that load as they near the window. tools/page_shots.py
 # cuts a capture and prints the slice heights listed here.
-PAGES = {}
+PAGES = {
+    "lider-home": {"d": [1600, 1600, 1600, 1600, 310], "m": [1600] * 13 + [274]},
+    "lider-org": {"d": [1600, 1600, 735], "m": [1600] * 7 + [1178]},
+}
 
 SHOTS = {
     "isaac": [("isaac-scene", "isaac3d.com/scene/chaos"), ("isaac-home", "isaac3d.com"), ("isaac-library", "isaac3d.com/library")],
