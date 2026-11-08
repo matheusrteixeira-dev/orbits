@@ -117,15 +117,18 @@ python3 -m http.server -d dist  # preview on http://localhost:8000
   so the first screen needs about 40 KB of fonts. Until Unbounded arrives the headline uses Arial Bold scaled to its
   width, so it keeps its line breaks. Sections below the hero skip layout until they near the screen
   (`content-visibility`), project tiles load their screenshot only then, and case-study screenshots load only when a planet is landed on.
-- Live projects: the window on the Isaac and Amadeo pages becomes the real site after landing (on
-  phones in a window shaped like a phone screen), and is removed on leaving. Any project window can
-  be enlarged to fill the screen; Escape restores it, then leaves the planet. After a click inside a
-  live site its keys belong to it until the mouse is back on the page. Isaac is framed through its embed
-  page (`/embed/chaos`, the full workspace of one scene), opened on a shared state: the double pendulum
-  14 s in with its trail drawn. Amadeo opens in the page's language. `LIVE` in `tools/build.py` holds the
-  addresses and `LIVE_ON` the sites that allow `https://sectus.dev` in their `frame-ancestors`;
-  `frame-src` in `_headers` lists the same origins, and `Permissions-Policy` passes the microphone to
-  Amadeo, which listens to an instrument. The connection to a live site opens during the flight.
+- Live projects: the window on the Isaac and Amadeo pages becomes the real site after landing (on phones
+  in a window shaped like a phone screen), and is removed on leaving. On wider screens the site is laid
+  out as on a 1366 px laptop screen and scaled down into the window (`fit` in `world.js`), so it shows
+  the layout of its screenshots and a scene keeps its room. Any project window can be enlarged to fill
+  the screen, where a live site is shown at its own size; Escape restores it, then leaves the planet.
+  After a click inside a live site its keys belong to it until the mouse is back on the page. Isaac is
+  framed through its embed page (`/embed/chaos`, the full workspace of one scene), opened on a shared
+  state: the double pendulum 14 s in with its trail drawn. Amadeo opens in the page's language. `LIVE`
+  in `tools/build.py` holds the addresses and `LIVE_ON` the sites that allow `https://sectus.dev` in
+  their `frame-ancestors`; `frame-src` in `_headers` lists the same origins, and `Permissions-Policy`
+  passes the microphone to Amadeo, which listens to an instrument. The connection to a live site opens
+  during the flight.
 - A site that cannot be framed can be shown as a whole page that scrolls inside the window: a full-page
   capture cut by `tools/page_shots.py` into 1600 px slices, a wide one and a phone one, listed in `PAGES`
   in `tools/build.py`. Only the slices of the layout on screen load, as they near the window.

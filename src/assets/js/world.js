@@ -82,6 +82,20 @@
     const nx = art.querySelector('.cs-next');
     if (nx) nx.addEventListener('click', () => switchTo(+nx.dataset.go));
   });
+  // A live site is laid out as on a laptop screen, DESK px wide, and scaled down into a smaller window,
+  // so the window shows the layout its screenshots show and a scene keeps its room. An enlarged window
+  // shows the site at its own size, and phones keep the site's phone layout.
+  const DESK = 1366, SMIN = .55, phone = matchMedia('(max-width: 820px)');
+  const fits = new ResizeObserver(es => es.forEach(e => fit(e.target)));
+  function fit(vp) {
+    const f = vp.querySelector('iframe');
+    if (!f) return;
+    const w = vp.clientWidth, h = vp.clientHeight;
+    const s = phone.matches || vp.closest('.win.max') || !w ? 1 : Math.min(1, Math.max(SMIN, w / DESK));
+    f.style.width = s < 1 ? `${w / s}px` : '';
+    f.style.height = s < 1 ? `${h / s}px` : '';
+    f.style.transform = s < 1 ? `scale(${s})` : '';
+  }
   // The real site, live in the window: the frame is made only when its tab is pressed and removed when
   // another tab is picked or the page is left, so nothing of it loads before or stays after.
   let liveOn = false;
@@ -93,7 +107,7 @@
     f.allow = 'fullscreen; microphone; display-capture; autoplay; clipboard-write; web-share';
     f.referrerPolicy = 'strict-origin-when-cross-origin';
     f.addEventListener('load', () => { if (f.isConnected) vp.classList.add('live'); }, { once: true });
-    vp.appendChild(f); liveOn = true;
+    vp.appendChild(f); fit(vp); fits.observe(vp); liveOn = true;
   }
   // On landing, the window becomes the live site (if the project has one); the screenshot stays in
   // its place until the site has loaded. On narrow screens the window takes a phone's shape for it.
@@ -110,12 +124,12 @@
   function setMax(art, on) {
     const w = art.querySelector('.cs-media .win'), b = w && w.querySelector('.wmax');
     if (!w || w.classList.contains('max') === on) return;
-    w.classList.toggle('max', on); el.classList.toggle('max', on);
+    w.classList.toggle('max', on); el.classList.toggle('max', on); fit(w.querySelector('.vp'));
     if (b) { b.setAttribute('aria-label', on ? T.res : T.enl); b.title = on ? T.res : T.enl; b.focus({ preventScroll: true }); }
   }
   function unlive(art) {
     const f = art.querySelector('.vp iframe');
-    if (f) { f.src = 'about:blank'; f.remove(); art.querySelector('.vp').classList.remove('live'); }
+    if (f) { const vp = art.querySelector('.vp'); f.src = 'about:blank'; f.remove(); vp.classList.remove('live'); fits.unobserve(vp); }
     liveOn = arts.some(a => a.querySelector('.vp iframe'));
   }
   // A whole page scrolled in the window (a site that cannot be framed): its slices load as they near

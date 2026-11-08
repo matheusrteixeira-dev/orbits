@@ -182,10 +182,11 @@ OG_LOCALE = {"en": "en_US", "pt": "pt_BR", "es": "es_ES", "fr": "fr_FR", "de": "
 
 
 # ---------- Case studies: one article per project, shown on its planet ----------
-# Projects used live inside their page: the real site in an iframe, made after landing on wide screens and
-# removed on leaving. A site goes in LIVE_ON once it lets https://sectus.dev frame it (CSP frame-ancestors,
-# no X-Frame-Options). Isaac's embed pages (/embed/<scene>) are made to be framed by any site: the full
-# workspace of the scene, with a link that opens it in Isaac. frame-src in src/static/_headers lists the same origins.
+# Projects used live inside their page: the real site in an iframe, made after landing and removed on
+# leaving (world.js lays it out as on a laptop screen and scales it into the window). A site goes in
+# LIVE_ON once it lets https://sectus.dev frame it (CSP frame-ancestors, no X-Frame-Options). Isaac's
+# embed pages (/embed/<scene>) are made to be framed by any site: the full workspace of the scene, with
+# a link that opens it in Isaac. frame-src in src/static/_headers lists the same origins.
 # The address takes the page's language where the site has it ({p}: "" for English, "/pt" and so on).
 # Isaac opens on a shared state (#s=, deflated JSON, see Isaac's src/engine/share.ts): the double pendulum
 # 14 s in with its trail on, {"v":1,"scene":"chaos","level":"undergraduate","time":14,"toggles":{"trail":true,"path":false}},
