@@ -50,7 +50,7 @@ C = {
   "h": "Über mich",
   "p": [
    "Ich bin Matheus Teixeira aus Santos, Brasilien. Ich forsche zu Quanten-Machine-Learning und Quantenfehlerkorrektur.",
-   "Ich habe 2016 als Webentwickler und IT-Support-Assistent bei Orion Benefícios angefangen. Seit 2019 studiere ich an der FEI, zuerst einen Bachelor in Informatik, dann einen Master in Elektrotechnik mit Schwerpunkt KI. Meine Masterarbeit ist eine hybride quantenklassische Pipeline für die Histopathologie von Brustkrebs, mit nach Patienten getrennten Daten, sodass kein Patient zugleich in Training und Test vorkommt. Jetzt mache ich einen MBA in Data Science, KI und Analytics an der USP mit Vollstipendium, und ich bin für die Promotion an der FEI zur Quantenfehlerkorrektur eingeschrieben, mit CAPES-Stipendium und Kursen ab Februar 2027.",
+   "Ich habe 2016 als Webentwickler angefangen. An der FEI habe ich einen Bachelor in Informatik und einen Master in Elektrotechnik mit Schwerpunkt KI gemacht. Jetzt mache ich einen MBA in Data Science und KI an der USP und bin für die Promotion zur Quantenfehlerkorrektur an der FEI eingeschrieben, mit Kursen ab Februar 2027.",
    "Unten sind fünf meiner Projekte, eines pro Planet."
   ],
   "facts": [
@@ -206,7 +206,7 @@ C = {
     ],
     [
      "Im Einsatz",
-     "Amadeo ist in neun Sprachen online, mit einem über Stripe bezahlten Pro-Tarif, einem Repertoire an Arrangements, einem Stimmgerät und einem Metronom. Eine Android-App ist fertig und wartet auf die Veröffentlichung im Store."
+     "Online in neun Sprachen, mit Pro-Tarif, Stimmgerät und Metronom. Eine Android-App ist fertig."
     ]
    ],
    "shots": [
@@ -417,7 +417,7 @@ C = {
     "y": "2024 – 2026",
     "t": "M.Sc. in Elektrotechnik",
     "w": "FEI · KI in Automatisierung und Robotik",
-    "p": "Masterarbeit über Quanten-Machine-Learning für die Histopathologie von Brustkrebs: 80,0 % Genauigkeit und 86,0 % F1, wobei kein Patient zugleich in Trainings- und Testdaten vorkommt.",
+    "p": "Masterarbeit über Quanten-Machine-Learning für die Histopathologie von Brustkrebs: 80,0 % Genauigkeit und 86,0 % F1.",
     "em": "CAPES-Stipendium",
     "a": "Code der Masterarbeit"
    },
@@ -444,7 +444,7 @@ C = {
     "y": "2024 – 2026",
     "t": "Forscher für angewandtes maschinelles Lernen",
     "w": "FEI, São Bernardo do Campo",
-    "p": "Klassifikation von Brustkrebs-Histopathologie auf BreaKHis mit ResNet-50, patientenweiser Aufteilung sowie SVM- und QSVM-Modellen; Experimente auf IBM-Quantum-Hardware dazu, wie Rauschen Quantenkernel beeinflusst."
+    "p": "Klassifikation von Brustkrebs-Histopathologie mit ResNet-50, SVM und QSVM; Experimente auf IBM-Quantum-Hardware."
    },
    {
     "y": "2020",
@@ -481,10 +481,8 @@ C = {
  "sky": {
   "h": "Über diesen Himmel",
   "p": [
-   "Das Schwarze Loch wird mit einem Raytracer gezeichnet, der aus dem von Isaac, meinem Physiksimulator, entstanden ist. Jedes Pixel folgt einem Lichtstrahl rückwärts durch die gekrümmte Raumzeit um das Loch (das sich mit 90 % der höchsten für ein Schwarzes Loch möglichen Rate dreht), gesehen 18° über seiner Scheibe. Die Scheibe ist heißes Gas, gefärbt wie ein schwarzer Körper, heller auf der Seite, die auf uns zukommt, und nahe am Loch rotverschoben. Das Gas kreist so schnell, wie es das wirklich täte: Der innere Rand braucht für eine Runde weniger als eine Sekunde, der äußere etwa 9. Der dünne helle Ring um den Schatten ist Licht, das das Loch umrundet hat, bevor es uns erreicht.",
-   "Die Planeten und der Asteroidengürtel umkreisen das Loch in der Ebene der Scheibe, alle nach derselben Uhr: Der innerste Planet braucht für eine Runde etwa 23 Sekunden, der äußerste etwa 48. Ihre Ellipsen drehen sich langsam, wie die allgemeine Relativitätstheorie vorhersagt, und jeder Planet wendet dem Loch stets dieselbe Seite zu.",
-   "Eine Sekunde hier sind 40 M Zeit, wobei M die Masse des Lochs in Zeiteinheiten ist. Für ein Loch von 100 Millionen Sonnen sind das etwa 20.000-fache Echtzeit. Die Kamera kreist langsam um das Loch.",
-   "Zwei Dinge sind nicht maßstabsgetreu. Umlaufbahnen, Gürtel und Planeten sind ohne die Ablenkung ihres Lichts gezeichnet, die die Rückseite jeder Umlaufbahn über das Loch heben würde, und die Planeten sind tausendfach größer gezeichnet, als sie wären."
+   "Das Schwarze Loch wird per Raytracing gezeichnet: Jedes Pixel folgt einem Lichtstrahl durch die gekrümmte Raumzeit um ein rotierendes Loch. Die Scheibe ist heißes Gas, heller auf der Seite, die sich auf uns zubewegt.",
+   "Die Planeten laufen nach einer gemeinsamen Uhr, etwa 20.000-mal schneller als um ein echtes Loch von 100 Millionen Sonnen. Ihre Bahnen sind flach gezeichnet und die Planeten weit größer als maßstabsgetreu."
   ]
  },
  "nf": {
@@ -502,7 +500,7 @@ C = {
  },
  "roadmap": {
   "h": "Fahrplan",
-  "p": "Mein bisheriger Weg und was als Nächstes kommt. Die Zeit läuft nach rechts, und für das Jahr in Zürich steigt die Linie nach oben. Gestrichelte Teile sind geplant.",
+  "p": "Mein bisheriger Weg und was als Nächstes kommt. Gestrichelte Teile sind geplant.",
   "br": "Brasilien",
   "ch": "Zürich",
   "now": "Jetzt",

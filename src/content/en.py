@@ -58,7 +58,7 @@ C = {
   "h": "About",
   "p": [
    "I’m Matheus Teixeira, from Santos, Brazil. My research is on quantum machine learning and quantum error correction.",
-   "I started in 2016 as a web developer and IT support assistant at Orion Benefícios. I have studied at FEI since 2019, first a B.Sc. in Computer Science and then an M.Sc. in Electrical Engineering, focused on AI. My dissertation is a hybrid quantum-classical pipeline for breast cancer histopathology, with the data split by patient so that no patient appears in both training and test sets. I am now doing an MBA in Data Science, AI and Analytics at USP on a full scholarship, and I am enrolled in the Ph.D. at FEI on quantum error correction, with a CAPES scholarship and classes from February 2027.",
+   "I started as a web developer in 2016. At FEI I did a B.Sc. in Computer Science and an M.Sc. in Electrical Engineering focused on AI. I’m now doing an MBA in Data Science and AI at USP, and I’m enrolled in a Ph.D. on quantum error correction at FEI, with classes from February 2027.",
    "Below are five of my projects, one per planet."
   ],
   "facts": [
@@ -214,7 +214,7 @@ C = {
     ],
     [
      "In use",
-     "Amadeo is live in nine languages, with a Pro plan paid through Stripe, a repertoire of arrangements, a tuner and a metronome. An Android app is built and waiting for its store release."
+     "Live in nine languages, with a Pro plan, a tuner and a metronome. An Android app is ready for release."
     ]
    ],
    "shots": [
@@ -412,7 +412,7 @@ C = {
  },
  "roadmap": {
   "h": "Roadmap",
-  "p": "My path so far and what comes next. Time runs to the right, and the line goes up for the year in Zurich. Dashed parts are planned.",
+  "p": "My path so far and what comes next. Dashed parts are planned.",
   "br": "Brazil",
   "ch": "Zurich",
   "now": "Now",
@@ -467,7 +467,7 @@ C = {
     "y": "2024 – 2026",
     "t": "M.Sc. in Electrical Engineering",
     "w": "FEI · AI applied to automation and robotics",
-    "p": "Dissertation on quantum machine learning for breast cancer histopathology: 80.0% accuracy and 86.0% F1, with no patient in both the training and the test set.",
+    "p": "Dissertation on quantum machine learning for breast cancer histopathology: 80.0% accuracy, 86.0% F1.",
     "em": "CAPES scholarship",
     "a": "Dissertation code"
    },
@@ -494,7 +494,7 @@ C = {
     "y": "2024 – 2026",
     "t": "Applied machine learning researcher",
     "w": "FEI, São Bernardo do Campo",
-    "p": "Breast cancer histopathology classification on BreaKHis with ResNet-50, patient-wise splits and SVM and QSVM models; experiments on IBM Quantum hardware on how noise affects quantum kernels."
+    "p": "Breast cancer histopathology classification with ResNet-50, SVM and QSVM; experiments on IBM Quantum hardware."
    },
    {
     "y": "2020",
@@ -531,10 +531,8 @@ C = {
  "sky": {
   "h": "About this sky",
   "p": [
-   "The black hole is drawn with a ray tracer grown from the one in Isaac, my physics simulator. Every pixel follows a light ray back through the curved spacetime around the hole (which spins at 90% of the fastest rate a black hole can have), seen from 18° above its disc. The disc is hot gas, coloured as a black body, brighter on the side moving towards us and redshifted close to the hole. The gas orbits as fast as it really would: the inner edge goes round in under a second, the outer edge in about 9. The thin bright ring around the shadow is light that circled the hole before reaching us.",
-   "The planets and the asteroid belt orbit in the plane of the disc, all on one clock: the innermost planet laps in about 23 seconds, the outermost in about 48. Their ellipses turn slowly, as general relativity predicts, and each planet keeps one face towards the hole.",
-   "One second here is 40 M of time, where M is the hole’s mass in units of time. For a hole of 100 million suns, that is about 20,000 times real speed. The camera drifts slowly around the hole.",
-   "Two things are not to scale. The orbits, the belt and the planets are drawn without the bending of their light, which would lift the far side of every orbit over the hole, and the planets are drawn thousands of times larger than they would be."
+   "The black hole is ray traced: every pixel follows a light ray through the curved spacetime around a spinning hole. Its disc is hot gas, brighter on the side moving towards us.",
+   "The planets orbit on one clock, about 20,000 times faster than around a real hole of 100 million suns. Their orbits are drawn flat, and the planets far larger than to scale."
   ]
  },
  "nf": {

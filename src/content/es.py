@@ -50,7 +50,7 @@ C = {
   "h": "Sobre mí",
   "p": [
    "Soy Matheus Teixeira, de Santos, Brasil. Mi investigación es en machine learning cuántico y corrección cuántica de errores.",
-   "Empecé en 2016 como desarrollador web y asistente de soporte informático en Orion Benefícios. Estudio en la FEI desde 2019, primero el grado en Ciencias de la Computación y después el máster en Ingeniería Eléctrica, con foco en IA. Mi tesis de máster es un pipeline híbrido cuántico-clásico para histopatología de cáncer de mama, con los datos divididos por paciente, de modo que ningún paciente aparece a la vez en entrenamiento y en prueba. Ahora curso un MBA en Data Science, IA y Analytics en la USP con beca completa, y estoy matriculado en el doctorado de la FEI en corrección cuántica de errores, con beca CAPES y clases desde febrero de 2027.",
+   "Empecé como desarrollador web en 2016. En la FEI hice el grado en Ciencias de la Computación y el máster en Ingeniería Eléctrica, con foco en IA. Ahora curso un MBA en Data Science e IA en la USP y estoy matriculado en el doctorado en corrección cuántica de errores en la FEI, con clases desde febrero de 2027.",
    "Abajo están cinco de mis proyectos, uno por planeta."
   ],
   "facts": [
@@ -206,7 +206,7 @@ C = {
     ],
     [
      "En uso",
-     "Amadeo está en línea en nueve idiomas, con un plan Pro pagado con Stripe, un repertorio de arreglos, un afinador y un metrónomo. Una app para Android está lista y espera su publicación en la tienda."
+     "En línea en nueve idiomas, con plan Pro, afinador y metrónomo. Una app para Android está lista para salir."
     ]
    ],
    "shots": [
@@ -417,7 +417,7 @@ C = {
     "y": "2024 – 2026",
     "t": "Maestría en Ingeniería Eléctrica",
     "w": "FEI · IA aplicada a la automatización y la robótica",
-    "p": "Tesis sobre machine learning cuántico para histopatología de cáncer de mama: 80,0% de exactitud y 86,0% de F1, sin ningún paciente a la vez en el conjunto de entrenamiento y en el de prueba.",
+    "p": "Tesis sobre machine learning cuántico para histopatología de cáncer de mama: 80,0% de exactitud y 86,0% de F1.",
     "em": "Beca CAPES",
     "a": "Código de la tesis"
    },
@@ -444,7 +444,7 @@ C = {
     "y": "2024 – 2026",
     "t": "Investigador en machine learning aplicado",
     "w": "FEI, São Bernardo do Campo",
-    "p": "Clasificación de histopatología de cáncer de mama en BreaKHis con ResNet-50, divisiones por paciente y modelos SVM y QSVM; experimentos en hardware de IBM Quantum sobre cómo el ruido afecta a los kernels cuánticos."
+    "p": "Clasificación de histopatología de cáncer de mama con ResNet-50, SVM y QSVM; experimentos en hardware de IBM Quantum."
    },
    {
     "y": "2020",
@@ -481,10 +481,8 @@ C = {
  "sky": {
   "h": "Sobre este cielo",
   "p": [
-   "El agujero negro se dibuja con un trazador de rayos derivado del de Isaac, mi simulador de física. Cada píxel sigue un rayo de luz hacia atrás por el espacio-tiempo curvo alrededor del agujero (que gira al 90% de la velocidad máxima que puede tener un agujero negro), visto 18° por encima de su disco. El disco es gas caliente, coloreado como un cuerpo negro, más brillante en el lado que se acerca y desplazado al rojo cerca del agujero. El gas gira a la velocidad que tendría de verdad: el borde interior da una vuelta en menos de un segundo, el exterior en unos 9. El anillo fino y brillante alrededor de la sombra es luz que rodeó el agujero antes de llegar hasta nosotros.",
-   "Los planetas y el cinturón de asteroides orbitan en el plano del disco, todos con el mismo reloj: el planeta más interior da una vuelta en unos 23 segundos, el más exterior en unos 48. Sus elipses giran despacio, como predice la relatividad general, y cada planeta muestra siempre la misma cara al agujero.",
-   "Un segundo aquí equivale a 40 M de tiempo, donde M es la masa del agujero en unidades de tiempo. Para un agujero de 100 millones de soles, son unas 20.000 veces la velocidad real. La cámara gira despacio alrededor del agujero.",
-   "Dos cosas no están a escala. Las órbitas, el cinturón y los planetas se dibujan sin la curvatura de su luz, que levantaría la parte trasera de cada órbita sobre el agujero, y los planetas se dibujan miles de veces más grandes de lo que serían."
+   "El agujero negro se dibuja con trazado de rayos: cada píxel sigue un rayo de luz por el espacio-tiempo curvo alrededor de un agujero en rotación. El disco es gas caliente, más brillante por el lado que viene hacia nosotros.",
+   "Los planetas siguen un solo reloj, unas 20.000 veces más rápido que alrededor de un agujero real de 100 millones de soles. Las órbitas se dibujan planas y los planetas mucho más grandes que a escala."
   ]
  },
  "nf": {
@@ -502,7 +500,7 @@ C = {
  },
  "roadmap": {
   "h": "Hoja de ruta",
-  "p": "Mi camino hasta ahora y lo que viene. El tiempo avanza hacia la derecha, y la línea sube durante el año en Zúrich. Las partes discontinuas están planificadas.",
+  "p": "Mi camino hasta ahora y lo que viene. Las partes discontinuas están planificadas.",
   "br": "Brasil",
   "ch": "Zúrich",
   "now": "Ahora",

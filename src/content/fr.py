@@ -50,7 +50,7 @@ C = {
   "h": "À propos",
   "p": [
    "Je suis Matheus Teixeira, de Santos, au Brésil. Mes recherches portent sur le machine learning quantique et la correction d’erreurs quantiques.",
-   "J’ai commencé en 2016 comme développeur web et assistant de support informatique chez Orion Benefícios. J’étudie à la FEI depuis 2019, d’abord une licence en informatique, puis un master en génie électrique, axé sur l’IA. Mon mémoire est un pipeline hybride quantique-classique pour l’histopathologie du cancer du sein, avec des données séparées par patient, si bien qu’aucun patient n’apparaît à la fois dans l’entraînement et dans le test. Je fais maintenant un MBA en Data Science, IA et Analytics à l’USP avec une bourse complète, et je suis inscrit en doctorat à la FEI sur la correction d’erreurs quantiques, avec une bourse CAPES et des cours à partir de février 2027.",
+   "J’ai commencé comme développeur web en 2016. À la FEI, j’ai fait une licence en informatique puis un master en génie électrique, axé sur l’IA. Je fais maintenant un MBA en Data Science et IA à l’USP, et je suis inscrit en doctorat sur la correction d’erreurs quantiques à la FEI, avec des cours à partir de février 2027.",
    "Voici cinq de mes projets, un par planète."
   ],
   "facts": [
@@ -206,7 +206,7 @@ C = {
     ],
     [
      "En service",
-     "Amadeo est en ligne en neuf langues, avec un abonnement Pro payé via Stripe, un répertoire d’arrangements, un accordeur et un métronome. Une application Android est prête et attend sa sortie sur le store."
+     "En ligne en neuf langues, avec un abonnement Pro, un accordeur et un métronome. Une application Android est prête."
     ]
    ],
    "shots": [
@@ -417,7 +417,7 @@ C = {
     "y": "2024 – 2026",
     "t": "Master en génie électrique",
     "w": "FEI · IA appliquée à l’automatisation et à la robotique",
-    "p": "Mémoire sur le machine learning quantique pour l’histopathologie du cancer du sein : 80,0 % d’exactitude et 86,0 % de F1, sans qu’aucun patient figure à la fois dans l’ensemble d’entraînement et dans celui de test.",
+    "p": "Mémoire sur le machine learning quantique pour l’histopathologie du cancer du sein : 80,0 % d’exactitude et 86,0 % de F1.",
     "em": "Bourse CAPES",
     "a": "Code du mémoire"
    },
@@ -444,7 +444,7 @@ C = {
     "y": "2024 – 2026",
     "t": "Chercheur en machine learning appliqué",
     "w": "FEI, São Bernardo do Campo",
-    "p": "Classification d’histopathologie du cancer du sein sur BreaKHis avec ResNet-50, séparation par patient et modèles SVM et QSVM ; expériences sur du matériel IBM Quantum sur l’effet du bruit sur les noyaux quantiques."
+    "p": "Classification d’histopathologie du cancer du sein avec ResNet-50, SVM et QSVM ; expériences sur du matériel IBM Quantum."
    },
    {
     "y": "2020",
@@ -481,10 +481,8 @@ C = {
  "sky": {
   "h": "À propos de ce ciel",
   "p": [
-   "Le trou noir est dessiné avec un lancer de rayons dérivé de celui d’Isaac, mon simulateur de physique. Chaque pixel suit un rayon de lumière à rebours dans l’espace-temps courbe autour du trou (qui tourne sur lui-même à 90 % de la vitesse maximale possible pour un trou noir), vu 18° au-dessus de son disque. Le disque est un gaz chaud, coloré comme un corps noir, plus brillant du côté qui vient vers nous et décalé vers le rouge près du trou. Le gaz tourne à la vitesse qu’il aurait réellement : le bord intérieur fait un tour en moins d’une seconde, le bord extérieur en 9. L’anneau fin et brillant autour de l’ombre est de la lumière qui a fait le tour du trou avant de nous atteindre.",
-   "Les planètes et la ceinture d’astéroïdes orbitent dans le plan du disque, toutes sur la même horloge : la planète la plus proche fait un tour en environ 23 secondes, la plus éloignée en environ 48. Leurs ellipses tournent lentement, comme le prévoit la relativité générale, et chaque planète garde une face tournée vers le trou.",
-   "Une seconde ici vaut 40 M de temps, où M est la masse du trou exprimée en temps. Pour un trou de 100 millions de soleils, cela fait environ 20 000 fois la vitesse réelle. La caméra tourne lentement autour du trou.",
-   "Deux choses ne sont pas à l’échelle. Les orbites, la ceinture et les planètes sont dessinées sans la déviation de leur lumière, qui relèverait l’arrière de chaque orbite au-dessus du trou, et les planètes sont dessinées des milliers de fois plus grandes qu’elles ne le seraient."
+   "Le trou noir est dessiné par lancer de rayons : chaque pixel suit un rayon de lumière dans l’espace-temps courbé autour d’un trou en rotation. Son disque est du gaz chaud, plus brillant du côté qui vient vers nous.",
+   "Les planètes suivent une seule horloge, environ 20 000 fois plus vite qu’autour d’un vrai trou de 100 millions de soleils. Leurs orbites sont dessinées à plat, et les planètes bien plus grandes qu’à l’échelle."
   ]
  },
  "nf": {
@@ -502,7 +500,7 @@ C = {
  },
  "roadmap": {
   "h": "Feuille de route",
-  "p": "Mon parcours jusqu’ici et la suite. Le temps s’écoule vers la droite, et la ligne monte pendant l’année à Zurich. Les parties en pointillé sont prévues.",
+  "p": "Mon parcours jusqu’ici et la suite. Les parties en pointillé sont prévues.",
   "br": "Brésil",
   "ch": "Zurich",
   "now": "Maintenant",

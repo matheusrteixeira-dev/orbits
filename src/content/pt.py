@@ -50,7 +50,7 @@ C = {
   "h": "Sobre",
   "p": [
    "Sou o Matheus Teixeira, de Santos. Minha pesquisa é em machine learning quântico e correção quântica de erros.",
-   "Comecei em 2016 como desenvolvedor web e assistente de suporte de TI na Orion Benefícios. Estudo na FEI desde 2019, primeiro a graduação em Ciência da Computação e depois o mestrado em Engenharia Elétrica, com foco em IA. Minha dissertação é um pipeline híbrido quântico-clássico para histopatologia de câncer de mama, com os dados divididos por paciente, de modo que nenhum paciente aparece no treino e no teste ao mesmo tempo. Agora faço um MBA em Data Science, IA e Analytics na USP, com bolsa integral, e estou matriculado no doutorado da FEI em correção quântica de erros, com bolsa CAPES e aulas a partir de fevereiro de 2027.",
+   "Comecei como desenvolvedor web em 2016. Na FEI fiz a graduação em Ciência da Computação e o mestrado em Engenharia Elétrica, com foco em IA. Agora faço um MBA em Data Science e IA na USP e estou matriculado no doutorado em correção quântica de erros na FEI, com aulas a partir de fevereiro de 2027.",
    "Abaixo estão cinco dos meus projetos, um por planeta."
   ],
   "facts": [
@@ -206,7 +206,7 @@ C = {
     ],
     [
      "Em uso",
-     "O Amadeo está no ar em nove idiomas, com plano Pro pago pelo Stripe, um repertório de arranjos, afinador e metrônomo. Um app para Android está pronto e aguarda a publicação na loja."
+     "No ar em nove idiomas, com plano Pro, afinador e metrônomo. Um app para Android está pronto para lançamento."
     ]
    ],
    "shots": [
@@ -417,7 +417,7 @@ C = {
     "y": "2024 – 2026",
     "t": "Mestrado em Engenharia Elétrica",
     "w": "FEI · IA aplicada à automação e robótica",
-    "p": "Dissertação sobre machine learning quântico para histopatologia de câncer de mama: 80,0% de acurácia e 86,0% de F1, sem nenhum paciente nos conjuntos de treino e de teste ao mesmo tempo.",
+    "p": "Dissertação sobre machine learning quântico para histopatologia de câncer de mama: 80,0% de acurácia e 86,0% de F1.",
     "em": "Bolsa CAPES",
     "a": "Código da dissertação"
    },
@@ -444,7 +444,7 @@ C = {
     "y": "2024 – 2026",
     "t": "Pesquisador em machine learning aplicado",
     "w": "FEI, São Bernardo do Campo",
-    "p": "Classificação de histopatologia de câncer de mama no BreaKHis com ResNet-50, divisão por paciente e modelos SVM e QSVM; experimentos em hardware da IBM Quantum sobre o efeito do ruído em kernels quânticos."
+    "p": "Classificação de histopatologia de câncer de mama com ResNet-50, SVM e QSVM; experimentos em hardware da IBM Quantum."
    },
    {
     "y": "2020",
@@ -481,10 +481,8 @@ C = {
  "sky": {
   "h": "Sobre este céu",
   "p": [
-   "O buraco negro é desenhado com um traçador de raios derivado do Isaac, meu simulador de física. Cada pixel segue um raio de luz de volta pelo espaço-tempo curvo em torno do buraco (que gira a 90% da velocidade máxima que um buraco negro pode ter), visto 18° acima do disco. O disco é gás quente, colorido como um corpo negro, mais brilhante do lado que vem em nossa direção e desviado para o vermelho perto do buraco. O gás gira na velocidade que teria de verdade: a borda interna dá uma volta em menos de um segundo, a externa em cerca de 9. O anel fino e brilhante em volta da sombra é luz que contornou o buraco antes de chegar até nós.",
-   "Os planetas e o cinturão de asteroides orbitam no plano do disco, todos no mesmo relógio: o planeta mais interno dá uma volta em cerca de 23 segundos, o mais externo em cerca de 48. As elipses giram devagar, como prevê a relatividade geral, e cada planeta mantém uma face voltada para o buraco.",
-   "Um segundo aqui são 40 M de tempo, em que M é a massa do buraco em unidades de tempo. Para um buraco de 100 milhões de sóis, isso é cerca de 20.000 vezes a velocidade real. A câmera gira devagar em torno do buraco.",
-   "Duas coisas não estão em escala. As órbitas, o cinturão e os planetas são desenhados sem o desvio da sua luz, que ergueria o lado de trás de cada órbita acima do buraco, e os planetas aparecem milhares de vezes maiores do que seriam."
+   "O buraco negro é desenhado por traçado de raios: cada pixel segue um raio de luz pelo espaço-tempo curvo em volta de um buraco em rotação. O disco é gás quente, mais brilhante do lado que vem em nossa direção.",
+   "Os planetas seguem um só relógio, cerca de 20.000 vezes mais rápido do que em volta de um buraco real de 100 milhões de sóis. As órbitas são desenhadas planas, e os planetas muito maiores do que na escala real."
   ]
  },
  "nf": {
@@ -502,7 +500,7 @@ C = {
  },
  "roadmap": {
   "h": "Roadmap",
-  "p": "Meu caminho até aqui e o que vem a seguir. O tempo corre para a direita, e a linha sobe no ano em Zurique. As partes tracejadas são planejadas.",
+  "p": "Meu caminho até aqui e o que vem a seguir. As partes tracejadas são planejadas.",
   "br": "Brasil",
   "ch": "Zurique",
   "now": "Agora",
