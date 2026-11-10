@@ -157,7 +157,7 @@ C = {
     "En ligne en neuf langues, avec abonnements Pro"
    ],
    "viz": "Les traces de hauteur du spectrogramme deviennent des notes sur la portée.",
-   "lede": "Transforme des enregistrements audio en partitions modifiables, entièrement dans le navigateur. La partition peut être modifiée, jouée sur 35 instruments échantillonnés et travaillée avec des notes qui tombent.",
+   "lede": "Transforme des enregistrements audio en partitions modifiables, entièrement dans le navigateur.",
    "platform": "Web",
    "arch": [
     [
@@ -425,7 +425,7 @@ C = {
     "y": "2026 – 2027",
     "t": "MBA en data science, IA et analytics",
     "w": "USP · en cours",
-    "p": "Statistiques, Python, analyse de données, machine learning, intelligence artificielle et analytics.",
+    "p": "",
     "em": "Bourse complète"
    },
    {

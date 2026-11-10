@@ -157,7 +157,7 @@ C = {
     "Online in neun Sprachen, mit Pro-Abos"
    ],
    "viz": "Tonhöhenspuren im Spektrogramm werden zu Noten im Notensystem.",
-   "lede": "Macht aus Audioaufnahmen bearbeitbare Noten, komplett im Browser. Die Partitur lässt sich bearbeiten, auf 35 gesampelten Instrumenten abspielen und mit fallenden Noten üben.",
+   "lede": "Macht aus Audioaufnahmen bearbeitbare Noten, komplett im Browser.",
    "platform": "Web",
    "arch": [
     [
@@ -425,7 +425,7 @@ C = {
     "y": "2026 – 2027",
     "t": "MBA in Data Science, KI und Analytics",
     "w": "USP · laufend",
-    "p": "Statistik, Python, Datenanalyse, maschinelles Lernen, künstliche Intelligenz und Analytics.",
+    "p": "",
     "em": "Vollstipendium"
    },
    {

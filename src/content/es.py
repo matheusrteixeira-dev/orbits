@@ -157,7 +157,7 @@ C = {
     "En línea en nueve idiomas, con suscripciones Pro"
    ],
    "viz": "Las trazas de tono del espectrograma se convierten en notas en el pentagrama.",
-   "lede": "Convierte grabaciones de audio en partituras editables, todo en el navegador. La partitura se puede editar, tocar con 35 instrumentos muestreados y practicar con notas que caen.",
+   "lede": "Convierte grabaciones de audio en partituras editables, todo en el navegador.",
    "platform": "Web",
    "arch": [
     [
@@ -425,7 +425,7 @@ C = {
     "y": "2026 – 2027",
     "t": "MBA en Data Science, IA y Analytics",
     "w": "USP · en curso",
-    "p": "Estadística, Python, análisis de datos, machine learning, inteligencia artificial y analytics.",
+    "p": "",
     "em": "Beca completa"
    },
    {

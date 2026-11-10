@@ -68,7 +68,7 @@ the planet texture size, one step at a time.
 
 | | |
 |---|---|
-| **About** | a short introduction and a terminal with what I am doing now |
+| **About** | a short introduction |
 | **Projects** | Isaac, Amadeo, Brectus, the company websites and Allwinner, each as a case study on its planet: the product, how its parts fit together, what is tested, engineering notes, screenshots and a live visual |
 | **Roadmap** | my path from 2016 to 2030 as a worldline that goes up for the year in Zurich |
 | **Education, experience, tools** | degrees, roles, the BRACIS 2026 paper |

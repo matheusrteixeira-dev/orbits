@@ -323,17 +323,11 @@ def render(lang, C, ver, all_c):
             link = ext_link(LINKS["iris"], it["a"])
         elif i == 1:
             link = ext_link(LINKS["qml"], it["a"])
-        ed.append(f'<div class="ec{" pl" if i == 3 else ""}"><span class="y">{e(it["y"])}</span><h3>{e(it["t"])}</h3><div class="w">{e(it["w"])}</div><p>{e(it["p"])}</p><em>{e(it["em"])}</em>{link}</div>')
+        ed.append(f'<div class="ec{" pl" if i == 3 else ""}"><span class="y">{e(it["y"])}</span><h3>{e(it["t"])}</h3><div class="w">{e(it["w"])}</div>{"<p>" + e(it["p"]) + "</p>" if it["p"] else ""}<em>{e(it["em"])}</em>{link}</div>')
     xp = "".join(f'<div class="xr"><span class="y">{e(it["y"])}</span><div><h3>{e(it["t"])}</h3><div class="w">{e(it["w"])}</div><p>{e(it["p"])}</p></div></div>' for it in C["experience"]["items"])
     tools = "".join(f'<div><h3>{e(h)}</h3><ul>{"".join(f"<li>{e(x)}</li>" for x in TOOLS[i])}</ul></div>' for i, h in enumerate(C["tools"]["groups"]))
     facts = "".join(f'<div><dt>{e(a)}</dt><dd>{e(v)}</dd></div>' for a, v in C["about"]["facts"])
     footlangs = "".join(f'<a href="{b}{page_path(l)}" hreflang="{l}" lang="{l}"{" aria-current=\"page\"" if l == lang else ""}>{e(all_c[l]["name"])}</a>' for l in LANGS)
-    tm = C["about"]["term"]
-    pr = '<span class="pp">matheus@orbit</span><span class="pc">:~$</span> '
-    term = (f'<div class="term" lang="{lang}" aria-label="Terminal"><div class="tb"><i></i><i></i><i></i><span>matheus — zsh</span></div><pre>'
-            f'{pr}<b>whoami</b>\n{e(tm["who"])}\n{pr}<b>cat now.txt</b>\n{e(chr(10).join(tm["now"]))}\n'
-            f'{pr}<b>ls ~/shipped</b>\n<span class="ls">isaac3d.com/  amadeosheets.com/  liderplustelemedicina.com.br/  brectus/  allwinner/  quantum-ml-healthcare/</span>\n'
-            f'{pr}<b>echo $LANG</b>\n{e(tm["lang"])}\n{pr}<span class="cur"></span></pre></div>')
     wl_svg, wl_list = worldline(C, rtl)
     studies = "".join(case_study(i, p, C, b, lang) for i, p in enumerate(PROJECTS))
 
@@ -385,13 +379,14 @@ def render(lang, C, ver, all_c):
 <div class="intro"><span class="k">{e(C["role"])}</span>
 <h1{" class=\"long\"" if len(H["h"]) > 48 else ""}>{hero_title(H["h"])}</h1>
 <p>{e(H["p"])}</p>
-<div class="row"><a class="btn" href="#projects">{e(H["cta"][0])}</a><a class="btn o" href="#about">{e(H["cta"][1])}</a></div></div>
+<div class="row"><a class="btn" href="#projects">{e(H["cta"][0])}</a><a class="btn o" href="/cv/Matheus-Teixeira-CV.pdf" download type="application/pdf">{e(T["cv"])}</a></div>
+<p class="open">{e(C["about"]["term"]["now"][2])}</p></div>
 </section>
 
 <section class="sec" id="about" aria-labelledby="h-about"><div class="sh"><h2 id="h-about">{e(C["about"]["h"])}</h2></div>
 <div class="ab"><div class="ab-l"><div class="pf"><i></i><b></b><img src="{b}assets/img/portrait-s.webp" srcset="{b}assets/img/portrait-s.webp 400w, {b}assets/img/portrait.webp 800w" sizes="222px" alt="{e(C["about"]["alt"])}" width="800" height="800" loading="lazy" decoding="async" fetchpriority="low"></div>
 <dl>{facts}</dl><div class="ln"><a href="{LINKS["github"]}" target="_blank" rel="noopener">GitHub</a><a href="{LINKS["linkedin"]}" target="_blank" rel="noopener">LinkedIn</a><a href="{LINKS["orcid"]}" target="_blank" rel="noopener">ORCID</a><a href="/cv/Matheus-Teixeira-CV.pdf" download type="application/pdf">{e(T["cv"])}</a></div></div>
-<div class="ab-r">{"".join(f"<p>{e(x)}</p>" for x in C["about"]["p"])}{term}</div></div></section>
+<div class="ab-r">{"".join(f"<p>{e(x)}</p>" for x in C["about"]["p"][:2])}</div></div></section>
 
 <section class="sec" id="projects" aria-labelledby="h-projects"><div class="sh"><h2 id="h-projects">{e(C["projects"]["h"])}</h2><p>{e(C["projects"]["p"])}</p></div><div class="pj">{"".join(cards)}</div></section>
 

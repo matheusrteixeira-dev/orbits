@@ -157,7 +157,7 @@ C = {
     "No ar em nove idiomas, com assinaturas Pro"
    ],
    "viz": "As linhas de altura no espectrograma viram notas na pauta.",
-   "lede": "Transforma gravações de áudio em partituras editáveis, tudo no navegador. A partitura pode ser editada, tocada em 35 instrumentos sampleados e praticada com notas caindo.",
+   "lede": "Transforma gravações de áudio em partituras editáveis, tudo no navegador.",
    "platform": "Web",
    "arch": [
     [
@@ -425,7 +425,7 @@ C = {
     "y": "2026 – 2027",
     "t": "MBA em Data Science, IA e Analytics",
     "w": "USP · em andamento",
-    "p": "Estatística, Python, análise de dados, machine learning, inteligência artificial e analytics.",
+    "p": "",
     "em": "Bolsa integral"
    },
    {

@@ -159,7 +159,7 @@ C = {
    "sub": "Audio to sheet music",
    "world": "Ocean world",
    "sum": "Turns audio recordings into editable sheet music, all in the browser.",
-   "lede": "Turns audio recordings into editable sheet music, all in the browser. The score can be edited, played on 35 sampled instruments and practised with falling notes.",
+   "lede": "Turns audio recordings into editable sheet music, all in the browser.",
    "hl": [
     "Neural transcription in the browser, on TensorFlow.js",
     "Score editor, 35 sampled instruments and a practice mode",
@@ -475,7 +475,7 @@ C = {
     "y": "2026 – 2027",
     "t": "MBA in Data Science, AI and Analytics",
     "w": "USP · in progress",
-    "p": "Statistics, Python, data analysis, machine learning, artificial intelligence and analytics.",
+    "p": "",
     "em": "Full scholarship"
    },
    {
