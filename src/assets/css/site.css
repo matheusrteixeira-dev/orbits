@@ -384,3 +384,5 @@ body:before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;opa
 @media(max-width:820px),(pointer:coarse){.k,.lab,.ab dt,.ec em,.wll em,.wll li.nw .t,.cs-hd .meta dt,.checks h4{font-size:12px}}
 /* Education cards: scholarship and link sit at the foot, so cards of one row end on one line. */
 .ec{display:flex;flex-direction:column}.ec>em,.ec>a.u{align-self:flex-start}.ec>em,.ec>p+a.u{margin-top:auto}
+/* Keyboard focus never lands under the fixed header. */
+a,button,summary,[tabindex]{scroll-margin-top:96px}
