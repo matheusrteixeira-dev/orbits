@@ -378,7 +378,7 @@ body:before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;opa
  .intro p{font-size:15px;line-height:1.45;margin-bottom:12px}
  .intro p.open{margin-top:8px}
 }
-@media(min-width:821px) and (max-height:500px) and (orientation:landscape){.intro{top:54px;transform:none;max-width:min(520px,58vw)}}
+@media(min-width:821px) and (max-height:500px) and (orientation:landscape){.intro{top:54px;transform:none;max-width:min(460px,50vw)}}
 @media(max-width:820px) and (max-height:500px) and (orientation:landscape){.intro{padding-top:64px}}
 /* Phones and touch screens: small mono labels no smaller than 12 px. */
 @media(max-width:820px),(pointer:coarse){.k,.lab,.ab dt,.ec em,.wll em,.wll li.nw .t,.cs-hd .meta dt,.checks h4{font-size:12px}}
