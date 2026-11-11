@@ -358,3 +358,15 @@ body:before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;opa
 .cs-media .win.max .vp>img{object-fit:contain}
 .cs-media .win.max .pg-d{max-width:1280px;margin-inline:auto}
 @media(max-width:820px){.cs-media .vp.tall{aspect-ratio:3/4}.cs-media .vp.tall>img{object-fit:contain}}
+/* Touch screens: every tap target at least 44 px. Boxes grow where they have a frame; inline links get an invisible hit area. */
+@media(pointer:coarse){
+ .mnav summary{width:44px;height:44px;padding:0 12px}
+ .lang summary{display:grid;place-items:center;min-width:44px;min-height:44px;padding:0 10px}
+ .mnav a{padding-block:14px}.lang li a{padding-block:14px}
+ .btn,.em button{min-height:44px}
+ .brand,.top nav a,.ln a,a.u,.em a,footer .fl a,.skynote summary{position:relative}
+ .brand:after,.top nav a:after,.ln a:after,a.u:after,.em a:after,footer .fl a:after,.skynote summary:after{content:"";position:absolute;inset:-14px -6px}
+ footer .fl a:after{inset:-14px -12px}
+ .lab:before{content:"";position:absolute;inset:-14px -10px}
+ .ln{row-gap:28px}footer .fl{gap:28px 24px}
+}
