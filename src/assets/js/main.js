@@ -18,7 +18,7 @@
     const seen = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); seen.unobserve(e.target); } }), { rootMargin: '0px 0px -8% 0px' });
     rv.forEach(el => {
       const k = [...el.parentNode.children].indexOf(el);
-      el.classList.add('rv'); el.style.setProperty('--d', Math.min(k, 5) * .07 + 's'); seen.observe(el);
+      el.classList.add('rv'); el.style.setProperty('--d', Math.min(k, 5) * .04 + 's'); seen.observe(el);
     });
   }
   // Tile screenshots load only as their tile nears the screen.
