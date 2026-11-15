@@ -189,16 +189,23 @@
     const t = arts[i] && arts[i].querySelector('.tabs button[data-live]');
     if (!t) return;
     const o = new URL(t.dataset.live).origin;
-    if (warmed.has(o)) return;
+    if (warmed.has(o) || onTap.matches) return;   // on touch screens the site loads only from its tab
     warmed.add(o);
     const l = document.createElement('link'); l.rel = 'preconnect'; l.href = o; document.head.appendChild(l);
   }
   // Leaving a project puts its window back and selects the live tab again, so the next landing goes live.
+  // On touch screens a landing shows the first screenshot and the live site loads only from its tab:
+  // a phone stalls while a whole site starts in a frame, and it saves mobile data.
+  const onTap = matchMedia('(max-width: 820px), (hover: none) and (pointer: coarse)');
   function rearm(art) {
     setMax(art, false);
     art.querySelectorAll('.pg').forEach(g => { g.scrollTop = 0; });
-    const lt = art.querySelector('.tabs button[data-live]');
-    if (lt) {
+    const lt = art.querySelector('.tabs button[data-live]'), st = onTap.matches && lt && art.querySelector('.tabs button:not([data-live])');
+    if (st) {
+      art.querySelectorAll('.tabs button').forEach(x => x.setAttribute('aria-selected', String(x === st)));
+      art.querySelectorAll('.vp > [data-k]').forEach(im => { im.hidden = im.dataset.k !== st.dataset.k; });
+      const url = art.querySelector('.url'); if (url && st.dataset.url) url.textContent = st.dataset.url;
+    } else if (lt) {
       art.querySelectorAll('.tabs button').forEach(x => x.setAttribute('aria-selected', String(x === lt)));
       art.querySelectorAll('.vp > [data-k]').forEach(im => { im.hidden = im.dataset.k !== '0'; });
       const url = art.querySelector('.url'); if (url && lt.dataset.url) url.textContent = lt.dataset.url;
