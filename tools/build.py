@@ -193,7 +193,7 @@ OG_LOCALE = {"en": "en_US", "pt": "pt_BR", "es": "es_ES", "fr": "fr_FR", "de": "
 # so the window shows the tangle that makes the point instead of an empty stage.
 ISAAC_START = "DYoxDoAgEAT_sjWNiRW_ueAKJIiGO2iMf_e6mcm8WIhbgCZ2IiIVuRUBjYvNffaDIw85phi9W71823anO-dGRXxhQ6rPNiYDHrGCeEpTft8P"
 LIVE = {
-    "isaac": ("https://isaac3d.com{p}/embed/chaos#s=" + ISAAC_START, set()),
+    "isaac": ("https://isaac3d.com{p}/embed/chaos#s=" + ISAAC_START, {"pt", "es", "fr", "zh", "hi", "ar"}),
     "amadeo": ("https://amadeosheets.com{p}", {"pt", "es", "fr", "de", "zh", "hi", "ar"}),
     "websites": ("https://liderplustelemedicina.com.br/", set()),
 }

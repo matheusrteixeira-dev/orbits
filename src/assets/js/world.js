@@ -183,25 +183,30 @@
     pg._io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { put(e.target); pg._io.unobserve(e.target); } }), { root: pg, rootMargin: '1200px 0px' });
     pg.querySelectorAll('img[data-src]').forEach(im => pg._io.observe(im));
   }
+  // On phones and touch screens a live site loads only when its tab is tapped: loading a whole app in the
+  // window stalls a phone's page for a second or more, and costs mobile data.
+  const onDemand = matchMedia('(max-width: 820px), (hover: none) and (pointer: coarse)');
   // Connect to a live site's server while the camera is still flying to its planet.
   const warmed = new Set();
   function warm(i) {
     const t = arts[i] && arts[i].querySelector('.tabs button[data-live]');
-    if (!t) return;
+    if (!t || onDemand.matches) return;
     const o = new URL(t.dataset.live).origin;
     if (warmed.has(o)) return;
     warmed.add(o);
     const l = document.createElement('link'); l.rel = 'preconnect'; l.href = o; document.head.appendChild(l);
   }
-  // Leaving a project puts its window back and selects the live tab again, so the next landing goes live.
+  // Leaving a project puts its window back and selects the live tab again, so the next landing goes live;
+  // on phones and touch screens the first screenshot is selected instead.
   function rearm(art) {
     setMax(art, false);
     art.querySelectorAll('.pg').forEach(g => { g.scrollTop = 0; });
     const lt = art.querySelector('.tabs button[data-live]');
     if (lt) {
-      art.querySelectorAll('.tabs button').forEach(x => x.setAttribute('aria-selected', String(x === lt)));
-      art.querySelectorAll('.vp > [data-k]').forEach(im => { im.hidden = im.dataset.k !== '0'; });
-      const url = art.querySelector('.url'); if (url && lt.dataset.url) url.textContent = lt.dataset.url;
+      const t = (onDemand.matches && art.querySelector('.tabs button:not([data-live])')) || lt;
+      art.querySelectorAll('.tabs button').forEach(x => x.setAttribute('aria-selected', String(x === t)));
+      art.querySelectorAll('.vp > [data-k]').forEach(im => { im.hidden = im.dataset.k !== (t === lt ? '0' : t.dataset.k); });
+      const url = art.querySelector('.url'); if (url && t.dataset.url) url.textContent = t.dataset.url;
     }
     shape(art);
   }
