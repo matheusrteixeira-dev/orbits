@@ -297,8 +297,6 @@
     const p3 = orbit(p, tau), [r, ph] = polar(p3), f = flatP(r, ph);
     return { X: f[0], Y: f[1], X0: f[0], M: [1, 0, 0, 1], k: 1, p3, r, ph };
   }
-  // The part of the sky the hole and its lensed disc cover, in M from the centre (measured from the traced image).
-  const HOLE = { x: 17, up: 11, down: 8 };
   function draw() {
     const { w, h, cx, cy, K } = L, W = w * dpr, H = h * dpr;
     bx.setTransform(1, 0, 0, 1, 0, 0); fx.setTransform(1, 0, 0, 1, 0, 0);
@@ -339,40 +337,31 @@
         scr[i] = { x: cx + im.X * K, y: cy - im.Y * K, R: Re };
       }
       const lb = labs.children[i], s_ = scr[i];
+      lb._w = lb._w || {}; const k_ = on ? 1 : 0; if (!lb._w[k_]) { lb.classList.toggle('on', on); lb._w[k_] = [lb.offsetWidth, lb.offsetHeight]; }
+      const [lw, lh] = lb._w[k_][0] ? lb._w[k_] : [80, 20];
+      // The label sits on the outer side of the planet's orbit, away from the hole, and turns with the
+      // planet: (ux, uy) is the outward direction in the orbit's plane (sin ph, cos ph, screen y down),
+      // so the label slides smoothly round the planet instead of jumping from side to side.
+      const ux = Math.sin(S_.im.ph), uy = Math.cos(S_.im.ph), gap = s_.R + 8;
+      let x = s_.x + ux * gap + (ux - 1) / 2 * lw, y = s_.y + uy * gap + (uy - 1) / 2 * lh;
+      // Near a screen edge the label slides along it, and down past the planet, rather than flipping.
+      const cl = Math.min(L.w - 4 - lw, Math.max(4, x)), push = Math.min(1, Math.abs(cl - x) / 16);
+      x = cl; y += push * (s_.y + gap - y);
+      y = Math.min(L.h - 4 - lh, Math.max(4, y));
+      lb._x = x; lb._y = y; lb._lw = lw; lb._lh = lh;
       // Keep labels off the intro text on wide screens.
-      const lx = s_.x + s_.R + 8, hid = IR && lx + 110 > IR.l && lx < IR.r && s_.y > IR.t && s_.y < IR.b;
-      lb.classList.toggle('hid', !!hid);
-      // Put the label on the planet's left when it would run off the right edge.
-      lb._w = lb._w || {}; const k_ = on ? 1 : 0; if (!lb._w[k_]) { lb.classList.toggle('on', on); lb._w[k_] = lb.offsetWidth; }
-      const lw = lb._w[k_] || 80;
-      // A planet in front of or behind the hole takes its label on the outer side, away from the hole.
-      let left = s_.x + s_.R + 8 + lw > L.w - 4 || (s_.x < cx && s_.x > cx - HOLE.x * K - lw && s_.x - s_.R - 8 - lw > 4);
-      // Keep labels off the hole's shadow and the bright inner disc: try the other side, then move
-      // the label just above or below.
-      const hx0 = cx - HOLE.x * K, hx1 = cx + HOLE.x * K, hy0 = cy - HOLE.up * K, hy1 = cy + HOLE.down * K;
-      const over = (lx0, y) => lx0 < hx1 && lx0 + lw > hx0 && y + 10 > hy0 && y - 10 < hy1;
-      const at = l => l ? s_.x - s_.R - 8 - lw : s_.x + s_.R + 8;
-      let ly = s_.y;
-      let lx_ = null;
-      if (over(at(left), ly)) {
-        if (!over(at(!left), ly) && at(!left) > 4 && at(!left) + lw < L.w - 4) left = !left;
-        else {
-          // Neither side is clear: centre the label just above or below the planet, on the side away
-          // from the hole; only if that still covers the hole, move it to the hole's edge.
-          const up = s_.y < cy - K, cxl = Math.min(L.w - 4 - lw, Math.max(4, s_.x - lw / 2)), yl = up ? s_.y - s_.R - 14 : s_.y + s_.R + 14;
-          lx_ = cxl; ly = over(cxl, yl) ? (up ? Math.min(yl, hy0 - 12) : Math.max(yl, hy1 + 12)) : yl;
-        }
-      }
-      lb._x = lx_ !== null ? lx_ : Math.max(4, at(left)); lb._y = ly; lb._lw = lw;
+      lb.classList.toggle('hid', !!(IR && x + lw > IR.l && x < IR.r && y + lh > IR.t && y < IR.b));
       lb.style.visibility = i === hideI || s_.x < -s_.R || s_.x > L.w + s_.R || s_.y < 0 || s_.y > L.h ? 'hidden' : '';
       lb.classList.toggle('on', on);
     }
-    const ls = [...labs.children].sort((a, b) => a._y - b._y);
+    // Two labels that meet are eased apart vertically, never snapped.
+    const ls = [...labs.children];
+    for (const lb of ls) lb._t = 0;
     for (let a = 0; a < ls.length; a++) for (let b = 0; b < a; b++) {
-      const A_ = ls[a], B_ = ls[b];
-      if (A_._x < B_._x + B_._lw && B_._x < A_._x + A_._lw && A_._y - B_._y < 20) A_._y = B_._y + 20;
+      const A_ = ls[a], B_ = ls[b], ov = Math.min(A_._y + A_._lh, B_._y + B_._lh) - Math.max(A_._y, B_._y) + 4;
+      if (ov > 0 && A_._x < B_._x + B_._lw && B_._x < A_._x + A_._lw) { const s = A_._y + A_._lh / 2 >= B_._y + B_._lh / 2 ? 1 : -1; A_._t += s * ov / 2; B_._t -= s * ov / 2; }
     }
-    for (const lb of ls) lb.style.transform = `translate(${Math.round(lb._x)}px,${Math.round(lb._y)}px) translateY(-50%)`;
+    for (const lb of ls) { lb._o = (lb._o || 0) + (lb._t - (lb._o || 0)) * .12; lb.style.transform = `translate(${Math.round(lb._x)}px,${Math.round(lb._y + lb._o)}px)`; }
     BH.draw(tau);
   }
   function glow(ctx, p, X, Y, R, on) {

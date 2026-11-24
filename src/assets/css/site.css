@@ -87,7 +87,7 @@ html.wait,html.wait *{cursor:progress}
 .intro p{font-size:18px;line-height:1.6;color:var(--soft);margin:0 0 26px;text-shadow:0 0 14px #03040a}
 .row{display:flex;flex-wrap:wrap;gap:10px}
 #labs{position:absolute;inset:0;pointer-events:none;z-index:6}
-.lab{position:absolute;left:0;top:0;direction:ltr;pointer-events:auto;display:flex;flex-direction:column;align-items:flex-start;font:600 11px var(--fm);letter-spacing:.12em;text-transform:uppercase;color:#fff;white-space:nowrap;cursor:pointer;padding:3px 7px 3px 8px;border:0;border-inline-start:2px solid var(--c);background:#03040ab0;text-align:start;will-change:transform}
+.lab{position:absolute;left:0;top:0;direction:ltr;pointer-events:auto;display:flex;flex-direction:column;align-items:flex-start;font:600 11px var(--fm);letter-spacing:.12em;text-transform:uppercase;color:#fff;white-space:nowrap;cursor:pointer;padding:3px 7px 3px 8px;border:0;border-inline-start:2px solid var(--c);background:#03040ab0;text-align:start;will-change:transform;transition:opacity .25s}
 .lab small{display:none;color:var(--soft);letter-spacing:.01em;text-transform:none;font:400 12px var(--fb);margin-top:2px}
 .lab.hid{opacity:0;pointer-events:none}.lab.hid:focus-visible{opacity:1}
 .lab:hover,.lab:focus-visible,.lab.on{background:#0b1630ee}.lab:hover small,.lab:focus-visible small,.lab.on small{display:block}
